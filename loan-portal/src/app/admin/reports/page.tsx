@@ -7,7 +7,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { BarChart3, TrendingUp, DollarSign, Users, Calendar, Download, Filter, ArrowLeft, PieChart } from "lucide-react"
 
 export default function ReportsAnalytics() {
-  const [loans, setLoans] = useState([])
+  const [loans, setLoans] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [dateRange, setDateRange] = useState("all")
@@ -33,11 +33,11 @@ export default function ReportsAnalytics() {
   }
 
   const calculateMetrics = () => {
-    const approved = loans.filter(l => l.status === "Approved")
-    const pending = loans.filter(l => l.status === "Pending")
-    const rejected = loans.filter(l => l.status === "Rejected")
+    const approved = loans.filter((l: any) => l.status === "Approved")
+    const pending = loans.filter((l: any) => l.status === "Pending")
+    const rejected = loans.filter((l: any) => l.status === "Rejected")
     
-    const totalDisbursed = approved.reduce((sum, l) => sum + parseFloat(l.amount || 0), 0)
+    const totalDisbursed = approved.reduce((sum: number, l: any) => sum + parseFloat(l.amount || 0), 0)
     const avgLoanSize = approved.length > 0 ? totalDisbursed / approved.length : 0
     const approvalRate = loans.length > 0 ? (approved.length / loans.length) * 100 : 0
     
@@ -53,8 +53,8 @@ export default function ReportsAnalytics() {
   }
 
   const getLoansByTerm = () => {
-    const terms = {}
-    loans.forEach(loan => {
+    const terms: any = {}
+    loans.forEach((loan: any) => {
       const term = loan.term || "Unknown"
       terms[term] = (terms[term] || 0) + 1
     })
@@ -63,16 +63,16 @@ export default function ReportsAnalytics() {
 
   const getLoansByStatus = () => {
     const statuses = {
-      Approved: loans.filter(l => l.status === "Approved").length,
-      Pending: loans.filter(l => l.status === "Pending").length,
-      Rejected: loans.filter(l => l.status === "Rejected").length
+      Approved: loans.filter((l: any) => l.status === "Approved").length,
+      Pending: loans.filter((l: any) => l.status === "Pending").length,
+      Rejected: loans.filter((l: any) => l.status === "Rejected").length
     }
     return statuses
   }
 
   const getTopBorrowers = () => {
-    const borrowers = {}
-    loans.forEach(loan => {
+    const borrowers: Record<string, { count: number; total: number }> = {}
+    loans.forEach((loan: any) => {
       const name = loan.borrower_name || "Unknown"
       if (!borrowers[name]) {
         borrowers[name] = { count: 0, total: 0 }
@@ -82,7 +82,7 @@ export default function ReportsAnalytics() {
     })
     
     return Object.entries(borrowers)
-      .map(([name, data]) => ({ name, ...data }))
+      .map(([name, data]: [string, any]) => ({ name, ...data }))
       .sort((a, b) => b.total - a.total)
       .slice(0, 5)
   }
@@ -215,7 +215,7 @@ export default function ReportsAnalytics() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {Object.entries(loansByStatus).map(([status, count]) => {
+                    {Object.entries(loansByStatus).map(([status, count]: [string, any]) => {
                       const percentage = metrics.totalLoans > 0 ? (count / metrics.totalLoans) * 100 : 0
                       const color = 
                         status === "Approved" ? "bg-green-500" :
@@ -252,7 +252,7 @@ export default function ReportsAnalytics() {
                   <div className="space-y-4">
                     {Object.entries(loansByTerm)
                       .sort(([a], [b]) => parseInt(a) - parseInt(b))
-                      .map(([term, count]) => {
+                      .map(([term, count]: [string, any]) => {
                         const percentage = metrics.totalLoans > 0 ? (count / metrics.totalLoans) * 100 : 0
                         
                         return (

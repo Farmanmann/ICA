@@ -8,9 +8,9 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { CreditCard, Calendar, CheckCircle, Clock, DollarSign, Download, ArrowLeft } from "lucide-react"
 
 export default function PaymentTracking() {
-  const [selectedLoan, setSelectedLoan] = useState(null)
-  const [loans, setLoans] = useState([])
-  const [payments, setPayments] = useState([])
+  const [selectedLoan, setSelectedLoan] = useState<any>(null)
+  const [loans, setLoans] = useState<any[]>([])
+  const [payments, setPayments] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showPaymentForm, setShowPaymentForm] = useState(false)
   const [paymentAmount, setPaymentAmount] = useState("")
@@ -27,7 +27,7 @@ export default function PaymentTracking() {
       const res = await fetch("http://127.0.0.1:8000/api/loans/")
       if (!res.ok) throw new Error("Failed to fetch loans")
       const data = await res.json()
-      const approvedLoans = data.filter(l => l.status === "Approved")
+      const approvedLoans = data.filter((l: any) => l.status === "Approved")
       setLoans(approvedLoans)
       if (approvedLoans.length > 0) {
         setSelectedLoan(approvedLoans[0])
@@ -41,7 +41,7 @@ export default function PaymentTracking() {
     }
   }
 
-  const generateMockPayments = (loan) => {
+  const generateMockPayments = (loan: any) => {
     // Generate mock payment history
     const mockPayments = [
       {
@@ -83,11 +83,11 @@ export default function PaymentTracking() {
     setTimeout(() => setSuccess(""), 3000)
   }
 
-  const calculateStats = (loan) => {
+  const calculateStats = (loan: any) => {
     const totalAmount = parseFloat(loan.amount)
     const monthlyPayment = totalAmount / parseInt(loan.term)
-    const paidPayments = payments.filter(p => p.status === "completed")
-    const totalPaid = paidPayments.reduce((sum, p) => sum + p.amount, 0)
+    const paidPayments = payments.filter((p: any) => p.status === "completed")
+    const totalPaid = paidPayments.reduce((sum: number, p: any) => sum + p.amount, 0)
     const remaining = totalAmount - totalPaid
     const percentPaid = (totalPaid / totalAmount) * 100
 

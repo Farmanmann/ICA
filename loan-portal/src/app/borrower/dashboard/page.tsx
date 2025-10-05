@@ -27,7 +27,7 @@ export default function BorrowerDashboard() {
       if (!res.ok) throw new Error("Failed to fetch loans")
       const data = await res.json()
       // Filter loans for this borrower (in real app, filter by user ID)
-      setLoans(data.filter(loan => loan.email === borrowerEmail || loan.borrower_name))
+      setLoans(data.filter((loan: any) => loan.email === borrowerEmail || loan.borrower_name))
       setError("")
     } catch (err) {
       setError("Unable to load your loans. Please try again.")
@@ -37,20 +37,20 @@ export default function BorrowerDashboard() {
     }
   }
 
-  const calculateMonthlyPayment = (amount, term) => {
+  const calculateMonthlyPayment = (amount: any, term: any) => {
     return (parseFloat(amount) / parseInt(term)).toFixed(2)
   }
 
-  const calculateRemainingBalance = (loan) => {
+  const calculateRemainingBalance = (loan: any) => {
     // Mock calculation - in real app, subtract payments made
     return parseFloat(loan.amount)
   }
 
-  const activeLoan = loans.find(l => l.status === "Approved")
-  const pendingLoans = loans.filter(l => l.status === "Pending")
+  const activeLoan = loans.find((l: any) => l.status === "Approved")
+  const pendingLoans = loans.filter((l: any) => l.status === "Pending")
   const totalBorrowed = loans
-    .filter(l => l.status === "Approved")
-    .reduce((sum, l) => sum + parseFloat(l.amount || 0), 0)
+    .filter((l: any) => l.status === "Approved")
+    .reduce((sum: number, l: any) => sum + parseFloat(l.amount || 0), 0)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -87,14 +87,14 @@ export default function BorrowerDashboard() {
 
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0">
+                        <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Active Loans</CardTitle>
               <Home className="h-4 w-4 opacity-75" />
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">
-                {loans.filter(l => l.status === "Approved").length}
+                {loans.filter((l: any) => l.status === "Approved").length}
               </div>
               <p className="text-xs opacity-90 mt-1">Currently active</p>
             </CardContent>
@@ -152,7 +152,7 @@ export default function BorrowerDashboard() {
                     <div>
                       <CardTitle className="text-xl">Active Loan</CardTitle>
                       <p className="text-sm text-slate-600 mt-1">
-                        Property: {activeLoan.property_address || "Not specified"}
+                        Property: {(activeLoan as any).property_address || "Not specified"}
                       </p>
                     </div>
                     <Badge className="bg-green-500">Approved</Badge>
@@ -163,25 +163,25 @@ export default function BorrowerDashboard() {
                     <div>
                       <p className="text-sm text-slate-600 mb-1">Loan Amount</p>
                       <p className="text-2xl font-bold text-slate-900">
-                        ${parseFloat(activeLoan.amount).toLocaleString()}
+                        ${parseFloat((activeLoan as any).amount).toLocaleString()}
                       </p>
                     </div>
                     <div>
                       <p className="text-sm text-slate-600 mb-1">Monthly Payment</p>
                       <p className="text-2xl font-bold text-blue-600">
-                        ${calculateMonthlyPayment(activeLoan.amount, activeLoan.term)}
+                        ${calculateMonthlyPayment((activeLoan as any).amount, (activeLoan as any).term)}
                       </p>
                     </div>
                     <div>
                       <p className="text-sm text-slate-600 mb-1">Loan Term</p>
                       <p className="text-2xl font-bold text-slate-900">
-                        {activeLoan.term} months
+                        {(activeLoan as any).term} months
                       </p>
                     </div>
                     <div>
                       <p className="text-sm text-slate-600 mb-1">Remaining</p>
                       <p className="text-2xl font-bold text-amber-600">
-                        ${calculateRemainingBalance(activeLoan).toLocaleString()}
+                        ${calculateRemainingBalance(activeLoan as any).toLocaleString()}
                       </p>
                     </div>
                   </div>
@@ -218,7 +218,7 @@ export default function BorrowerDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {loans.map((loan) => (
+                  {loans.map((loan: any) => (
                     <div
                       key={loan.id}
                       className="flex items-center justify-between p-4 border rounded-lg hover:bg-slate-50 transition-colors"

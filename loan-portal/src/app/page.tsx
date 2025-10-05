@@ -1,284 +1,335 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Menu, DollarSign, Clock, CheckCircle, XCircle, Search } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Home, Shield, TrendingUp, Users, CheckCircle, Menu, X, ArrowRight } from "lucide-react"
 
-export default function AdminDashboard() {
-  const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [applications, setApplications] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
-  const [searchTerm, setSearchTerm] = useState("")
-  const [filterStatus, setFilterStatus] = useState("all")
-
-  useEffect(() => {
-    fetchLoans()
-  }, [])
-
-  const fetchLoans = async () => {
-    try {
-      setLoading(true)
-      const res = await fetch("http://127.0.0.1:8000/api/loans/")
-      if (!res.ok) throw new Error("Failed to fetch loans")
-      const data = await res.json()
-      setApplications(data)
-      setError("")
-    } catch (err) {
-      setError("Unable to load loan applications. Please check your connection.")
-      console.error("Failed to load loans:", err)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const updateLoanStatus = async (loanId, newStatus) => {
-    try {
-      const res = await fetch(`http://127.0.0.1:8000/api/loans/${loanId}/`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus })
-      })
-      if (!res.ok) throw new Error("Failed to update status")
-      await fetchLoans()
-    } catch (err) {
-      console.error("Failed to update loan:", err)
-      alert("Failed to update loan status")
-    }
-  }
-
-  const filteredApplications = applications.filter(loan => {
-    const matchesSearch = loan.borrower_name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         loan.id.toString().includes(searchTerm)
-    const matchesFilter = filterStatus === "all" || loan.status === filterStatus
-    return matchesSearch && matchesFilter
-  })
-
-  const stats = {
-    total: applications.length,
-    approved: applications.filter(a => a.status === "Approved").length,
-    pending: applications.filter(a => a.status === "Pending").length,
-    rejected: applications.filter(a => a.status === "Rejected").length,
-    totalAmount: applications.reduce((sum, a) => sum + parseFloat(a.amount || 0), 0)
-  }
+export default function LandingPage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
-      {/* Sidebar */}
-      {sidebarOpen && (
-        <aside className="w-64 bg-slate-900 text-white flex flex-col p-4 shadow-lg">
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold">Property Loans</h2>
-            <p className="text-slate-400 text-sm">Admin Panel</p>
-          </div>
-          <nav className="flex flex-col gap-2">
-            <Button variant="ghost" className="justify-start text-left bg-slate-800 text-white hover:bg-slate-700">
-              Dashboard
-            </Button>
-            <Button variant="ghost" className="justify-start text-left hover:bg-slate-800 text-white">
-              Applications
-            </Button>
-            <Button variant="ghost" className="justify-start text-left hover:bg-slate-800 text-white">
-              Borrowers
-            </Button>
-            <Button variant="ghost" className="justify-start text-left hover:bg-slate-800 text-white">
-              Payments
-            </Button>
-            <Button variant="ghost" className="justify-start text-left hover:bg-slate-800 text-white">
-              Reports
-            </Button>
-            <Button variant="ghost" className="justify-start text-left hover:bg-slate-800 text-white">
-              Settings
-            </Button>
-          </nav>
-        </aside>
-      )}
+    <div className="min-h-screen bg-white">
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Home className="h-8 w-8 text-blue-600" />
+              <span className="text-2xl font-bold text-slate-900">ICA-Loans</span>
+            </div>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        {/* Top Navbar */}
-        <header className="flex items-center justify-between bg-white border-b p-4 shadow-sm">
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-8">
+              <a href="/how-it-works" className="text-slate-600 hover:text-blue-600 transition-colors">How It Works</a>
+              <a href="/products" className="text-slate-600 hover:text-blue-600 transition-colors">Products</a>
+              <a href="/sharia" className="text-slate-600 hover:text-blue-600 transition-colors">Sharia Compliance</a>
+              <a href="/about" className="text-slate-600 hover:text-blue-600 transition-colors">About</a>
+              <a href="/contact" className="text-slate-600 hover:text-blue-600 transition-colors">Contact</a>
+            </div>
+
+            <div className="hidden md:flex items-center gap-4">
+              <Button variant="ghost" onClick={() => window.location.href = '/auth/login'}>
+                Login
+              </Button>
+              <Button className="bg-blue-600 hover:bg-blue-700" onClick={() => window.location.href = '/auth/signup-borrower'}>
+                Get Started
+              </Button>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button 
+              className="md:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              <Menu className="h-5 w-5" />
-            </Button>
-            <h1 className="text-xl font-bold text-slate-900">Loan Management Dashboard</h1>
-          </div>
-          <div className="flex items-center gap-3">
-            <Badge variant="outline" className="text-sm">Admin</Badge>
-            <Button variant="outline">Logout</Button>
-          </div>
-        </header>
-
-        {/* Dashboard Content */}
-        <main className="flex-1 p-6 space-y-6">
-          {error && (
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-
-          {/* Stats Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Total Loans</CardTitle>
-                <DollarSign className="h-4 w-4 opacity-75" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold">{stats.total}</div>
-                <p className="text-xs opacity-90 mt-1">${stats.totalAmount.toLocaleString()} total value</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white border-0">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Approved</CardTitle>
-                <CheckCircle className="h-4 w-4 opacity-75" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold">{stats.approved}</div>
-                <p className="text-xs opacity-90 mt-1">{stats.total > 0 ? Math.round((stats.approved/stats.total)*100) : 0}% approval rate</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-amber-500 to-amber-600 text-white border-0">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Pending</CardTitle>
-                <Clock className="h-4 w-4 opacity-75" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold">{stats.pending}</div>
-                <p className="text-xs opacity-90 mt-1">Awaiting review</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-gradient-to-br from-red-500 to-red-600 text-white border-0">
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Rejected</CardTitle>
-                <XCircle className="h-4 w-4 opacity-75" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold">{stats.rejected}</div>
-                <p className="text-xs opacity-90 mt-1">Declined applications</p>
-              </CardContent>
-            </Card>
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
           </div>
 
-          {/* Applications Table */}
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>Loan Applications</CardTitle>
-                <Button onClick={fetchLoans} variant="outline" size="sm">
-                  Refresh
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden mt-4 pb-4 space-y-4">
+              <a href="/how-it-works" className="block text-slate-600 hover:text-blue-600">How It Works</a>
+              <a href="/products" className="block text-slate-600 hover:text-blue-600">Products</a>
+              <a href="/sharia" className="block text-slate-600 hover:text-blue-600">Sharia Compliance</a>
+              <a href="/about" className="block text-slate-600 hover:text-blue-600">About</a>
+              <a href="/contact" className="block text-slate-600 hover:text-blue-600">Contact</a>
+              <div className="flex flex-col gap-2 pt-4">
+                <Button variant="ghost" className="w-full" onClick={() => window.location.href = '/auth/login'}>
+                  Login
+                </Button>
+                <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={() => window.location.href = '/auth/signup-borrower'}>
+                  Get Started
                 </Button>
               </div>
-              <div className="flex gap-3 mt-4">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
-                  <input
-                    type="text"
-                    placeholder="Search by borrower or ID..."
-                    className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-                <select
-                  className="px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  value={filterStatus}
-                  onChange={(e) => setFilterStatus(e.target.value)}
+            </div>
+          )}
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="pt-32 pb-20 px-6 bg-gradient-to-br from-blue-50 via-white to-slate-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h1 className="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+                Interest-Free Property Loans
+              </h1>
+              <p className="text-xl text-slate-600 mb-8">
+                Achieve your property dreams with Sharia-compliant, interest-free financing. 
+                No banks, no interest, just transparent and ethical lending.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button 
+                  size="lg" 
+                  className="bg-blue-600 hover:bg-blue-700 text-lg px-8"
+                  onClick={() => window.location.href = '/borrower/apply/personal-info'}
                 >
-                  <option value="all">All Status</option>
-                  <option value="Pending">Pending</option>
-                  <option value="Approved">Approved</option>
-                  <option value="Rejected">Rejected</option>
-                </select>
+                  Apply Now
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="text-lg px-8"
+                  onClick={() => window.location.href = '/borrower/calculator'}
+                >
+                  Calculate Payment
+                </Button>
               </div>
-            </CardHeader>
-            <CardContent>
-              {loading ? (
-                <div className="text-center py-8 text-slate-500">Loading applications...</div>
-              ) : filteredApplications.length === 0 ? (
-                <div className="text-center py-8 text-slate-500">No applications found</div>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="text-left p-3 font-semibold">Loan ID</th>
-                        <th className="text-left p-3 font-semibold">Borrower</th>
-                        <th className="text-left p-3 font-semibold">Amount</th>
-                        <th className="text-left p-3 font-semibold">Term</th>
-                        <th className="text-left p-3 font-semibold">Status</th>
-                        <th className="text-left p-3 font-semibold">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredApplications.map((loan) => (
-                        <tr key={loan.id} className="border-b hover:bg-slate-50">
-                          <td className="p-3 font-medium">#{loan.id}</td>
-                          <td className="p-3">{loan.borrower_name || "Unassigned"}</td>
-                          <td className="p-3 font-semibold">${parseFloat(loan.amount).toLocaleString()}</td>
-                          <td className="p-3">{loan.term} months</td>
-                          <td className="p-3">
-                            <Badge
-                              variant={
-                                loan.status === "Approved"
-                                  ? "default"
-                                  : loan.status === "Pending"
-                                  ? "secondary"
-                                  : "destructive"
-                              }
-                            >
-                              {loan.status}
-                            </Badge>
-                          </td>
-                          <td className="p-3">
-                            <div className="flex gap-2">
-                              {loan.status === "Pending" && (
-                                <>
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    className="text-green-600 border-green-600 hover:bg-green-50"
-                                    onClick={() => updateLoanStatus(loan.id, "Approved")}
-                                  >
-                                    Approve
-                                  </Button>
-                                  <Button
-                                    size="sm"
-                                    variant="outline"
-                                    className="text-red-600 border-red-600 hover:bg-red-50"
-                                    onClick={() => updateLoanStatus(loan.id, "Rejected")}
-                                  >
-                                    Reject
-                                  </Button>
-                                </>
-                              )}
-                              <Button size="sm" variant="ghost">
-                                View
-                              </Button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+              <div className="flex items-center gap-6 mt-8">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <span className="text-slate-700">0% Interest</span>
                 </div>
-              )}
-            </CardContent>
-          </Card>
-        </main>
-      </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <span className="text-slate-700">Sharia Compliant</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-green-600" />
+                  <span className="text-slate-700">Fast Approval</span>
+                </div>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="aspect-square bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl shadow-2xl flex items-center justify-center">
+                <Home className="h-48 w-48 text-white opacity-20" />
+              </div>
+              <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl">
+                <p className="text-sm text-slate-600 mb-1">Average Loan Amount</p>
+                <p className="text-3xl font-bold text-slate-900">$150,000</p>
+              </div>
+              <div className="absolute -top-6 -right-6 bg-white p-6 rounded-2xl shadow-xl">
+                <p className="text-sm text-slate-600 mb-1">Approval Rate</p>
+                <p className="text-3xl font-bold text-green-600">95%</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 px-6 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">Why Choose PropertyLoans?</h2>
+            <p className="text-xl text-slate-600">
+              Experience ethical, transparent, and interest-free property financing
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <Card className="border-2 hover:border-blue-500 transition-all hover:shadow-lg">
+              <CardHeader>
+                <div className="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                  <Shield className="h-8 w-8 text-blue-600" />
+                </div>
+                <CardTitle>0% Interest</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-slate-600">
+                  Completely interest-free loans. Pay back only what you borrow, nothing more.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 hover:border-blue-500 transition-all hover:shadow-lg">
+              <CardHeader>
+                <div className="w-14 h-14 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                  <CheckCircle className="h-8 w-8 text-green-600" />
+                </div>
+                <CardTitle>Sharia Compliant</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-slate-600">
+                  Fully certified and compliant with Islamic financial principles and guidelines.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 hover:border-blue-500 transition-all hover:shadow-lg">
+              <CardHeader>
+                <div className="w-14 h-14 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                  <TrendingUp className="h-8 w-8 text-purple-600" />
+                </div>
+                <CardTitle>Fast Approval</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-slate-600">
+                  Get approved in days, not weeks. Simple application process with quick decisions.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 hover:border-blue-500 transition-all hover:shadow-lg">
+              <CardHeader>
+                <div className="w-14 h-14 bg-amber-100 rounded-lg flex items-center justify-center mb-4">
+                  <Users className="h-8 w-8 text-amber-600" />
+                </div>
+                <CardTitle>Direct Lending</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-slate-600">
+                  Connect directly with lenders. No banks, no hidden fees, complete transparency.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="py-20 px-6 bg-gradient-to-br from-slate-50 to-blue-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">How It Works</h2>
+            <p className="text-xl text-slate-600">Simple, transparent, and fast</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+                1
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">Apply Online</h3>
+              <p className="text-slate-600">
+                Complete our simple 5-step application form. Takes less than 10 minutes.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+                2
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">Get Approved</h3>
+              <p className="text-slate-600">
+                Receive approval within 2-3 business days. We review every application carefully.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+                3
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">Receive Funds</h3>
+              <p className="text-slate-600">
+                Get your funds and start your property journey. Simple repayment terms.
+              </p>
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <Button 
+              size="lg" 
+              className="bg-blue-600 hover:bg-blue-700"
+              onClick={() => window.location.href = '/how-it-works'}
+            >
+              Learn More About Our Process
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 px-6 bg-blue-600">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl font-bold text-white mb-6">
+            Ready to Get Started?
+          </h2>
+          <p className="text-xl text-blue-100 mb-8">
+            Join thousands of satisfied borrowers who chose ethical, interest-free financing
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg" 
+              className="bg-white text-blue-600 hover:bg-slate-100 text-lg px-8"
+              onClick={() => window.location.href = '/borrower/apply/personal-info'}
+            >
+              Apply for a Loan
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="border-white text-white hover:bg-blue-700 text-lg px-8"
+              onClick={() => window.location.href = '/auth/signup-lender'}
+            >
+              Become a Lender
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-slate-900 text-white py-12 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Home className="h-6 w-6 text-blue-400" />
+                <span className="text-xl font-bold">PropertyLoans</span>
+              </div>
+              <p className="text-slate-400">
+                Interest-free, Sharia-compliant property financing for everyone.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-4">Company</h4>
+              <div className="space-y-2">
+                <a href="/about" className="block text-slate-400 hover:text-white">About Us</a>
+                <a href="/how-it-works" className="block text-slate-400 hover:text-white">How It Works</a>
+                <a href="/products" className="block text-slate-400 hover:text-white">Products</a>
+                <a href="/sharia" className="block text-slate-400 hover:text-white">Sharia Compliance</a>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-4">Support</h4>
+              <div className="space-y-2">
+                <a href="/faq" className="block text-slate-400 hover:text-white">FAQ</a>
+                <a href="/contact" className="block text-slate-400 hover:text-white">Contact Us</a>
+                <a href="/terms" className="block text-slate-400 hover:text-white">Terms & Conditions</a>
+                <a href="/privacy" className="block text-slate-400 hover:text-white">Privacy Policy</a>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-4">Get Started</h4>
+              <div className="space-y-2">
+                <a href="/borrower/apply/personal-info" className="block text-slate-400 hover:text-white">Apply for Loan</a>
+                <a href="/auth/signup-lender" className="block text-slate-400 hover:text-white">Become a Lender</a>
+                <a href="/borrower/calculator" className="block text-slate-400 hover:text-white">Loan Calculator</a>
+                <a href="/auth/login" className="block text-slate-400 hover:text-white">Login</a>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-slate-800 pt-8 text-center text-slate-400">
+            <p>© 2025 PropertyLoans. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }
