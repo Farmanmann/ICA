@@ -1,13 +1,11 @@
 "use client"
 
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
 import { Card, CardContent } from "@/components/ui/card"
+import Image from "next/image"
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
 
       <main className="pt-24">
         {/* Hero Section */}
@@ -31,12 +29,12 @@ export default function PrivacyPage() {
                   <div>
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">Introduction</h2>
                     <p className="mb-4">
-                      PropertyLoans ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy 
-                      explains how we collect, use, disclose, and safeguard your information when you use our platform 
+                      Noor Financial ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy
+                      explains how we collect, use, disclose, and safeguard your information when you use our platform
                       and services.
                     </p>
                     <p>
-                      By using PropertyLoans, you agree to the collection and use of information in accordance with 
+                      By using Noor Financial, you agree to the collection and use of information in accordance with
                       this policy. If you do not agree with our policies and practices, please do not use our services.
                     </p>
                   </div>
@@ -147,7 +145,7 @@ export default function PrivacyPage() {
                       <li><strong>Restriction:</strong> Request restriction of processing in certain circumstances</li>
                     </ul>
                     <p className="mt-4">
-                      To exercise these rights, please contact us at privacy@propertyloans.com
+                      To exercise these rights, please contact us at privacy@noorfinancial.com
                     </p>
                   </div>
 
@@ -224,17 +222,17 @@ export default function PrivacyPage() {
                       If you have questions or concerns about this Privacy Policy or our data practices, please contact us:
                     </p>
                     <div className="bg-slate-50 p-4 rounded-lg">
-                      <p className="font-semibold">PropertyLoans - Privacy Team</p>
-                      <p>Email: privacy@propertyloans.com</p>
-                      <p>Phone: 1-800-PROPERTY</p>
-                      <p>Address: 123 Finance Street, Houston, TX 77002</p>
+                      <p className="font-semibold">Noor Financial - Privacy Team</p>
+                      <p>Email: farmannoorali2@gmail.com</p>
+                      <p>Phone: 281-903-4718</p>
+                      <p>Address: 11006 Hundred Bridge Ln</p>
                     </div>
                   </div>
 
                   {/* Acceptance */}
                   <div className="border-t pt-8">
                     <p className="text-sm italic">
-                      By using PropertyLoans, you acknowledge that you have read and understood this Privacy Policy 
+                      By using Noor Financial, you acknowledge that you have read and understood this Privacy Policy
                       and agree to the collection, use, and disclosure of your information as described herein.
                     </p>
                   </div>
@@ -245,7 +243,62 @@ export default function PrivacyPage() {
         </section>
       </main>
 
-      <Footer />
+      {/* Footer */}
+      <footer className="bg-slate-900 text-white py-12">
+        <div className="max-w-7xl mx-auto px-6">
+          {/* Logo */}
+          <div className="flex justify-center mb-6">
+            <a href="/">
+              <Image
+                src="/NoorFinancingLogo.png"
+                alt="Noor Financing"
+                width={200}
+                height={120}
+                className="h-28 md:h-32 w-auto object-contain cursor-pointer hover:opacity-80 transition-opacity"
+                priority
+              />
+            </a>
+          </div>
+
+          {/* Footer Links */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+            <a href="/privacy" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Privacy Policy
+            </a>
+            <a href="/advertising-disclosure" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Advertising Disclosure
+            </a>
+            <a href="/security-policy" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Security Policy
+            </a>
+            <a href="/terms" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Terms of Use
+            </a>
+            <a href="/licenses" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Licenses & Legal Disclosures
+            </a>
+            <a href="/electronic-disclosure" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Electronic Disclosure
+            </a>
+            <a href="/dnc" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              DNC
+            </a>
+            <a href="/sms-terms" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              SMS Terms & Conditions
+            </a>
+            <a href="/accessibility" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Accessibility Statement
+            </a>
+          </div>
+
+          {/* Legal Text */}
+          <div className="max-w-4xl mx-auto">
+            <p className="text-slate-400 text-xs leading-relaxed text-center">
+              Noor Financing LLC is currently in the licensing process and is not yet accepting applications or conducting mortgage brokerage activities. Noor Financing technology and processes are proprietary to Noor Financing LLC. © 2026 Noor Financing LLC. All Rights Reserved. This site is directed at, and made available to, persons in Texas only.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

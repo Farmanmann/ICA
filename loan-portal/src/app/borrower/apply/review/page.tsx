@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { CheckCircle, Edit, Send, ArrowLeft } from "lucide-react"
+import VerificationStatus from "@/components/VerificationStatus"
 
 export default function ApplyStep5() {
   const [applicationData, setApplicationData] = useState<any>(null)
@@ -126,12 +127,37 @@ export default function ApplyStep5() {
           </Alert>
         )}
 
+        {/* Loan Type */}
+        <Card className="mb-6">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>Loan Type</CardTitle>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => window.location.href = '/borrower/apply/personal-info'}
+            >
+              <Edit className="h-4 w-4 mr-2" />
+              Edit
+            </Button>
+          </CardHeader>
+          <CardContent className="grid grid-cols-2 gap-4">
+            <div>
+              <p className="text-sm text-slate-600">Financing Type</p>
+              <p className="font-semibold capitalize">{applicationData.loan_type || "Not specified"}</p>
+            </div>
+            <div>
+              <p className="text-sm text-slate-600">Purpose</p>
+              <p className="font-semibold capitalize">{applicationData.purpose || "Not specified"}</p>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Personal Information */}
         <Card className="mb-6">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Personal Information</CardTitle>
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               size="sm"
               onClick={() => window.location.href = '/borrower/apply/personal-info'}
             >
@@ -159,34 +185,58 @@ export default function ApplyStep5() {
           </CardContent>
         </Card>
 
-        {/* Property Details */}
+        {/* Asset Details */}
         <Card className="mb-6">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Property Details</CardTitle>
-            <Button 
-              variant="ghost" 
+            <CardTitle>
+              {applicationData.purpose === "car" ? "Vehicle Details" : "Property Details"}
+            </CardTitle>
+            <Button
+              variant="ghost"
               size="sm"
-              onClick={() => window.location.href = '/borrower/apply/property-details'}
+              onClick={() => window.location.href = '/borrower/apply/propertly-details'}
             >
               <Edit className="h-4 w-4 mr-2" />
               Edit
             </Button>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-4">
-            <div className="col-span-2">
-              <p className="text-sm text-slate-600">Property Address</p>
-              <p className="font-semibold">{applicationData.property_address}</p>
-            </div>
-            <div>
-              <p className="text-sm text-slate-600">Property Value</p>
-              <p className="font-semibold">
-                {applicationData.property_value ? `$${parseFloat(applicationData.property_value).toLocaleString()}` : "Not provided"}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-slate-600">Purpose</p>
-              <p className="font-semibold capitalize">{applicationData.purpose || "Not specified"}</p>
-            </div>
+            {(applicationData.purpose === "property" || applicationData.purpose === "renovation") && (
+              <>
+                <div className="col-span-2">
+                  <p className="text-sm text-slate-600">Property Address</p>
+                  <p className="font-semibold">{applicationData.property_address || "Not provided"}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-600">Property Value</p>
+                  <p className="font-semibold">
+                    {applicationData.property_value ? `$${parseFloat(applicationData.property_value).toLocaleString()}` : "Not provided"}
+                  </p>
+                </div>
+              </>
+            )}
+            {applicationData.purpose === "car" && (
+              <>
+                <div>
+                  <p className="text-sm text-slate-600">Make</p>
+                  <p className="font-semibold">{applicationData.vehicle_make || "Not provided"}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-600">Model</p>
+                  <p className="font-semibold">{applicationData.vehicle_model || "Not provided"}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-600">Year</p>
+                  <p className="font-semibold">{applicationData.vehicle_year || "Not provided"}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-600">Vehicle Value</p>
+                  <p className="font-semibold">
+                    {applicationData.vehicle_value ? `$${parseFloat(applicationData.vehicle_value).toLocaleString()}` : "Not provided"}
+                  </p>
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
 
@@ -242,8 +292,8 @@ export default function ApplyStep5() {
         <Card className="mb-6">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Documents</CardTitle>
-            <Button 
-              variant="ghost" 
+            <Button
+              variant="ghost"
               size="sm"
               onClick={() => window.location.href = '/borrower/apply/documents'}
             >
@@ -286,6 +336,11 @@ export default function ApplyStep5() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Verification Status */}
+        <div className="mb-6">
+          <VerificationStatus showActions={true} compact={false} />
+        </div>
 
         {/* Agreement */}
         <Card className="mb-6">

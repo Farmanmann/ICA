@@ -1,14 +1,11 @@
 "use client"
 
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
 import { Card, CardContent } from "@/components/ui/card"
+import Image from "next/image"
 
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
-
       <main className="pt-24">
         {/* Hero Section */}
         <section className="py-20 px-6 bg-gradient-to-br from-blue-50 to-white">
@@ -31,7 +28,7 @@ export default function TermsPage() {
                   <div>
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Acceptance of Terms</h2>
                     <p className="mb-4">
-                      By accessing and using PropertyLoans ("the Platform"), you accept and agree to be bound by the terms 
+                      By accessing and using Noor Financial ("the Platform"), you accept and agree to be bound by the terms 
                       and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
                     </p>
                     <p>
@@ -57,7 +54,7 @@ export default function TermsPage() {
                   {/* Section 3 */}
                   <div>
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">3. Loan Terms</h2>
-                    <p className="mb-3">All loans provided through PropertyLoans are subject to the following:</p>
+                    <p className="mb-3">All loans provided through Noor Financial are subject to the following:</p>
                     <ul className="list-disc pl-6 space-y-2">
                       <li>All loans are interest-free and comply with Islamic Sharia principles</li>
                       <li>Loan amounts, terms, and conditions are determined on a case-by-case basis</li>
@@ -101,7 +98,7 @@ export default function TermsPage() {
                   <div>
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">6. Sharia Compliance</h2>
                     <p className="mb-4">
-                      All loans and financial transactions on PropertyLoans are structured to comply with Islamic Sharia 
+                      All loans and financial transactions on Noor Financial are structured to comply with Islamic Sharia 
                       principles. This includes:
                     </p>
                     <ul className="list-disc pl-6 space-y-2">
@@ -130,8 +127,8 @@ export default function TermsPage() {
                   <div>
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">8. Intellectual Property</h2>
                     <p className="mb-4">
-                      All content on the PropertyLoans platform, including but not limited to text, graphics, logos, 
-                      images, and software, is the property of PropertyLoans or its content suppliers and is protected 
+                      All content on the Noor Financial platform, including but not limited to text, graphics, logos, 
+                      images, and software, is the property of Noor Financial or its content suppliers and is protected 
                       by intellectual property laws.
                     </p>
                     <p>
@@ -144,7 +141,7 @@ export default function TermsPage() {
                   <div>
                     <h2 className="text-2xl font-bold text-slate-900 mb-4">9. Limitation of Liability</h2>
                     <p className="mb-4">
-                      PropertyLoans shall not be liable for any indirect, incidental, special, consequential, or 
+                      Noor Financial shall not be liable for any indirect, incidental, special, consequential, or 
                       punitive damages resulting from your use or inability to use the service.
                     </p>
                     <p>
@@ -188,17 +185,17 @@ export default function TermsPage() {
                       If you have any questions about these Terms and Conditions, please contact us at:
                     </p>
                     <div className="bg-slate-50 p-4 rounded-lg">
-                      <p className="font-semibold">PropertyLoans</p>
-                      <p>Email: legal@propertyloans.com</p>
-                      <p>Phone: 1-800-PROPERTY</p>
-                      <p>Address: 123 Finance Street, Houston, TX 77002</p>
+                      <p className="font-semibold">Noor Financial</p>
+                      <p>Email: farmannoorali2@gmail.com</p>
+                      <p>Phone: 281-903-4718</p>
+                      <p>Address: 11006 Hundred Bridge Ln. Sugar Land, Texas, 77498</p>
                     </div>
                   </div>
 
                   {/* Acceptance */}
                   <div className="border-t pt-8">
                     <p className="text-sm italic">
-                      By using PropertyLoans, you acknowledge that you have read, understood, and agree to be bound 
+                      By using Noor Financial, you acknowledge that you have read, understood, and agree to be bound 
                       by these Terms and Conditions.
                     </p>
                   </div>
@@ -209,7 +206,62 @@ export default function TermsPage() {
         </section>
       </main>
 
-      <Footer />
+      {/* Footer */}
+      <footer className="bg-slate-900 text-white py-12">
+        <div className="max-w-7xl mx-auto px-6">
+          {/* Logo */}
+          <div className="flex justify-center mb-6">
+            <a href="/">
+              <Image
+                src="/NoorFinancingLogo.png"
+                alt="Noor Financing"
+                width={200}
+                height={120}
+                className="h-28 md:h-32 w-auto object-contain cursor-pointer hover:opacity-80 transition-opacity"
+                priority
+              />
+            </a>
+          </div>
+
+          {/* Footer Links */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+            <a href="/privacy" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Privacy Policy
+            </a>
+            <a href="/advertising-disclosure" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Advertising Disclosure
+            </a>
+            <a href="/security-policy" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Security Policy
+            </a>
+            <a href="/terms" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Terms of Use
+            </a>
+            <a href="/licenses" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Licenses & Legal Disclosures
+            </a>
+            <a href="/electronic-disclosure" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Electronic Disclosure
+            </a>
+            <a href="/dnc" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              DNC
+            </a>
+            <a href="/sms-terms" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              SMS Terms & Conditions
+            </a>
+            <a href="/accessibility" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Accessibility Statement
+            </a>
+          </div>
+
+          {/* Legal Text */}
+          <div className="max-w-4xl mx-auto">
+            <p className="text-slate-400 text-xs leading-relaxed text-center">
+              Noor Financing LLC is currently in the licensing process and is not yet accepting applications or conducting mortgage brokerage activities. Noor Financing technology and processes are proprietary to Noor Financing LLC. © 2026 Noor Financing LLC. All Rights Reserved. This site is directed at, and made available to, persons in Texas only.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

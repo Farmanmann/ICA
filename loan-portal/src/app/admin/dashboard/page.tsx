@@ -22,10 +22,12 @@ export default function AdminDashboard() {
   const fetchLoans = async () => {
     try {
       setLoading(true)
-      const res = await fetch("http://127.0.0.1:8000/api/loans/")
+      const res = await fetch("http://localhost:8000/api/loans/")
       if (!res.ok) throw new Error("Failed to fetch loans")
       const data = await res.json()
-      setApplications(data)
+      // Handle paginated response
+      const loans = data.results || data
+      setApplications(loans)
       setError("")
     } catch (err) {
       setError("Unable to load loan applications. Please check your connection.")
@@ -37,7 +39,7 @@ export default function AdminDashboard() {
 
   const updateLoanStatus = async (loanId: any, newStatus: any) => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/loans/${loanId}/`, {
+      const res = await fetch(`http://localhost:8000/api/loans/${loanId}/`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus })
@@ -71,7 +73,7 @@ export default function AdminDashboard() {
       {sidebarOpen && (
         <aside className="w-64 bg-slate-900 text-white flex flex-col p-4 shadow-lg">
           <div className="mb-8">
-            <h2 className="text-2xl font-bold">Property Loans</h2>
+            <h2 className="text-2xl font-bold">ICA-Loans</h2>
             <p className="text-slate-400 text-sm">Admin Panel</p>
           </div>
           <nav className="flex flex-col gap-2">
@@ -214,8 +216,11 @@ export default function AdminDashboard() {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b">
-                        <th className="text-left p-3 font-semibold">Loan ID</th>
+                        <th className="text-left p-3 font-semibold">ID</th>
+                        <th className="text-left p-3 font-semibold">Type</th>
+                        <th className="text-left p-3 font-semibold">Purpose</th>
                         <th className="text-left p-3 font-semibold">Borrower</th>
+                        <th className="text-left p-3 font-semibold">Asset Details</th>
                         <th className="text-left p-3 font-semibold">Amount</th>
                         <th className="text-left p-3 font-semibold">Term</th>
                         <th className="text-left p-3 font-semibold">Status</th>
@@ -226,9 +231,38 @@ export default function AdminDashboard() {
                       {filteredApplications.map((loan: any) => (
                         <tr key={loan.id} className="border-b hover:bg-slate-50">
                           <td className="p-3 font-medium">#{loan.id}</td>
-                          <td className="p-3">{loan.borrower_name || "Unassigned"}</td>
+                          <td className="p-3">
+                            <Badge variant="outline" className="capitalize">
+                              {loan.loan_type || "N/A"}
+                            </Badge>
+                          </td>
+                          <td className="p-3">
+                            <span className="capitalize text-sm">
+                              {loan.purpose_display || loan.purpose || "N/A"}
+                            </span>
+                          </td>
+                          <td className="p-3">
+                            <div>
+                              <p className="font-medium">{loan.borrower_name || "Unassigned"}</p>
+                              <p className="text-xs text-slate-500">{loan.email}</p>
+                            </div>
+                          </td>
+                          <td className="p-3">
+                            {loan.purpose === "car" ? (
+                              <div className="text-sm">
+                                <p className="font-medium">{loan.vehicle_make} {loan.vehicle_model}</p>
+                                <p className="text-xs text-slate-500">{loan.vehicle_year}</p>
+                              </div>
+                            ) : (
+                              <div className="text-sm">
+                                <p className="truncate max-w-[200px]" title={loan.property_address}>
+                                  {loan.property_address || "N/A"}
+                                </p>
+                              </div>
+                            )}
+                          </td>
                           <td className="p-3 font-semibold">${parseFloat(loan.amount).toLocaleString()}</td>
-                          <td className="p-3">{loan.term} months</td>
+                          <td className="p-3">{loan.term} mo</td>
                           <td className="p-3">
                             <Badge
                               variant={
@@ -244,6 +278,13 @@ export default function AdminDashboard() {
                           </td>
                           <td className="p-3">
                             <div className="flex gap-2">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => window.location.href = `/admin/loans/${loan.id}`}
+                              >
+                                View Details
+                              </Button>
                               {loan.status === "Pending" && (
                                 <>
                                   <Button
@@ -264,9 +305,6 @@ export default function AdminDashboard() {
                                   </Button>
                                 </>
                               )}
-                              <Button size="sm" variant="ghost">
-                                View
-                              </Button>
                             </div>
                           </td>
                         </tr>

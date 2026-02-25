@@ -1,0 +1,126 @@
+// src/lib/api/services/paymentService.ts
+
+import { apiClient } from '../client';
+import { Payment } from './loanService';
+
+export interface MakePaymentData {
+  loan: number;
+  amount: number;
+  payment_method: 'bank_transfer' | 'credit_card' | 'debit_card';
+  notes?: string;
+}
+
+export interface PaymentResponse {
+  id: number;
+  loan: number;
+  amount: number;
+  payment_date: string;
+  status: 'pending' | 'completed' | 'failed';
+  payment_method: string;
+  notes: string;
+  created_at: string;
+}
+
+export interface DashboardStats {
+  total_loans: number;
+  active_loans: number;
+  pending_loans: number;
+  rejected_loans: number;
+  total_borrowed: number;
+  total_paid: number;
+  total_remaining: number;
+  payment_progress: number;
+}
+
+/**
+ * Payment Service - All payment-related API calls
+ */
+export const paymentService = {
+  /**
+   * Make a payment for a loan
+   */
+  async makePayment(data: MakePaymentData): Promise<PaymentResponse> {
+    try {
+      const response = await apiClient.post('/repayments/make_payment/', data);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Get all payments
+   */
+  async getAllPayments(
+    filters?: {
+      loan?: number;
+      status?: string;
+      payment_method?: string;
+      page?: number;
+    }
+  ): Promise<{
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: Payment[];
+  }> {
+    try {
+      const response = await apiClient.get('/repayments/', { params: filters });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Get payment by ID
+   */
+  async getPaymentById(id: number): Promise<Payment> {
+    try {
+      const response = await apiClient.get(`/repayments/${id}/`);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Get current user's payments
+   */
+  async getMyPayments(): Promise<Payment[]> {
+    try {
+      const response = await apiClient.get('/repayments/my_payments/');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Get payment history for a specific loan
+   */
+  async getPaymentHistory(loanId: number): Promise<Payment[]> {
+    try {
+      const response = await apiClient.get('/repayments/payment_history/', {
+        params: { loan_id: loanId },
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * Get dashboard statistics
+   */
+  async getDashboardStats(): Promise<DashboardStats> {
+    try {
+      const response = await apiClient.get('/dashboard/stats/');
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+};
+
+export default paymentService;

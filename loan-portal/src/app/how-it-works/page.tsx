@@ -1,7 +1,5 @@
 "use client"
 
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { FileText, CheckCircle, DollarSign, Home, Users, Calendar, Shield, ArrowRight } from "lucide-react"
@@ -9,8 +7,6 @@ import { FileText, CheckCircle, DollarSign, Home, Users, Calendar, Shield, Arrow
 export default function HowItWorksPage() {
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
-
       <main className="pt-24">
         {/* Hero Section */}
         <section className="py-20 px-6 bg-gradient-to-br from-blue-50 to-white">
@@ -286,8 +282,6 @@ export default function HowItWorksPage() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   )
 }

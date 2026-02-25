@@ -4,13 +4,17 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Home, DollarSign, ArrowRight, ArrowLeft } from "lucide-react"
+import { Home, DollarSign, ArrowRight, ArrowLeft, Car } from "lucide-react"
 
 export default function ApplyStep2() {
   const [formData, setFormData] = useState({
+    purpose: "",
     property_address: "",
     property_value: "",
-    purpose: ""
+    vehicle_make: "",
+    vehicle_model: "",
+    vehicle_year: "",
+    vehicle_value: ""
   })
   const [error, setError] = useState("")
 
@@ -19,9 +23,13 @@ export default function ApplyStep2() {
     if (saved) {
       const data = JSON.parse(saved)
       setFormData({
+        purpose: data.purpose || "",
         property_address: data.property_address || "",
         property_value: data.property_value || "",
-        purpose: data.purpose || ""
+        vehicle_make: data.vehicle_make || "",
+        vehicle_model: data.vehicle_model || "",
+        vehicle_year: data.vehicle_year || "",
+        vehicle_value: data.vehicle_value || ""
       })
     }
   }, [])
@@ -36,9 +44,17 @@ export default function ApplyStep2() {
   const handleNext = () => {
     setError("")
 
-    if (!formData.property_address) {
-      setError("Please enter the property address")
-      return
+    // Validate based on purpose
+    if (formData.purpose === "property" || formData.purpose === "renovation") {
+      if (!formData.property_address) {
+        setError("Please enter the property address")
+        return
+      }
+    } else if (formData.purpose === "car") {
+      if (!formData.vehicle_make || !formData.vehicle_model || !formData.vehicle_year) {
+        setError("Please fill in all vehicle details")
+        return
+      }
     }
 
     const saved = localStorage.getItem("loanApplication")
@@ -67,7 +83,7 @@ export default function ApplyStep2() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-slate-900 mb-2">Apply for a Loan</h1>
-          <p className="text-slate-600">Step 2 of 5: Property Details</p>
+          <p className="text-slate-600">Step 2 of 5: Asset Details</p>
         </div>
 
         <div className="mb-8">
@@ -88,57 +104,117 @@ export default function ApplyStep2() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Property Information</CardTitle>
-            <p className="text-sm text-slate-600">Tell us about the property</p>
+            <CardTitle>
+              {formData.purpose === "car" ? "Vehicle Information" : "Property Information"}
+            </CardTitle>
+            <p className="text-sm text-slate-600">
+              {formData.purpose === "car"
+                ? "Tell us about the vehicle you want to finance"
+                : "Tell us about the property"}
+            </p>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
-                <Home className="h-4 w-4" />
-                Property Address *
-              </label>
-              <textarea
-                name="property_address"
-                value={formData.property_address}
-                onChange={handleChange}
-                rows={3}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                placeholder="456 Property Ave, City, State, ZIP"
-              />
-            </div>
+            {/* Property Fields - Show for property, renovation */}
+            {(formData.purpose === "property" || formData.purpose === "renovation") && (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+                    <Home className="h-4 w-4" />
+                    Property Address *
+                  </label>
+                  <textarea
+                    name="property_address"
+                    value={formData.property_address}
+                    onChange={handleChange}
+                    rows={3}
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    placeholder="456 Property Ave, City, State, ZIP"
+                  />
+                </div>
 
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
-                <DollarSign className="h-4 w-4" />
-                Estimated Property Value
-              </label>
-              <input
-                type="number"
-                name="property_value"
-                value={formData.property_value}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                placeholder="150000"
-              />
-            </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+                    <DollarSign className="h-4 w-4" />
+                    Estimated Property Value
+                  </label>
+                  <input
+                    type="number"
+                    name="property_value"
+                    value={formData.property_value}
+                    onChange={handleChange}
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    placeholder="150000"
+                  />
+                </div>
+              </>
+            )}
 
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
-                Loan Purpose
-              </label>
-              <select
-                name="purpose"
-                value={formData.purpose}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              >
-                <option value="">Select purpose</option>
-                <option value="purchase">Property Purchase</option>
-                <option value="renovation">Renovation</option>
-                <option value="refinance">Refinance</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
+            {/* Vehicle Fields - Show for car */}
+            {formData.purpose === "car" && (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+                    <Car className="h-4 w-4" />
+                    Vehicle Make *
+                  </label>
+                  <input
+                    type="text"
+                    name="vehicle_make"
+                    value={formData.vehicle_make}
+                    onChange={handleChange}
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    placeholder="e.g., Toyota, Honda, Ford"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+                    <Car className="h-4 w-4" />
+                    Vehicle Model *
+                  </label>
+                  <input
+                    type="text"
+                    name="vehicle_model"
+                    value={formData.vehicle_model}
+                    onChange={handleChange}
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    placeholder="e.g., Camry, Accord, F-150"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+                    <Car className="h-4 w-4" />
+                    Vehicle Year *
+                  </label>
+                  <input
+                    type="number"
+                    name="vehicle_year"
+                    value={formData.vehicle_year}
+                    onChange={handleChange}
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    placeholder="2024"
+                    min="1900"
+                    max="2025"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+                    <DollarSign className="h-4 w-4" />
+                    Estimated Vehicle Value
+                  </label>
+                  <input
+                    type="number"
+                    name="vehicle_value"
+                    value={formData.vehicle_value}
+                    onChange={handleChange}
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    placeholder="25000"
+                  />
+                </div>
+              </>
+            )}
 
             <div className="flex gap-3 pt-4">
               <Button

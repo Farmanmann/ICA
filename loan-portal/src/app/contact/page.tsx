@@ -1,8 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -38,7 +36,6 @@ export default function ContactPage() {
   if (submitted) {
     return (
       <div className="min-h-screen bg-white">
-        <Navbar />
         <main className="pt-24 px-6 py-20">
           <div className="max-w-2xl mx-auto text-center">
             <div className="mb-6 flex justify-center">
@@ -55,15 +52,12 @@ export default function ContactPage() {
             </Button>
           </div>
         </main>
-        <Footer />
       </div>
     )
   }
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
-
       <main className="pt-24">
         {/* Hero Section */}
         <section className="py-20 px-6 bg-gradient-to-br from-blue-50 to-white">
@@ -96,8 +90,8 @@ export default function ContactPage() {
                     <Mail className="h-6 w-6 text-green-600" />
                   </div>
                   <h3 className="font-semibold text-slate-900 mb-1">Email</h3>
-                  <p className="text-sm text-slate-600">support@propertyloans.com</p>
-                  <p className="text-sm text-slate-600">info@propertyloans.com</p>
+                  <p className="text-sm text-slate-600">support@noorfinancial.com</p>
+                  <p className="text-sm text-slate-600">info@noorfinancial.com</p>
                 </CardContent>
               </Card>
 
@@ -254,8 +248,6 @@ export default function ContactPage() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   )
 }

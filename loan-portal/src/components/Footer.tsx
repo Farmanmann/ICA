@@ -10,7 +10,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Home className="h-6 w-6 text-blue-400" />
-              <span className="text-xl font-bold">PropertyLoans</span>
+              <span className="text-xl font-bold">Noor Financing</span>
             </div>
             <p className="text-slate-400">
               Interest-free, Sharia-compliant property financing for everyone.
@@ -73,7 +73,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-slate-800 pt-8 text-center text-slate-400">
-          <p>&copy; 2025 PropertyLoans. All rights reserved.</p>
+          <p>&copy; 2026 Noor Financing. All rights reserved.</p>
         </div>
       </div>
     </footer>

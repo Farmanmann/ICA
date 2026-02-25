@@ -13,7 +13,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           <a href="/" className="flex items-center gap-2">
             <Home className="h-8 w-8 text-blue-600" />
-            <span className="text-2xl font-bold text-slate-900">PropertyLoans</span>
+            <span className="text-2xl font-bold text-slate-900">Noor Financing</span>
           </a>
 
           {/* Desktop Navigation */}

@@ -36,18 +36,50 @@ export default function LoginPage() {
       return
     }
 
-    // Simulate API call
-    setTimeout(() => {
-      // In real app, authenticate with backend
-      // For now, redirect based on user type
-      if (userType === "admin") {
+    try {
+      // Import authService dynamically
+      const { authService } = await import("@/lib/api/services/authService")
+
+      // Create username from email (part before @)
+      const username = formData.email.split('@')[0]
+
+      // Login
+      await authService.login({
+        username,
+        password: formData.password,
+      })
+
+      // Get user profile to determine role
+      const userData = await authService.getCurrentUser()
+      const role = userData.profile.role
+
+      // Redirect based on role
+      if (role === "admin") {
         window.location.href = "/admin/dashboard"
-      } else if (userType === "lender") {
+      } else if (role === "lender") {
         window.location.href = "/lender/dashboard"
       } else {
         window.location.href = "/borrower/dashboard"
       }
-    }, 1000)
+    } catch (err: any) {
+      console.error('Login error:', err)
+      const errorData = err.response?.data
+      if (errorData) {
+        if (errorData.detail) {
+          setError(errorData.detail)
+        } else if (errorData.error) {
+          setError(errorData.error)
+        } else {
+          setError("Invalid email or password")
+        }
+      } else if (err.response?.status === 401) {
+        setError("Invalid email or password. If you haven't verified your email yet, please check your inbox.")
+      } else {
+        setError("Network error. Please check your connection and try again.")
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -168,7 +200,7 @@ export default function LoginPage() {
                     <input type="checkbox" className="mr-2" />
                     <span className="text-sm text-slate-600">Remember me</span>
                   </label>
-                  <a href="#" className="text-sm text-blue-600 hover:underline">
+                  <a href="/auth/forgot-password" className="text-sm text-blue-600 hover:underline">
                     Forgot password?
                   </a>
                 </div>

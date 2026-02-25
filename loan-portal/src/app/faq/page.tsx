@@ -1,8 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ChevronDown, ChevronUp } from "lucide-react"
@@ -15,15 +13,15 @@ export default function FAQPage() {
       category: "General",
       questions: [
         {
-          q: "What is PropertyLoans?",
-          a: "PropertyLoans is an interest-free, Sharia-compliant property financing platform that connects borrowers directly with ethical lenders. We eliminate banks and interest charges, making property ownership accessible through transparent and fair lending."
+          q: "What is Noor Financial?",
+          a: "Noor Financial is an interest-free, Sharia-compliant property financing platform that connects borrowers directly with ethical lenders. We eliminate banks and interest charges, making property ownership accessible through transparent and fair lending."
         },
         {
           q: "How is this different from a traditional mortgage?",
           a: "Unlike traditional mortgages, we charge 0% interest. You only pay back the principal amount borrowed. There are no hidden fees, and all transactions comply with Islamic Sharia principles. We connect you directly with lenders, removing banks from the equation."
         },
         {
-          q: "Who can use PropertyLoans?",
+          q: "Who can use Noor Financial?",
           a: "Anyone 18 years or older with a stable income and good credit history can apply. You don't need to be Muslim to use our services - our interest-free model is available to everyone who values ethical financing."
         }
       ]
@@ -78,7 +76,7 @@ export default function FAQPage() {
           a: "All our loans are structured to comply with Islamic principles: 0% interest (no Riba), transparent terms, ethical practices, and regular audits by our Sharia Advisory Board. We follow Murabaha and Ijara financing models."
         },
         {
-          q: "Is PropertyLoans certified?",
+          q: "Is Noor Financial certified?",
           a: "Yes, we are certified by recognized Islamic finance authorities. Our Sharia Advisory Board includes qualified Islamic scholars who review all products and ensure ongoing compliance."
         },
         {
@@ -131,8 +129,6 @@ export default function FAQPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
-
       <main className="pt-24">
         {/* Hero Section */}
         <section className="py-20 px-6 bg-gradient-to-br from-blue-50 to-white">
@@ -213,8 +209,6 @@ export default function FAQPage() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   )
 }

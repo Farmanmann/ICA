@@ -1,1 +1,51 @@
-loan-portal/
+# ----------------
+# General
+# ----------------
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ----------------
+# Python / Django
+# ----------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.sqlite3
+db.sqlite3
+
+# Django specific
+*.log
+staticfiles/
+media/
+*.pot
+
+# ----------------
+# Node / Next.js
+# ----------------
+node_modules/
+.next/
+out/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ----------------
+# VSCode / IDE
+# ----------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ----------------
+# Keep frontend (loan-portal) tracked
+# ----------------
+# NOTE: do NOT ignore the entire loan-portal folder
+# Only ignore its build/cache folders (already covered above)
+

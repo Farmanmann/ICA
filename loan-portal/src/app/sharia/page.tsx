@@ -1,7 +1,5 @@
 "use client"
 
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -10,8 +8,6 @@ import { Shield, CheckCircle, Book, Users, Award, FileCheck } from "lucide-react
 export default function ShariaPage() {
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
-
       <main className="pt-24">
         {/* Hero Section */}
         <section className="py-20 px-6 bg-gradient-to-br from-green-50 to-white">
@@ -144,71 +140,6 @@ export default function ShariaPage() {
           </div>
         </section>
 
-        {/* Sharia Board */}
-        <section className="py-20 px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-slate-900 mb-4">Our Sharia Advisory Board</h2>
-              <p className="text-lg text-slate-600">
-                Distinguished Islamic scholars ensuring compliance with Sharia principles
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-              <Card className="text-center">
-                <CardContent className="pt-8">
-                  <div className="w-32 h-32 bg-gradient-to-br from-green-400 to-green-600 rounded-full mx-auto mb-4"></div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-1">Dr. Omar Khan</h3>
-                  <p className="text-green-600 mb-3">Chairman</p>
-                  <p className="text-sm text-slate-600">
-                    PhD in Islamic Finance, 20+ years experience in Sharia advisory
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="text-center">
-                <CardContent className="pt-8">
-                  <div className="w-32 h-32 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full mx-auto mb-4"></div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-1">Sheikh Abdullah Rahman</h3>
-                  <p className="text-blue-600 mb-3">Senior Scholar</p>
-                  <p className="text-sm text-slate-600">
-                    Islamic jurisprudence expert, certified Sharia auditor
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="text-center">
-                <CardContent className="pt-8">
-                  <div className="w-32 h-32 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full mx-auto mb-4"></div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-1">Dr. Fatima Hassan</h3>
-                  <p className="text-purple-600 mb-3">Board Member</p>
-                  <p className="text-sm text-slate-600">
-                    Islamic banking specialist, professor of Islamic economics
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <Card className="bg-green-50 border-2 border-green-200">
-              <CardContent className="pt-6">
-                <div className="flex items-start gap-4">
-                  <Book className="h-8 w-8 text-green-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">Board Responsibilities</h3>
-                    <ul className="space-y-2 text-slate-700">
-                      <li>• Review and approve all financial products and services</li>
-                      <li>• Conduct regular audits of transactions and contracts</li>
-                      <li>• Issue Sharia compliance certificates</li>
-                      <li>• Provide guidance on Islamic finance matters</li>
-                      <li>• Ensure ongoing adherence to Sharia principles</li>
-                    </ul>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
         {/* Certifications */}
         <section className="py-20 px-6 bg-slate-50">
           <div className="max-w-6xl mx-auto">
@@ -337,8 +268,6 @@ export default function ShariaPage() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   )
 }

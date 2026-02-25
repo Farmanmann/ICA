@@ -1,8 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { DollarSign, Calendar, TrendingUp, Calculator, ArrowRight } from "lucide-react"
@@ -26,8 +24,6 @@ export default function LoanCalculator() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
-
       <main className="pt-24">
         {/* Hero Section */}
         <section className="py-12 px-6 bg-gradient-to-br from-blue-50 to-white">
@@ -236,7 +232,7 @@ export default function LoanCalculator() {
                     <tbody>
                       <tr className="border-b bg-green-50">
                         <td className="p-4 font-medium">
-                          PropertyLoans (0% Interest)
+                          Noor Financial (0% Interest)
                         </td>
                         <td className="text-right p-4 font-bold text-green-600">
                           ${calculateMonthlyPayment()}
@@ -284,8 +280,6 @@ export default function LoanCalculator() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   )
 }

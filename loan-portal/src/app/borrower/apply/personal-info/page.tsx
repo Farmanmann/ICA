@@ -4,18 +4,36 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { User, Mail, Phone, MapPin, ArrowRight } from "lucide-react"
+import { User, Mail, Phone, MapPin, ArrowRight, Building, Briefcase } from "lucide-react"
+
+interface LoanOption {
+  value: string
+  label: string
+}
 
 export default function ApplyStep1() {
   const [formData, setFormData] = useState({
     borrower_name: "",
     email: "",
     phone: "",
-    address: ""
+    address: "",
+    loan_type: "murabaha",
+    purpose: ""
   })
+  const [loanTypes, setLoanTypes] = useState<LoanOption[]>([])
+  const [purposes, setPurposes] = useState<LoanOption[]>([])
   const [error, setError] = useState("")
 
   useEffect(() => {
+    // Fetch loan types and purposes from API
+    fetch("http://localhost:8000/api/loan-options/")
+      .then(res => res.json())
+      .then(data => {
+        setLoanTypes(data.loan_types || [])
+        setPurposes(data.purposes || [])
+      })
+      .catch(err => console.error("Failed to fetch loan options:", err))
+
     // Load saved data from localStorage
     const saved = localStorage.getItem("loanApplication")
     if (saved) {
@@ -24,7 +42,9 @@ export default function ApplyStep1() {
         borrower_name: data.borrower_name || "",
         email: data.email || "",
         phone: data.phone || "",
-        address: data.address || ""
+        address: data.address || "",
+        loan_type: data.loan_type || "murabaha",
+        purpose: data.purpose || ""
       })
     }
   }, [])
@@ -40,7 +60,7 @@ export default function ApplyStep1() {
     setError("")
 
     // Validation
-    if (!formData.borrower_name || !formData.email || !formData.phone) {
+    if (!formData.borrower_name || !formData.email || !formData.phone || !formData.loan_type || !formData.purpose) {
       setError("Please fill in all required fields")
       return
     }
@@ -62,7 +82,7 @@ export default function ApplyStep1() {
     }))
 
     // Navigate to next step
-    window.location.href = "/borrower/apply/property-details"
+    window.location.href = "/borrower/apply/propertly-details"
   }
 
   return (
@@ -93,10 +113,54 @@ export default function ApplyStep1() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Personal Information</CardTitle>
-            <p className="text-sm text-slate-600">Tell us about yourself</p>
+            <CardTitle>Loan Application</CardTitle>
+            <p className="text-sm text-slate-600">Tell us about yourself and the loan you need</p>
           </CardHeader>
           <CardContent className="space-y-6">
+            {/* Loan Type */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+                <Building className="h-4 w-4" />
+                Financing Type *
+              </label>
+              <select
+                name="loan_type"
+                value={formData.loan_type}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              >
+                {loanTypes.map(type => (
+                  <option key={type.value} value={type.value}>{type.label}</option>
+                ))}
+              </select>
+              <p className="text-xs text-slate-500 mt-1">
+                Choose the Islamic financing structure for your loan
+              </p>
+            </div>
+
+            {/* Purpose */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+                <Briefcase className="h-4 w-4" />
+                Loan Purpose *
+              </label>
+              <select
+                name="purpose"
+                value={formData.purpose}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              >
+                <option value="">Select a purpose</option>
+                {purposes.map(purpose => (
+                  <option key={purpose.value} value={purpose.value}>{purpose.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="border-t pt-6">
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">Personal Information</h3>
+            </div>
+
             {/* Full Name */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">

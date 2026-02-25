@@ -1,7 +1,5 @@
 "use client"
 
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -76,8 +74,6 @@ export default function ProductsPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
-
       <main className="pt-24">
         {/* Hero Section */}
         <section className="py-20 px-6 bg-gradient-to-br from-blue-50 to-white">
@@ -276,8 +272,6 @@ export default function ProductsPage() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   )
 }
