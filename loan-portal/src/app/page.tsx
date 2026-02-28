@@ -211,11 +211,28 @@ export default function ComingSoon() {
           </div>
 
           {/* Legal Text */}
-          <div className="max-w-4xl mx-auto">
-            <p className="text-slate-400 text-xs leading-relaxed text-center">
-              Noor Financing LLC is currently in the licensing process and is not yet accepting applications or conducting mortgage brokerage activities. Noor Financing technology and processes are proprietary to Noor Financing LLC. © 2026 Noor Financing LLC. All Rights Reserved. This site is directed at, and made available to, persons in Texas only. 
-            </p>
-          </div>
+          {/* Legal Row */}
+<div className="max-w-6xl mx-auto mt-10 px-6">
+  <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
+
+    {/* Legal Text */}
+    <p className="text-slate-400 text-xs leading-relaxed text-left md:max-w-4xl">
+      Noor Financing LLC is currently in the licensing process and is not yet accepting applications or conducting mortgage brokerage activities. Noor Financing technology and processes are proprietary to Noor Financing LLC. © 2026 Noor Financing LLC. All Rights Reserved. This site is directed at, and made available to, persons in Texas only.
+    </p>
+
+    {/* Equal Housing Logo */}
+    <div className="flex-shrink-0">
+      <Image
+        src="/Equal-Housing-emblem.png"
+        alt="Equal Housing Opportunity"
+        width={80}
+        height={80}
+        className="opacity-80"
+      />
+    </div>
+
+  </div>
+</div>
         </div>
       </footer>
       {/* Custom animations */}

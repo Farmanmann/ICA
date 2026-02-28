@@ -100,9 +100,9 @@ export default function CheckEmailPage() {
                 <Button
                   variant="ghost"
                   className="w-full"
-                  onClick={() => window.location.href = '/auth/login'}
+                  onClick={() => window.location.href = '/'}
                 >
-                  Back to Login
+                  Back to Home Page
                 </Button>
               </div>
             </div>

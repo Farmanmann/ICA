@@ -1,97 +1,48 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { useSearchParams, useRouter } from "next/navigation"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Lock, Eye, EyeOff, CheckCircle, XCircle } from "lucide-react"
-import { authService } from "@/lib/api/services/authService"
+import { Mail, ArrowLeft, CheckCircle } from "lucide-react"
 
 export default function ResetPasswordPage() {
-  const searchParams = useSearchParams()
   const router = useRouter()
-
-  const [formData, setFormData] = useState({
-    newPassword: "",
-    confirmPassword: ""
-  })
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [email, setEmail] = useState("")
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState("")
-
-  const uid = searchParams.get('uid')
-  const token = searchParams.get('token')
-
-  useEffect(() => {
-    if (!uid || !token) {
-      setError('Invalid password reset link. Please request a new one.')
-    }
-  }, [uid, token])
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError("")
+    setSuccess(false)
 
-    // Validation
-    if (!formData.newPassword || !formData.confirmPassword) {
-      setError("Please fill in all fields")
-      setLoading(false)
-      return
-    }
-
-    if (formData.newPassword !== formData.confirmPassword) {
-      setError("Passwords do not match")
-      setLoading(false)
-      return
-    }
-
-    if (formData.newPassword.length < 8) {
-      setError("Password must be at least 8 characters")
-      setLoading(false)
-      return
-    }
-
-    if (!uid || !token) {
-      setError("Invalid reset link")
+    if (!email) {
+      setError("Please enter your email address")
       setLoading(false)
       return
     }
 
     try {
-      await authService.confirmPasswordReset(
-        uid,
-        token,
-        formData.newPassword,
-        formData.confirmPassword
-      )
-      setSuccess(true)
+      // Import Supabase client
+      const { createClient } = await import("@/lib/supabase/client")
+      const supabase = createClient()
 
-      // Redirect to login after 3 seconds
-      setTimeout(() => {
-        router.push('/auth/login')
-      }, 3000)
-    } catch (err: any) {
-      const errorData = err.response?.data
-      if (errorData?.error) {
-        if (Array.isArray(errorData.error)) {
-          setError(errorData.error.join(', '))
-        } else {
-          setError(errorData.error)
-        }
-      } else {
-        setError("Failed to reset password. The link may have expired.")
+      // Request password reset
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/callback?type=recovery`,
+      })
+
+      if (resetError) {
+        throw resetError
       }
+
+      setSuccess(true)
+    } catch (err: any) {
+      setError(err.message || "Failed to send reset email. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -106,25 +57,44 @@ export default function ResetPasswordPage() {
               <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
                 <CheckCircle className="h-8 w-8 text-green-600" />
               </div>
-              <CardTitle className="text-2xl">Password Reset Successful!</CardTitle>
+              <CardTitle className="text-2xl">Check Your Email</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <Alert className="border-green-200 bg-green-50">
                 <CheckCircle className="h-4 w-4 text-green-600" />
                 <AlertDescription className="text-green-800">
-                  Your password has been reset successfully.
+                  Password reset instructions have been sent to your email.
                 </AlertDescription>
               </Alert>
 
-              <p className="text-center text-slate-600">
-                You can now log in with your new password. Redirecting to login...
+              <p className="text-center text-slate-700">
+                We've sent a password reset link to:
               </p>
+              <p className="font-semibold text-slate-900 text-lg text-center">
+                {email}
+              </p>
+              <p className="text-sm text-slate-600 text-center">
+                Click the link in the email to reset your password.
+              </p>
+
+              <div className="bg-slate-50 p-4 rounded-lg">
+                <p className="text-sm font-medium text-slate-700 mb-2">
+                  Didn't receive the email?
+                </p>
+                <ul className="text-sm text-slate-600 space-y-1 list-disc list-inside">
+                  <li>Check your spam or junk folder</li>
+                  <li>Make sure you entered the correct email</li>
+                  <li>The link expires in 24 hours</li>
+                </ul>
+              </div>
 
               <Button
                 onClick={() => router.push('/auth/login')}
-                className="w-full bg-blue-600 hover:bg-blue-700"
+                variant="outline"
+                className="w-full"
               >
-                Go to Login
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Login
               </Button>
             </CardContent>
           </Card>
@@ -139,89 +109,36 @@ export default function ResetPasswordPage() {
         <Card>
           <CardHeader className="text-center">
             <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-              <Lock className="h-8 w-8 text-blue-600" />
+              <Mail className="h-8 w-8 text-blue-600" />
             </div>
-            <CardTitle className="text-2xl">Set New Password</CardTitle>
+            <CardTitle className="text-2xl">Reset Your Password</CardTitle>
             <p className="text-slate-600 mt-2">
-              Enter your new password below
+              Enter your email and we'll send you a link to reset your password
             </p>
           </CardHeader>
           <CardContent>
             {error && (
               <Alert variant="destructive" className="mb-6">
-                <XCircle className="h-4 w-4" />
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* New Password */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                  New Password *
+                  Email Address *
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
                   <input
-                    type={showPassword ? "text" : "password"}
-                    name="newPassword"
-                    value={formData.newPassword}
-                    onChange={handleChange}
-                    className="w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="Create a new password (min. 8 characters)"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                    placeholder="your@email.com"
+                    required
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                  >
-                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                  </button>
                 </div>
-              </div>
-
-              {/* Confirm Password */}
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Confirm New Password *
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    className="w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="Re-enter your new password"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                  >
-                    {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                  </button>
-                </div>
-              </div>
-
-              {/* Password Requirements */}
-              <div className="bg-slate-50 p-4 rounded-lg">
-                <p className="text-sm font-medium text-slate-700 mb-2">Password must contain:</p>
-                <ul className="space-y-1 text-sm text-slate-600">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className={`h-4 w-4 ${formData.newPassword.length >= 8 ? 'text-green-600' : 'text-slate-300'}`} />
-                    At least 8 characters
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className={`h-4 w-4 ${/[A-Z]/.test(formData.newPassword) ? 'text-green-600' : 'text-slate-300'}`} />
-                    One uppercase letter
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className={`h-4 w-4 ${/[0-9]/.test(formData.newPassword) ? 'text-green-600' : 'text-slate-300'}`} />
-                    One number
-                  </li>
-                </ul>
               </div>
 
               <Button
@@ -229,7 +146,7 @@ export default function ResetPasswordPage() {
                 disabled={loading}
                 className="w-full bg-blue-600 hover:bg-blue-700 py-6 text-lg"
               >
-                {loading ? "Resetting Password..." : "Reset Password"}
+                {loading ? "Sending..." : "Send Reset Link"}
               </Button>
 
               <Button
@@ -238,6 +155,7 @@ export default function ResetPasswordPage() {
                 variant="ghost"
                 className="w-full"
               >
+                <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Login
               </Button>
             </form>

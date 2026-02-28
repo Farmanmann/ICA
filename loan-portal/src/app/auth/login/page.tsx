@@ -37,43 +37,56 @@ export default function LoginPage() {
     }
 
     try {
-      // Import authService dynamically
-      const { authService } = await import("@/lib/api/services/authService")
+      // Import Supabase client
+      const { createClient } = await import("@/lib/supabase/client")
+      const supabase = createClient()
 
-      // Create username from email (part before @)
-      const username = formData.email.split('@')[0]
-
-      // Login
-      await authService.login({
-        username,
+      // Sign in with Supabase
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email: formData.email,
         password: formData.password,
       })
 
+      if (signInError) {
+        throw signInError
+      }
+
+      // Check if email is confirmed
+      if (!data.user?.email_confirmed_at) {
+        setError("Please verify your email before logging in. Check your inbox for the verification link.")
+        await supabase.auth.signOut()
+        setLoading(false)
+        return
+      }
+
       // Get user profile to determine role
-      const userData = await authService.getCurrentUser()
-      const role = userData.profile.role
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', data.user.id)
+        .single()
+
+      if (profileError) {
+        console.error('Profile error:', profileError)
+        // If profile doesn't exist, default to borrower
+        window.location.href = "/borrower/dashboard"
+        return
+      }
 
       // Redirect based on role
-      if (role === "admin") {
+      if (profile.role === "admin") {
         window.location.href = "/admin/dashboard"
-      } else if (role === "lender") {
+      } else if (profile.role === "lender") {
         window.location.href = "/lender/dashboard"
       } else {
         window.location.href = "/borrower/dashboard"
       }
     } catch (err: any) {
       console.error('Login error:', err)
-      const errorData = err.response?.data
-      if (errorData) {
-        if (errorData.detail) {
-          setError(errorData.detail)
-        } else if (errorData.error) {
-          setError(errorData.error)
-        } else {
-          setError("Invalid email or password")
-        }
-      } else if (err.response?.status === 401) {
+      if (err.message === "Invalid login credentials") {
         setError("Invalid email or password. If you haven't verified your email yet, please check your inbox.")
+      } else if (err.message) {
+        setError(err.message)
       } else {
         setError("Network error. Please check your connection and try again.")
       }

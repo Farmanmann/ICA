@@ -67,51 +67,38 @@ export default function LenderSignupPage() {
     }
 
     try {
-      // Import authService dynamically
-      const { authService } = await import("@/lib/api/services/authService")
+      // Import Supabase client
+      const { createClient } = await import("@/lib/supabase/client")
+      const supabase = createClient()
 
-      // Split full name into first and last name
-      const nameParts = formData.fullName.trim().split(' ')
-      const firstName = nameParts[0] || ''
-      const lastName = nameParts.slice(1).join(' ') || ''
-
-      // Create username from email (part before @)
-      const username = formData.email.split('@')[0]
-
-      // Register user
-      await authService.register({
-        username,
+      // Sign up with Supabase
+      const { error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
-        password2: formData.confirmPassword,
-        first_name: firstName,
-        last_name: lastName,
-        role: 'lender',
-        phone: formData.phone,
-        lender_type: formData.lenderType as 'individual' | 'organization',
-        organization: formData.organization || undefined,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback?type=signup`,
+          data: {
+            full_name: formData.fullName,
+            phone: formData.phone,
+            role: 'lender',
+            lender_type: formData.lenderType,
+            organization: formData.organization,
+          },
+        },
       })
+
+      if (signUpError) {
+        throw signUpError
+      }
 
       // Redirect to check-email page
       window.location.href = `/auth/check-email?email=${encodeURIComponent(formData.email)}`
     } catch (err: any) {
       console.error('Registration error:', err)
-      const errorData = err.response?.data
-      if (errorData) {
-        // Handle field-specific errors
-        if (errorData.username) {
-          setError(`Username: ${errorData.username[0]}`)
-        } else if (errorData.email) {
-          setError(`Email: ${errorData.email[0]}`)
-        } else if (errorData.password) {
-          setError(`Password: ${errorData.password[0]}`)
-        } else if (errorData.error) {
-          setError(errorData.error)
-        } else {
-          setError("Registration failed. Please try again.")
-        }
+      if (err.message) {
+        setError(err.message)
       } else {
-        setError("Network error. Please check your connection and try again.")
+        setError("Registration failed. Please try again.")
       }
     } finally {
       setLoading(false)
@@ -326,7 +313,7 @@ export default function LenderSignupPage() {
                     <div className="w-full border-t border-slate-300"></div>
                   </div>
                   <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-slate-500">Already have an account?</span>
+                    <span className="px-2 bg-white text-slate-500"></span>
                   </div>
                 </div>
 
@@ -334,9 +321,9 @@ export default function LenderSignupPage() {
                 <Button
                   variant="outline"
                   className="w-full"
-                  onClick={() => window.location.href = '/auth/login'}
+                  onClick={() => window.location.href = '/'}
                 >
-                  Sign In
+                  Homepage
                 </Button>
               </div>
             </CardContent>
@@ -395,11 +382,27 @@ export default function LenderSignupPage() {
             </a>
           </div>
 
-          {/* Legal Text */}
-          <div className="max-w-4xl mx-auto">
-            <p className="text-slate-400 text-xs leading-relaxed text-center">
-              Noor Financing LLC is currently in the licensing process and is not yet accepting applications or conducting mortgage brokerage activities. Noor Financing technology and processes are proprietary to Noor Financing LLC. © 2026 Noor Financing LLC. All Rights Reserved. This site is directed at, and made available to, persons in Texas only. 
-            </p>
+          {/* Legal Row */}
+          <div className="max-w-6xl mx-auto mt-10 px-6">
+            <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
+
+              {/* Legal Text */}
+              <p className="text-slate-400 text-xs leading-relaxed text-left md:max-w-4xl">
+                Noor Financing LLC is currently in the licensing process and is not yet accepting applications or conducting mortgage brokerage activities. Noor Financing technology and processes are proprietary to Noor Financing LLC. © 2026 Noor Financing LLC. All Rights Reserved. This site is directed at, and made available to, persons in Texas only.
+              </p>
+
+              {/* Equal Housing Logo */}
+              <div className="flex-shrink-0">
+                <Image
+                  src="/Equal-Housing-emblem.png"
+                  alt="Equal Housing Opportunity"
+                  width={80}
+                  height={80}
+                  className="opacity-80"
+                />
+              </div>
+
+            </div>
           </div>
         </div>
       </footer>

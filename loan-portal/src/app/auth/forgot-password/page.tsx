@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Mail, ArrowLeft, CheckCircle } from "lucide-react"
-import { authService } from "@/lib/api/services/authService"
 
 export default function ForgotPasswordPage() {
   const router = useRouter()
@@ -28,10 +27,22 @@ export default function ForgotPasswordPage() {
     }
 
     try {
-      await authService.requestPasswordReset(email)
+      // Import Supabase client
+      const { createClient } = await import("@/lib/supabase/client")
+      const supabase = createClient()
+
+      // Request password reset
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/callback?type=recovery`,
+      })
+
+      if (resetError) {
+        throw resetError
+      }
+
       setSuccess(true)
     } catch (err: any) {
-      setError(err.response?.data?.error || "Failed to send reset email. Please try again.")
+      setError(err.message || "Failed to send reset email. Please try again.")
     } finally {
       setLoading(false)
     }
