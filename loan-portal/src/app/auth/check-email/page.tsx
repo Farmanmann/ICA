@@ -1,14 +1,13 @@
 "use client"
 
-import { useState } from "react"
+import { useState, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Mail, CheckCircle, RefreshCw } from "lucide-react"
-import { authService } from "@/lib/api/services/authService"
+import { Mail, CheckCircle, RefreshCw, Loader2 } from "lucide-react"
 
-export default function CheckEmailPage() {
+function CheckEmailContent() {
   const searchParams = useSearchParams()
   const email = searchParams.get('email') || ''
 
@@ -22,10 +21,25 @@ export default function CheckEmailPage() {
     setMessage("")
 
     try {
-      const response = await authService.resendVerificationEmail(email)
-      setMessage(response.message || "Verification email sent!")
+      // Import Supabase client
+      const { createClient } = await import("@/lib/supabase/client")
+      const supabase = createClient()
+
+      const { error: resendError } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback?type=signup`,
+        },
+      })
+
+      if (resendError) {
+        throw resendError
+      }
+
+      setMessage("Verification email sent!")
     } catch (err: any) {
-      setError(err.response?.data?.error || "Failed to resend email. Please try again.")
+      setError(err.message || "Failed to resend email. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -57,7 +71,7 @@ export default function CheckEmailPage() {
 
             <div className="text-center space-y-4">
               <p className="text-slate-700">
-                We've sent a verification link to:
+                We have sent a verification link to:
               </p>
               <p className="font-semibold text-slate-900 text-lg">
                 {email}
@@ -68,7 +82,7 @@ export default function CheckEmailPage() {
 
               <div className="bg-slate-50 p-4 rounded-lg text-left">
                 <p className="text-sm font-medium text-slate-700 mb-2">
-                  Didn't receive the email?
+                  Did not receive the email?
                 </p>
                 <ul className="text-sm text-slate-600 space-y-1 list-disc list-inside">
                   <li>Check your spam or junk folder</li>
@@ -110,5 +124,24 @@ export default function CheckEmailPage() {
         </Card>
       </div>
     </div>
+  )
+}
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="text-center">
+        <Loader2 className="h-8 w-8 animate-spin mx-auto text-blue-600" />
+        <p className="mt-2 text-slate-600">Loading...</p>
+      </div>
+    </div>
+  )
+}
+
+export default function CheckEmailPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <CheckEmailContent />
+    </Suspense>
   )
 }
