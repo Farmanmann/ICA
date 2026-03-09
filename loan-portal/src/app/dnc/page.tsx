@@ -40,7 +40,7 @@ export default function DNCPage() {
                 If you have questions or concerns about this Do Not Call Policy, please contact us:
               </p>
               <div className="bg-slate-50 p-4 rounded-lg">
-                <p className="font-semibold">Noor Financial - Privacy Team</p>
+                <p className="font-semibold">Noor Financing - Privacy Team</p>
                 <p>Email: <a href="mailto:support@noorfinancing.com" className="text-blue-600 hover:underline">support@noorfinancing.com</a></p>
                 <p>Phone: 346-521-8425</p>
                 <p>Address: 800 Bonaventure Way Suite 111, Sugar Land, TX 77479</p>

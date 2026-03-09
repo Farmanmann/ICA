@@ -12,7 +12,7 @@ export default function AdvertisingDisclosurePage() {
 
           <div className="prose prose-slate max-w-none space-y-6">
             <p className="font-semibold">
-              NOOR FINANCING LLC IS A MARKETING LEAD GENERATOR AND IS A DULY LICENSED MORTGAGE COMPANY, AS REQUIRED BY LAW, WITH ITS MAIN OFFICE LOCATED AT 434 Apple Core Way, Richmond, TX 77406, TELEPHONE NUMBER 346-521-8425.
+              NOOR FINANCING LLC IS A MARKETING LEAD GENERATOR AND IS A DULY LICENSED MORTGAGE COMPANY, AS REQUIRED BY LAW, WITH ITS MAIN OFFICE LOCATED AT 800 Bonaventure Way Suite 111, Sugar Land, TX 77479, TELEPHONE NUMBER 346-521-8425.
             </p>
 
             <div>
@@ -77,7 +77,7 @@ export default function AdvertisingDisclosurePage() {
                 If you have questions or concerns about this Advertising Disclosure, please contact us:
               </p>
               <div className="bg-slate-50 p-4 rounded-lg">
-                <p className="font-semibold">Noor Financial - Privacy Team</p>
+                <p className="font-semibold">Noor Financing - Privacy Team</p>
                 <p>Email: <a href="mailto:support@noorfinancing.com" className="text-blue-600 hover:underline">support@noorfinancing.com</a></p>
                 <p>Phone: 346-521-8425</p>
                 <p>Address: 800 Bonaventure Way Suite 111, Sugar Land, TX 77479</p>

@@ -63,7 +63,7 @@ export default function BorrowerSignupPage() {
       const supabase = createClient()
 
       // Sign up with Supabase
-      const { error: signUpError } = await supabase.auth.signUp({
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
@@ -78,6 +78,12 @@ export default function BorrowerSignupPage() {
 
       if (signUpError) {
         throw signUpError
+      }
+
+      if (signUpData.user?.identities?.length === 0) {
+        setError("An account with this email already exists. Please log in or reset your password instead.")
+        setLoading(false)
+        return
       }
 
       // Redirect to check-email page
