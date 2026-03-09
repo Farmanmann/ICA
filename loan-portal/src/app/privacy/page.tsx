@@ -1,247 +1,140 @@
-"use client"
-
-import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image"
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-white">
+      <div className="py-12">
+        <div className="max-w-4xl mx-auto px-6">
+          <h1 className="text-4xl font-bold text-slate-900 mb-4">Privacy Policy</h1>
+          <p className="text-sm text-slate-500 mb-8">Last Updated: February 23, 2026</p>
 
-      <main className="pt-24">
-        {/* Hero Section */}
-        <section className="py-20 px-6 bg-gradient-to-br from-blue-50 to-white">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl font-bold text-slate-900 mb-6">Privacy Policy</h1>
-            <p className="text-xl text-slate-600">
-              Your privacy is important to us. Learn how we collect, use, and protect your information.
-            </p>
-            <p className="text-sm text-slate-500 mt-4">Last Updated: January 2025</p>
+          <div className="prose prose-slate max-w-none space-y-6">
+            <div>
+              <p>
+                Noor Financing LLC ("Noor Financing," "we," "our," or "us") is committed to maintaining the privacy and security of your personal information. This Privacy Policy describes our practices regarding the collection, use, and disclosure of personal information obtained through our website, mobile applications, and other digital properties (collectively, the "Digital Properties"), as well as through our offline business interactions. By using our Services, you agree to the terms of this Privacy Policy.
+              </p>
+            </div>
+
+            <div>
+              <p>
+                <strong>Personal Information We Collect.</strong> Depending on your interactions with the Services, we may collect several categories of personal information:
+              </p>
+              <ul className="list-disc pl-6 space-y-2 mt-3">
+                <li>Contact information, including your name, residential address, telephone number, and email address.</li>
+                <li>Identifying information, including your Social Security number, date of birth, driver's license number, or other government-issued identifiers.</li>
+                <li>Financial information, including income, assets, employment history, credit scores, and debt obligations.</li>
+                <li>Sensitive personal information, including financial account credentials and information regarding your preference for Shariah-compliant financing. Pursuant to the Texas Data Privacy and Security Act (TDPSA), the collection of information related to religious or ethical preferences is classified as sensitive data. By initiating an inquiry, you provide express consent for the processing of this data for the purpose of matching you with appropriate financing products.</li>
+                <li>Usage data, including IP addresses, device identifiers, browser type, and information regarding your interactions with the Digital Properties.</li>
+              </ul>
+            </div>
+
+            <div>
+              <p>
+                <strong>Information Collected Through Automated Means.</strong> We and our service providers use cookies, web beacons, and similar tracking technologies to monitor and memorialize visits to our Digital Properties. This may include site-recording technology that collects information such as page URLs, mouse movements, clicks, and information you input into webforms. We use this information for fraud prevention, security, and to improve the effectiveness of our Services.
+              </p>
+            </div>
+
+            <div>
+              <p>
+                <strong>How We Use Personal Information.</strong> We use the personal information we collect for the following business and commercial purposes:
+              </p>
+              <ul className="list-disc pl-6 space-y-2 mt-3">
+                <li>Delivering the Services, specifically connecting you with Network Partners (lenders and financial institutions) to provide financing offers.</li>
+                <li>Communicating with you for administrative and marketing purposes, including responding to inquiries and sending promotional materials.</li>
+                <li>Verifying your identity and maintaining security to detect and prevent unauthorized transactions or fraudulent activity.</li>
+                <li>Satisfying our legal and regulatory obligations, including compliance with the Texas Department of Savings and Mortgage Lending (SML) and federal Anti-Money Laundering (AML) laws.</li>
+              </ul>
+            </div>
+
+            <div>
+              <p>
+                <strong>Disclosure of Personal Information.</strong> Noor Financing functions as a marketplace and may disclose your personal information to the following categories of recipients:
+              </p>
+              <ul className="list-disc pl-6 space-y-2 mt-3">
+                <li>Network Partners. When you submit an inquiry for a Shariah-compliant financial product, we disclose your information to lenders and other third parties in our network as necessary to fulfill your request.</li>
+                <li>Service Providers. Third parties that provide professional, technical, or administrative support, including credit reporting agencies and cloud storage providers.</li>
+                <li>Governmental Authorities. Law enforcement or regulatory bodies as required by law, including in response to subpoenas or court orders.</li>
+                <li>Relevant Third Parties. In connection with a merger, acquisition, or sale of business assets.</li>
+              </ul>
+            </div>
+
+            <div>
+              <p>
+                <strong>Texas Privacy Rights.</strong> Under the Texas Data Privacy and Security Act (TDPSA), Texas residents have specific rights regarding their personal data:
+              </p>
+              <ul className="list-disc pl-6 space-y-2 mt-3">
+                <li>Access and Correction. You have the right to confirm whether we are processing your data and to request access to or correction of inaccuracies in your personal information.</li>
+                <li>Deletion. You have the right to request the deletion of personal data provided by or obtained about you.</li>
+                <li>Opt-Out. You have the right to opt out of the processing of your personal data for targeted advertising or the sale of your personal data.</li>
+              </ul>
+              <p className="mt-4">
+                Notwithstanding the foregoing, Noor Financing is a licensed mortgage entity in the State of Texas. Pursuant to 7 TAC §80.204, we are required to maintain certain mortgage-related records for a minimum of three (3) years. We are unable to delete personal information that is subject to these mandatory state or federal record-keeping requirements.
+              </p>
+            </div>
+
+            <div>
+              <p>
+                <strong>Your Choices and Opt-Outs.</strong> We provide you with the ability to make choices regarding your personal information:
+              </p>
+            </div>
+
+            <div>
+              <p>
+                <strong>Marketing Communications.</strong> You may opt out of receiving promotional communications by following the "unsubscribe" instructions provided in such emails or by contacting us directly.
+              </p>
+            </div>
+
+            <div>
+              <p>
+                <strong>Information Security and Retention.</strong> We maintain physical, electronic, and procedural measures designed to safeguard your personal information, including the use of industry-standard encryption and multi-factor authentication. We retain personal information for as long as necessary to fulfill the purposes outlined in this policy or as required to satisfy legal, regulatory, or reporting requirements.
+              </p>
+            </div>
+
+            <div>
+              <p>
+                <strong>Children's Privacy.</strong> The Services are not intended for individuals under the age of 18. We do not knowingly collect, sell, or share personal information from or about individuals under the age of 18.
+              </p>
+            </div>
+
+            <div>
+              <p>
+                <strong>Services Limited to the United States.</strong> Our Digital Properties are designed for use within the United States and are governed by the laws of the United States and the State of Texas. We make no representation that our Digital Properties are governed by the laws of any other nation.
+              </p>
+            </div>
+
+            <div>
+              <p>
+                <strong>Changes to This Privacy Policy.</strong> We may update this Privacy Policy from time to time to reflect changes in our practices or applicable law. The "Last Updated" date at the top of this page indicates when the policy was last revised. We encourage you to review this policy periodically.
+              </p>
+            </div>
+
+            <div>
+              <p>
+                <strong>Access and Correct Personal Information.</strong> If you have submitted a request for a loan or other financial product through the Services and would like to access or correct certain personal information, or if you wish to exercise your rights under the TDPSA, please contact us at:
+              </p>
+              <p className="mt-2">
+                Email: <a href="mailto:support@noorfinancing.com" className="text-blue-600 hover:underline">support@noorfinancing.com</a>
+              </p>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h2 className="text-2xl font-bold text-slate-900 mb-4">How to Contact Us</h2>
+              <p className="mb-4">
+                If you have any questions or comments about this Privacy Policy or our information handling and privacy practices, please contact us using the following details:
+              </p>
+              <div className="bg-slate-50 p-4 rounded-lg">
+                <p className="font-semibold">Noor Financing, LLC</p>
+                <p>Email: <a href="mailto:support@noorfinancing.com" className="text-blue-600 hover:underline">support@noorfinancing.com</a></p>
+                <p>Phone: 346-521-8425</p>
+                <p>Mail: 800 Bonaventure Way Suite 111</p>
+                <p>Sugar Land, TX 77479</p>
+                <p className="mt-2">NMLS ID: 2780355</p>
+              </div>
+            </div>
           </div>
-        </section>
-
-        {/* Privacy Content */}
-        <section className="py-20 px-6">
-          <div className="max-w-4xl mx-auto">
-            <Card>
-              <CardContent className="pt-8">
-                <div className="space-y-8 text-slate-700">
-                  {/* Introduction */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">Introduction</h2>
-                    <p className="mb-4">
-                      Noor Financial ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy
-                      explains how we collect, use, disclose, and safeguard your information when you use our platform
-                      and services.
-                    </p>
-                    <p>
-                      By using Noor Financial, you agree to the collection and use of information in accordance with
-                      this policy. If you do not agree with our policies and practices, please do not use our services.
-                    </p>
-                  </div>
-
-                  {/* Section 1 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Information We Collect</h2>
-                    
-                    <h3 className="text-xl font-semibold text-slate-900 mb-3 mt-4">Personal Information</h3>
-                    <p className="mb-3">We collect personal information that you voluntarily provide to us, including:</p>
-                    <ul className="list-disc pl-6 space-y-2 mb-4">
-                      <li>Name, email address, and phone number</li>
-                      <li>Mailing address and residential information</li>
-                      <li>Date of birth and government-issued identification</li>
-                      <li>Social Security Number or Tax ID</li>
-                      <li>Employment and income information</li>
-                      <li>Bank account and payment information</li>
-                      <li>Credit history and financial data</li>
-                    </ul>
-
-                    <h3 className="text-xl font-semibold text-slate-900 mb-3 mt-4">Automatically Collected Information</h3>
-                    <p className="mb-3">When you access our platform, we automatically collect:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                      <li>IP address and browser type</li>
-                      <li>Device information and operating system</li>
-                      <li>Usage data and navigation patterns</li>
-                      <li>Cookies and similar tracking technologies</li>
-                      <li>Location data (with your permission)</li>
-                    </ul>
-                  </div>
-
-                  {/* Section 2 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">2. How We Use Your Information</h2>
-                    <p className="mb-3">We use the information we collect to:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                      <li>Process and manage your loan applications</li>
-                      <li>Verify your identity and creditworthiness</li>
-                      <li>Communicate with you about your account and services</li>
-                      <li>Process payments and prevent fraud</li>
-                      <li>Improve our platform and user experience</li>
-                      <li>Comply with legal and regulatory requirements</li>
-                      <li>Send you marketing communications (with your consent)</li>
-                      <li>Analyze usage patterns and trends</li>
-                    </ul>
-                  </div>
-
-                  {/* Section 3 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">3. Information Sharing and Disclosure</h2>
-                    <p className="mb-4">
-                      We may share your information with third parties in the following circumstances:
-                    </p>
-                    
-                    <h3 className="text-xl font-semibold text-slate-900 mb-3">With Your Consent</h3>
-                    <p className="mb-4">
-                      We may share your information when you explicitly authorize us to do so, such as when matching 
-                      you with potential lenders.
-                    </p>
-
-                    <h3 className="text-xl font-semibold text-slate-900 mb-3">Service Providers</h3>
-                    <p className="mb-3">We may share information with third-party service providers who perform services on our behalf:</p>
-                    <ul className="list-disc pl-6 space-y-2 mb-4">
-                      <li>Payment processors</li>
-                      <li>Credit reporting agencies</li>
-                      <li>Identity verification services</li>
-                      <li>Cloud storage providers</li>
-                      <li>Customer support platforms</li>
-                    </ul>
-
-                    <h3 className="text-xl font-semibold text-slate-900 mb-3">Legal Requirements</h3>
-                    <p className="mb-3">We may disclose your information if required to do so by law or in response to:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                      <li>Court orders or legal processes</li>
-                      <li>Government or regulatory requests</li>
-                      <li>Protection of our rights or property</li>
-                      <li>Prevention of fraud or illegal activities</li>
-                    </ul>
-                  </div>
-
-                  {/* Section 4 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">4. Data Security</h2>
-                    <p className="mb-4">
-                      We implement appropriate technical and organizational measures to protect your personal information 
-                      against unauthorized access, alteration, disclosure, or destruction.
-                    </p>
-                    <p className="mb-3">Our security measures include:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                      <li>Encryption of sensitive data in transit and at rest</li>
-                      <li>Regular security audits and vulnerability assessments</li>
-                      <li>Access controls and authentication procedures</li>
-                      <li>Employee training on data protection</li>
-                      <li>Secure data centers with physical security measures</li>
-                    </ul>
-                  </div>
-
-                  {/* Section 5 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">5. Your Privacy Rights</h2>
-                    <p className="mb-3">You have the right to:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                      <li><strong>Access:</strong> Request a copy of the personal information we hold about you</li>
-                      <li><strong>Correction:</strong> Request correction of inaccurate or incomplete information</li>
-                      <li><strong>Deletion:</strong> Request deletion of your personal information</li>
-                      <li><strong>Opt-out:</strong> Unsubscribe from marketing communications</li>
-                      <li><strong>Data Portability:</strong> Request transfer of your data to another service</li>
-                      <li><strong>Restriction:</strong> Request restriction of processing in certain circumstances</li>
-                    </ul>
-                    <p className="mt-4">
-                      To exercise these rights, please contact us at privacy@noorfinancial.com
-                    </p>
-                  </div>
-
-                  {/* Section 6 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">6. Cookies and Tracking Technologies</h2>
-                    <p className="mb-4">
-                      We use cookies and similar tracking technologies to enhance your experience on our platform. 
-                      Cookies are small data files stored on your device.
-                    </p>
-                    <p className="mb-3">We use the following types of cookies:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                      <li><strong>Essential Cookies:</strong> Required for basic platform functionality</li>
-                      <li><strong>Performance Cookies:</strong> Help us understand how you use our platform</li>
-                      <li><strong>Functional Cookies:</strong> Remember your preferences and settings</li>
-                      <li><strong>Marketing Cookies:</strong> Used to deliver relevant advertisements</li>
-                    </ul>
-                    <p className="mt-4">
-                      You can control cookies through your browser settings, but disabling certain cookies may limit 
-                      platform functionality.
-                    </p>
-                  </div>
-
-                  {/* Section 7 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">7. Data Retention</h2>
-                    <p className="mb-4">
-                      We retain your personal information for as long as necessary to fulfill the purposes outlined in 
-                      this Privacy Policy, unless a longer retention period is required by law.
-                    </p>
-                    <p>
-                      When we no longer need your information, we will securely delete or anonymize it in accordance 
-                      with our data retention policies.
-                    </p>
-                  </div>
-
-                  {/* Section 8 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">8. Third-Party Links</h2>
-                    <p className="mb-4">
-                      Our platform may contain links to third-party websites or services. We are not responsible for 
-                      the privacy practices of these third parties. We encourage you to review their privacy policies 
-                      before providing any personal information.
-                    </p>
-                  </div>
-
-                  {/* Section 9 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">9. Children's Privacy</h2>
-                    <p className="mb-4">
-                      Our services are not intended for individuals under the age of 18. We do not knowingly collect 
-                      personal information from children. If we become aware that we have collected information from 
-                      a child, we will take steps to delete it promptly.
-                    </p>
-                  </div>
-
-                  {/* Section 10 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">10. Changes to This Privacy Policy</h2>
-                    <p className="mb-4">
-                      We may update this Privacy Policy from time to time. We will notify you of any changes by posting 
-                      the new Privacy Policy on this page and updating the "Last Updated" date.
-                    </p>
-                    <p>
-                      Your continued use of our services after changes are posted constitutes your acceptance of the 
-                      updated Privacy Policy.
-                    </p>
-                  </div>
-
-                  {/* Contact */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">11. Contact Us</h2>
-                    <p className="mb-4">
-                      If you have questions or concerns about this Privacy Policy or our data practices, please contact us:
-                    </p>
-                    <div className="bg-slate-50 p-4 rounded-lg">
-                      <p className="font-semibold">Noor Financial - Privacy Team</p>
-                      <p>Email: farmannoorali2@gmail.com</p>
-                      <p>Phone: 281-903-4718</p>
-                      <p>Address: 11006 Hundred Bridge Ln</p>
-                    </div>
-                  </div>
-
-                  {/* Acceptance */}
-                  <div className="border-t pt-8">
-                    <p className="text-sm italic">
-                      By using Noor Financial, you acknowledge that you have read and understood this Privacy Policy
-                      and agree to the collection, use, and disclosure of your information as described herein.
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-      </main>
+        </div>
+      </div>
 
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-12">
@@ -297,13 +190,13 @@ export default function PrivacyPage() {
 
               {/* Legal Text */}
               <p className="text-slate-400 text-xs leading-relaxed text-left md:max-w-4xl">
-                Noor Financing LLC is currently in the licensing process and is not yet accepting applications or conducting mortgage brokerage activities. Noor Financing technology and processes are proprietary to Noor Financing LLC. © 2026 Noor Financing LLC. All Rights Reserved. This site is directed at, and made available to, persons in Texas only.
+                Noor Financing LLC is a Marketing Lead Generator and is a Duly Licensed Mortgage Company, as required by law, with its main office located at 800 Bonaventure Way Suite 111, Sugar Land, TX 77479. NMLS Unique Identifier #2780355. Noor Financing is a marketplace; we do not fund, originate, or service loans. All credit decisions are made by independent third-party lenders. Noor Financing technology and processes are proprietary to Noor Financing LLC. © 2026 Noor Financing LLC. All Rights Reserved. This site is directed at, and made available to, persons in Texas only. 
               </p>
 
               {/* Equal Housing Logo */}
               <div className="flex-shrink-0">
                 <Image
-                  src="/Equal-Housing-emblem.png"
+                  src="/EqualHousingWebLogo.png"
                   alt="Equal Housing Opportunity"
                   width={80}
                   height={80}

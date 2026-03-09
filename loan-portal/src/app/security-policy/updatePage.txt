@@ -1,0 +1,207 @@
+import Image from "next/image"
+
+export default function SecurityPolicyPage() {
+  return (
+    <div className="min-h-screen bg-white">
+      <div className="py-12">
+        <div className="max-w-4xl mx-auto px-6">
+          <h1 className="text-4xl font-bold text-slate-900 mb-4">Security Policy</h1>
+          <p className="text-sm text-slate-500 mb-8">Last Updated: February 23, 2026</p>
+
+          <div className="prose prose-slate max-w-none space-y-6">
+            {/* Introduction */}
+            <div>
+              <p>
+                At Noor Financing LLC ("Noor Financing," "we," "us," or "our"), safeguarding your personal and financial information is a top priority. This Security Policy outlines the administrative, technical, and physical safeguards we implement to protect your data when you use our websites, mobile applications, and digital services (collectively, the "Services").
+              </p>
+            </div>
+
+            {/* Data Encryption */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Data Encryption</h2>
+              <ul className="list-disc pl-6 space-y-2">
+                <li><strong>In Transit.</strong> All data transmitted between your browser and our servers is encrypted using Transport Layer Security (TLS/SSL). We enforce HTTPS across all pages of our website to prevent interception or tampering during transmission.</li>
+                <li><strong>At Rest.</strong> Sensitive data stored in our databases is encrypted using industry-standard encryption protocols. Our infrastructure provider maintains AES-256 encryption for data at rest.</li>
+              </ul>
+            </div>
+
+            {/* Authentication and Access Control */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Authentication and Access Control</h2>
+              <ul className="list-disc pl-6 space-y-2">
+                <li><strong>Secure Authentication.</strong> We utilize enterprise-grade authentication services to manage user accounts. All passwords are securely hashed and never stored in plain text.</li>
+                <li><strong>Email Verification.</strong> New accounts require email verification before activation to confirm ownership and prevent unauthorized account creation.</li>
+                <li><strong>Password Requirements.</strong> We enforce strong password policies requiring a minimum of 8 characters, including at least one uppercase letter and one number.</li>
+                <li><strong>Session Management.</strong> User sessions are managed through secure, HTTP-only cookies that help protect against cross-site scripting (XSS) attacks. Sessions automatically expire after a period of inactivity.</li>
+                <li><strong>Role-Based Access.</strong> Our platform implements role-based access controls to ensure users can only access information and features appropriate to their account type (borrower, lender, or administrator).</li>
+              </ul>
+            </div>
+
+            {/* Secure Infrastructure */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Secure Infrastructure</h2>
+              <ul className="list-disc pl-6 space-y-2">
+                <li><strong>Cloud Security.</strong> Our Services are hosted on enterprise-grade cloud infrastructure with built-in security features including firewalls, intrusion detection, and DDoS protection.</li>
+                <li><strong>Database Security.</strong> We implement Row Level Security (RLS) policies to ensure users can only access their own data. Database access is restricted and monitored.</li>
+                <li><strong>Environment Isolation.</strong> Sensitive configuration values and API credentials are stored securely in environment variables, separate from application code.</li>
+              </ul>
+            </div>
+
+            {/* API Security */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">API Security</h2>
+              <ul className="list-disc pl-6 space-y-2">
+                <li><strong>Token-Based Authentication.</strong> All API requests require authenticated access tokens transmitted via secure headers.</li>
+                <li><strong>Automatic Token Refresh.</strong> Access tokens have limited lifespans and are automatically refreshed to minimize the impact of potential token compromise.</li>
+                <li><strong>Request Validation.</strong> All incoming requests are validated to prevent injection attacks and ensure data integrity.</li>
+              </ul>
+            </div>
+
+            {/* Application Security */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Application Security</h2>
+              <ul className="list-disc pl-6 space-y-2">
+                <li><strong>Input Validation.</strong> All user inputs are validated on both the client and server side to prevent malicious data from entering our systems.</li>
+                <li><strong>Cross-Site Scripting (XSS) Protection.</strong> Our application framework automatically escapes user-generated content to prevent XSS attacks.</li>
+                <li><strong>Cross-Site Request Forgery (CSRF) Protection.</strong> We implement SameSite cookie policies and other measures to protect against CSRF attacks.</li>
+                <li><strong>Secure Coding Practices.</strong> Our development team follows industry-standard secure coding practices and conducts regular code reviews.</li>
+              </ul>
+            </div>
+
+            {/* Data Retention and Disposal */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Data Retention and Disposal</h2>
+              <p>
+                We retain personal information only for as long as necessary to fulfill the purposes for which it was collected, comply with legal obligations, and meet regulatory requirements. As a licensed mortgage entity in Texas, we are required to maintain certain records for a minimum of three (3) years in accordance with Texas Department of Savings and Mortgage Lending (SML) regulations. When data is no longer needed, it is securely deleted or anonymized.
+              </p>
+            </div>
+
+            {/* Incident Response */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Incident Response</h2>
+              <p>
+                In the event of a security incident, we have established procedures to promptly investigate, contain, and remediate the issue. If a breach affects your personal information, we will notify you in accordance with applicable laws and regulations.
+              </p>
+            </div>
+
+            {/* Your Responsibilities */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Your Responsibilities</h2>
+              <p className="mb-4">While we take extensive measures to protect your information, security is a shared responsibility. We encourage you to:</p>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Use a strong, unique password for your Noor Financing account.</li>
+                <li>Never share your login credentials with others.</li>
+                <li>Log out of your account when using shared or public devices.</li>
+                <li>Keep your device's operating system and browser up to date.</li>
+                <li>Report any suspicious activity to us immediately.</li>
+              </ul>
+            </div>
+
+            {/* Third-Party Services */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Third-Party Services</h2>
+              <p>
+                We carefully select third-party service providers who demonstrate a commitment to security. Our partners are contractually obligated to protect your information and use it only for the purposes we specify. However, we are not responsible for the security practices of third-party websites linked from our Services.
+              </p>
+            </div>
+
+            {/* Updates to This Policy */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Updates to This Policy</h2>
+              <p>
+                We may update this Security Policy from time to time to reflect changes in our practices or applicable regulations. We will post the updated policy on this page with a revised "Last Updated" date. We encourage you to review this policy periodically.
+              </p>
+            </div>
+
+            {/* Contact Us */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Contact Us</h2>
+              <p className="mb-4">
+                If you have questions about this Security Policy or wish to report a security concern, please contact us:
+              </p>
+              <div className="bg-slate-50 p-4 rounded-lg">
+                <p className="font-semibold">Noor Financing, LLC - Security Team</p>
+                <p>Email: <a href="mailto:security@noorfinancing.com" className="text-blue-600 hover:underline">security@noorfinancing.com</a></p>
+                <p>Phone: 346-521-8425</p>
+                <p>Address: 800 Bonaventure Way Suite 111, Sugar Land, TX 77479</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-slate-900 text-white py-12">
+        <div className="max-w-7xl mx-auto px-6">
+          {/* Logo */}
+          <div className="flex justify-center mb-6">
+            <a href="/">
+              <Image
+                src="/NoorFinancingLogo.png"
+                alt="Noor Financing"
+                width={200}
+                height={120}
+                className="h-28 md:h-32 w-auto object-contain cursor-pointer hover:opacity-80 transition-opacity"
+                priority
+              />
+            </a>
+          </div>
+
+          {/* Footer Links */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+            <a href="/privacy" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Privacy Policy
+            </a>
+            <a href="/advertising-disclosure" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Advertising Disclosure
+            </a>
+            <a href="/security-policy" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Security Policy
+            </a>
+            <a href="/terms" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Terms of Use
+            </a>
+            <a href="/licenses" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Licenses & Legal Disclosures
+            </a>
+            <a href="/electronic-disclosure" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Electronic Disclosure
+            </a>
+            <a href="/dnc" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              DNC
+            </a>
+            <a href="/sms-terms" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              SMS Terms & Conditions
+            </a>
+            <a href="/accessibility" className="text-blue-300 hover:text-blue-200 text-sm text-center transition-colors">
+              Accessibility Statement
+            </a>
+          </div>
+
+          {/* Legal Row */}
+          <div className="max-w-6xl mx-auto mt-10 px-6">
+            <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
+
+              {/* Legal Text */}
+              <p className="text-slate-400 text-xs leading-relaxed text-left md:max-w-4xl">
+                Noor Financing LLC is currently in the licensing process and is not yet accepting applications or conducting mortgage brokerage activities. Noor Financing technology and processes are proprietary to Noor Financing LLC. © 2026 Noor Financing LLC. All Rights Reserved. This site is directed at, and made available to, persons in Texas only.
+              </p>
+
+              {/* Equal Housing Logo */}
+              <div className="flex-shrink-0">
+                <Image
+                  src="/EqualHousingWebLogo.png"
+                  alt="Equal Housing Opportunity"
+                  width={80}
+                  height={80}
+                  className="opacity-80"
+                />
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  )
+}

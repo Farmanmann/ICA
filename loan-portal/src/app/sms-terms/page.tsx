@@ -5,9 +5,42 @@ export default function SMSTermsPage() {
     <div className="min-h-screen bg-white">
       <div className="py-12">
         <div className="max-w-4xl mx-auto px-6">
-          <h1 className="text-4xl font-bold text-slate-900 mb-8">SMS Terms and Conditions</h1>
-          <div className="prose prose-slate max-w-none">
-            {/* Content will be added here */}
+          <h1 className="text-4xl font-bold text-slate-900 mb-8">Noor Financing SMS Terms & Conditions</h1>
+          <div className="prose prose-slate max-w-none space-y-6">
+            {/* Program Description */}
+            <div>
+              <p>
+                <strong>Program Description.</strong> By opting into Noor Financing Alerts, you agree to receive recurring automated promotional and personalized marketing text messages (e.g., financing updates, rate alerts, and marketplace news) from Noor Financing at the mobile number provided at opt-in. Consent is not a condition of any purchase or financing offer.
+              </p>
+            </div>
+
+            {/* Carrier Liability and Delivery */}
+            <div>
+              <p>
+                <strong>Carrier Liability and Delivery.</strong> SMS delivery is subject to the transmission capabilities of your wireless provider. Noor Financing and mobile carriers are not liable for delayed or undelivered messages. Alerts may be impacted by factors such as terrain, weather, and network capacity.
+              </p>
+            </div>
+
+            {/* Privacy */}
+            <div>
+              <p>
+                <strong>Privacy.</strong> We value your data security. Your mobile information is never shared with third parties for their own marketing purposes. You can review our full <a href="/privacy" className="text-blue-600 hover:underline">Privacy Policy</a> and <a href="/terms" className="text-blue-600 hover:underline">Terms of Use</a> here.
+              </p>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Contact Us</h2>
+              <p className="mb-4">
+                If you have questions about these SMS Terms & Conditions, please contact us:
+              </p>
+              <div className="bg-slate-50 p-4 rounded-lg">
+                <p className="font-semibold">Noor Financing, LLC</p>
+                <p>Email: <a href="mailto:support@noorfinancing.com" className="text-blue-600 hover:underline">support@noorfinancing.com</a></p>
+                <p>Phone: 346-521-8425</p>
+                <p>Address: 800 Bonaventure Way Suite 111, Sugar Land, TX 77479</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -66,13 +99,13 @@ export default function SMSTermsPage() {
 
               {/* Legal Text */}
               <p className="text-slate-400 text-xs leading-relaxed text-left md:max-w-4xl">
-                Noor Financing LLC is currently in the licensing process and is not yet accepting applications or conducting mortgage brokerage activities. Noor Financing technology and processes are proprietary to Noor Financing LLC. © 2026 Noor Financing LLC. All Rights Reserved. This site is directed at, and made available to, persons in Texas only.
+                Noor Financing LLC is a Marketing Lead Generator and is a Duly Licensed Mortgage Company, as required by law, with its main office located at 800 Bonaventure Way Suite 111, Sugar Land, TX 77479. NMLS Unique Identifier #2780355. Noor Financing is a marketplace; we do not fund, originate, or service loans. All credit decisions are made by independent third-party lenders. Noor Financing technology and processes are proprietary to Noor Financing LLC. © 2026 Noor Financing LLC. All Rights Reserved. This site is directed at, and made available to, persons in Texas only. 
               </p>
 
               {/* Equal Housing Logo */}
               <div className="flex-shrink-0">
                 <Image
-                  src="/Equal-Housing-emblem.png"
+                  src="/EqualHousingWebLogo.png"
                   alt="Equal Housing Opportunity"
                   width={80}
                   height={80}

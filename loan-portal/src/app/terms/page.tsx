@@ -1,210 +1,164 @@
-"use client"
-
-import { Card, CardContent } from "@/components/ui/card"
 import Image from "next/image"
 
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-white">
-      <main className="pt-24">
-        {/* Hero Section */}
-        <section className="py-20 px-6 bg-gradient-to-br from-blue-50 to-white">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl font-bold text-slate-900 mb-6">Terms & Conditions</h1>
-            <p className="text-xl text-slate-600">
-              Please read these terms carefully before using our services
-            </p>
-            <p className="text-sm text-slate-500 mt-4">Last Updated: January 2025</p>
+      <div className="py-12">
+        <div className="max-w-4xl mx-auto px-6">
+          <h1 className="text-4xl font-bold text-slate-900 mb-4">Terms of Use</h1>
+          <p className="text-sm text-slate-500 mb-8">Last Updated: February 23, 2026</p>
+
+          <div className="prose prose-slate max-w-none space-y-6">
+            {/* Important Notice */}
+            <div className="bg-slate-100 p-4 rounded-lg">
+              <p className="font-bold text-sm">
+                THIS AGREEMENT CONTAINS A MANDATORY ARBITRATION PROVISION, A JURY TRIAL WAIVER, AND A CLASS ACTION WAIVER THAT RESTRICT YOUR LEGAL REMEDIES IN THE EVENT OF A DISPUTE. PLEASE REVIEW THE SECTION ENTITLED "DISPUTE RESOLUTION" CAREFULLY.
+              </p>
+            </div>
+
+            {/* Introduction */}
+            <div>
+              <p>
+                This Terms of Use Agreement ("Agreement") governs your access to and use of the websites, mobile applications, and digital services (collectively, the "Services") owned or operated by Noor Financing LLC ("Noor Financing," "we," "us," or "our"). By accessing or using the Services, you acknowledge that you have read, understood, and agree to be bound by this Agreement and our Privacy Policy, which is incorporated herein by reference.
+              </p>
+            </div>
+
+            {/* Definitions */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Definitions</h2>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>"You" or "your" refers to the individual accessing the Services or the entity on whose behalf such individual is acting.</li>
+                <li>"Network Partner" refers to the third-party lenders, financial institutions, and service providers that participate in our marketplace to offer Shariah-compliant financial products.</li>
+                <li>"Inquiry Form" refers to the digital request you submit to be matched with one or more Network Partners.</li>
+              </ul>
+            </div>
+
+            {/* Eligibility and Geographic Scope */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Eligibility and Geographic Scope</h2>
+              <p>
+                The Services are intended solely for individuals who are at least 18 years of age and reside within the United States. By using the Services, you represent and warrant that you meet these eligibility requirements. Noor Financing makes no representation that the Services are appropriate or available for use in locations outside of the United States or the State of Texas.
+              </p>
+            </div>
+
+            {/* Privacy and Data Retention */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Privacy and Data Retention</h2>
+              <p>
+                Your use of the Services is subject to our Privacy Policy. As a licensed mortgage entity in the State of Texas, Noor Financing is required by the Texas Department of Savings and Mortgage Lending (SML) and federal law to maintain certain records related to your inquiries for a period of at least three (3) years. You acknowledge that your right to request the deletion of data is subject to these mandatory regulatory retention requirements.
+              </p>
+            </div>
+
+            {/* Ownership and Intellectual Property */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Ownership and Intellectual Property</h2>
+              <p className="mb-4">
+                All content, including text, graphics, logos, images, software, and the "look and feel" of the Services (collectively, the "Content"), is the exclusive property of Noor Financing or its licensors.
+              </p>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>You are granted a limited, non-exclusive, non-transferable license to access the Services for personal, non-commercial use only.</li>
+                <li>You may not copy, reproduce, distribute, or create derivative works from the Content without express written authorization.</li>
+                <li>Use of any automated system, including "robots," "spiders," or "offline readers," to access or scrape the Services is strictly prohibited.</li>
+              </ul>
+            </div>
+
+            {/* Prohibited Conduct */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Prohibited Conduct</h2>
+              <p className="mb-4">In connection with your use of the Services, you agree not to:</p>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>Provide false, inaccurate, or misleading information in any Inquiry Form.</li>
+                <li>Use the Services to train, develop, or improve any artificial intelligence (AI) or machine learning models without our prior written consent.</li>
+                <li>Impersonate any person or entity or misrepresent your affiliation with a person or entity.</li>
+                <li>Interfere with or disrupt the integrity or performance of the Services or the data contained therein.</li>
+                <li>Access or attempt to access the Services through any means other than the interface provided by Noor Financing.</li>
+              </ul>
+            </div>
+
+            {/* Chatbot and AI Disclosure */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Chatbot and Artificial Intelligence Disclosure</h2>
+              <p className="mb-4">We may utilize a virtual assistant or Chatbot to facilitate customer support.</p>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>The Chatbot provides information based on pre-programmed scripts and generative AI.</li>
+                <li>Responses provided by the Chatbot are for informational purposes only and do not constitute financial advice, loan approval, or a binding commitment.</li>
+                <li>Noor Financing does not warrant the accuracy or reliability of any "Output" generated by the Chatbot. You are solely responsible for verifying any information provided by the Chatbot before taking action.</li>
+              </ul>
+            </div>
+
+            {/* Disclaimers of Warranty */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Disclaimers of Warranty</h2>
+              <p className="font-semibold text-sm">
+                THE SERVICES AND ALL CONTENT ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. NOOR FINANCING DISCLAIMS ALL WARRANTIES, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. WE DO NOT WARRANT THAT THE SERVICES WILL BE UNINTERRUPTED, ERROR-FREE, OR FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS.
+              </p>
+            </div>
+
+            {/* Limitation of Liability */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Limitation of Liability</h2>
+              <p className="font-semibold text-sm">
+                TO THE MAXIMUM EXTENT PERMITTED BY LAW, NOOR FINANCING SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS OR REVENUES, WHETHER INCURRED DIRECTLY OR INDIRECTLY, OR ANY LOSS OF DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES. IN NO EVENT SHALL OUR AGGREGATE LIABILITY EXCEED ONE HUNDRED U.S. DOLLARS ($100.00).
+              </p>
+            </div>
+
+            {/* Indemnification */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Indemnification</h2>
+              <p>
+                You agree to indemnify, defend, and hold harmless Noor Financing and its officers, directors, employees, and agents from and against any and all claims, damages, obligations, losses, liabilities, costs, and expenses (including attorney's fees) arising from: (i) your use of the Services; (ii) your violation of this Agreement; or (iii) your violation of any third-party right, including intellectual property or privacy rights.
+              </p>
+            </div>
+
+            {/* Dispute Resolution */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Dispute Resolution and Mandatory Arbitration</h2>
+              <p className="mb-4">
+                Any dispute, claim, or controversy arising out of or relating to this Agreement or the Services shall be resolved through final and binding individual arbitration, rather than in court.
+              </p>
+              <ul className="list-disc pl-6 space-y-2">
+                <li><strong>Arbitration Rules.</strong> The arbitration will be administered by the American Arbitration Association (AAA) or JAMS under their respective consumer arbitration rules.</li>
+                <li><strong>Class Action Waiver.</strong> YOU AND NOOR FINANCING AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN AN INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS OR REPRESENTATIVE PROCEEDING.</li>
+                <li><strong>Jury Trial Waiver.</strong> YOU HEREBY WAIVE YOUR CONSTITUTIONAL AND STATUTORY RIGHTS TO GO TO COURT AND HAVE A TRIAL IN FRONT OF A JUDGE OR A JURY.</li>
+                <li><strong>Opt-Out.</strong> You have the right to opt out of this arbitration agreement within 30 days of first using the Services by sending written notice to Legal@NoorFinancing.com.</li>
+              </ul>
+            </div>
+
+            {/* Governing Law */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Governing Law</h2>
+              <p>
+                This Agreement shall be governed by and construed in accordance with the laws of the State of Texas, without regard to its conflict of law principles. Any legal action not subject to arbitration shall be filed in the state or federal courts located in Fort Bend County, Texas.
+              </p>
+            </div>
+
+            {/* Modifications to Agreement */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Modifications to Agreement</h2>
+              <p>
+                Noor Financing reserves the right to modify this Agreement at any time. Changes will be effective immediately upon posting to the Services. Your continued use of the Services following the posting of changes constitutes your acceptance of such modifications.
+              </p>
+            </div>
+
+            {/* Contact Information */}
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Contact Information</h2>
+              <p className="mb-4">
+                If you have questions regarding these Terms of Use, please contact our Legal Department:
+              </p>
+              <div className="bg-slate-50 p-4 rounded-lg">
+                <ul className="list-disc pl-6 space-y-1">
+                  <li>Email: <a href="mailto:support@noorfinancing.com" className="text-blue-600 hover:underline">support@noorfinancing.com</a></li>
+                  <li>Mail: Noor Financing, LLC</li>
+                </ul>
+                <p className="mt-4">800 Bonaventure Way Suite 111</p>
+                <p>Sugar Land, TX 77479</p>
+                <p className="mt-4">NMLS ID: 2780355</p>
+              </div>
+            </div>
           </div>
-        </section>
-
-        {/* Terms Content */}
-        <section className="py-20 px-6">
-          <div className="max-w-4xl mx-auto">
-            <Card>
-              <CardContent className="pt-8">
-                <div className="space-y-8 text-slate-700">
-                  {/* Section 1 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">1. Acceptance of Terms</h2>
-                    <p className="mb-4">
-                      By accessing and using Noor Financial ("the Platform"), you accept and agree to be bound by the terms 
-                      and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
-                    </p>
-                    <p>
-                      These Terms and Conditions govern your use of our website and services. By registering for an account, 
-                      applying for a loan, or using any of our services, you acknowledge that you have read, understood, and 
-                      agree to be bound by these terms.
-                    </p>
-                  </div>
-
-                  {/* Section 2 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">2. Eligibility</h2>
-                    <p className="mb-3">To use our services, you must:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                      <li>Be at least 18 years of age</li>
-                      <li>Have the legal capacity to enter into binding contracts</li>
-                      <li>Provide accurate and complete information during registration</li>
-                      <li>Maintain the security of your account credentials</li>
-                      <li>Be a resident of a jurisdiction where our services are available</li>
-                    </ul>
-                  </div>
-
-                  {/* Section 3 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">3. Loan Terms</h2>
-                    <p className="mb-3">All loans provided through Noor Financial are subject to the following:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                      <li>All loans are interest-free and comply with Islamic Sharia principles</li>
-                      <li>Loan amounts, terms, and conditions are determined on a case-by-case basis</li>
-                      <li>Borrowers must provide accurate financial information</li>
-                      <li>Loans are subject to approval and may be denied at our discretion</li>
-                      <li>Monthly payments must be made on time as per the agreed schedule</li>
-                      <li>Late payments may result in additional fees or penalties</li>
-                    </ul>
-                  </div>
-
-                  {/* Section 4 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">4. User Responsibilities</h2>
-                    <p className="mb-3">As a user of our platform, you agree to:</p>
-                    <ul className="list-disc pl-6 space-y-2">
-                      <li>Provide truthful, accurate, and complete information</li>
-                      <li>Update your information promptly if circumstances change</li>
-                      <li>Use the platform only for lawful purposes</li>
-                      <li>Not attempt to manipulate, hack, or otherwise interfere with the platform</li>
-                      <li>Not use the platform to engage in fraudulent activities</li>
-                      <li>Maintain confidentiality of your account credentials</li>
-                    </ul>
-                  </div>
-
-                  {/* Section 5 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">5. Payment Terms</h2>
-                    <p className="mb-4">
-                      Borrowers agree to repay loans according to the schedule provided at the time of loan approval. 
-                      Payments must be made through the methods specified on the platform.
-                    </p>
-                    <ul className="list-disc pl-6 space-y-2">
-                      <li>Payments are due on the specified date each month</li>
-                      <li>Late payments may incur fees as specified in your loan agreement</li>
-                      <li>Early repayment is allowed without penalties</li>
-                      <li>Failed payments may result in loan default</li>
-                    </ul>
-                  </div>
-
-                  {/* Section 6 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">6. Sharia Compliance</h2>
-                    <p className="mb-4">
-                      All loans and financial transactions on Noor Financial are structured to comply with Islamic Sharia 
-                      principles. This includes:
-                    </p>
-                    <ul className="list-disc pl-6 space-y-2">
-                      <li>Zero interest (Riba) charged on any loans</li>
-                      <li>Transparent and fair terms</li>
-                      <li>No hidden fees or charges</li>
-                      <li>Ethical lending practices</li>
-                      <li>Regular audits by our Sharia Advisory Board</li>
-                    </ul>
-                  </div>
-
-                  {/* Section 7 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">7. Privacy and Data Protection</h2>
-                    <p className="mb-4">
-                      We are committed to protecting your privacy. Your personal information will be collected, used, 
-                      and stored in accordance with our Privacy Policy and applicable data protection laws.
-                    </p>
-                    <p>
-                      By using our services, you consent to the collection and use of your information as described 
-                      in our Privacy Policy.
-                    </p>
-                  </div>
-
-                  {/* Section 8 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">8. Intellectual Property</h2>
-                    <p className="mb-4">
-                      All content on the Noor Financial platform, including but not limited to text, graphics, logos, 
-                      images, and software, is the property of Noor Financial or its content suppliers and is protected 
-                      by intellectual property laws.
-                    </p>
-                    <p>
-                      You may not reproduce, distribute, modify, or create derivative works from any content without 
-                      express written permission.
-                    </p>
-                  </div>
-
-                  {/* Section 9 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">9. Limitation of Liability</h2>
-                    <p className="mb-4">
-                      Noor Financial shall not be liable for any indirect, incidental, special, consequential, or 
-                      punitive damages resulting from your use or inability to use the service.
-                    </p>
-                    <p>
-                      We do not guarantee that the service will be uninterrupted, timely, secure, or error-free.
-                    </p>
-                  </div>
-
-                  {/* Section 10 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">10. Termination</h2>
-                    <p className="mb-4">
-                      We reserve the right to terminate or suspend your account and access to the service at our sole 
-                      discretion, without notice, for conduct that we believe violates these Terms and Conditions or 
-                      is harmful to other users, us, or third parties, or for any other reason.
-                    </p>
-                  </div>
-
-                  {/* Section 11 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">11. Changes to Terms</h2>
-                    <p className="mb-4">
-                      We reserve the right to modify these Terms and Conditions at any time. Changes will be effective 
-                      immediately upon posting to the website. Your continued use of the service after changes are 
-                      posted constitutes your acceptance of the modified terms.
-                    </p>
-                  </div>
-
-                  {/* Section 12 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">12. Governing Law</h2>
-                    <p className="mb-4">
-                      These Terms and Conditions shall be governed by and construed in accordance with the laws of 
-                      the State of Texas, without regard to its conflict of law provisions.
-                    </p>
-                  </div>
-
-                  {/* Section 13 */}
-                  <div>
-                    <h2 className="text-2xl font-bold text-slate-900 mb-4">13. Contact Information</h2>
-                    <p className="mb-4">
-                      If you have any questions about these Terms and Conditions, please contact us at:
-                    </p>
-                    <div className="bg-slate-50 p-4 rounded-lg">
-                      <p className="font-semibold">Noor Financial</p>
-                      <p>Email: farmannoorali2@gmail.com</p>
-                      <p>Phone: 281-903-4718</p>
-                      <p>Address: 11006 Hundred Bridge Ln. Sugar Land, Texas, 77498</p>
-                    </div>
-                  </div>
-
-                  {/* Acceptance */}
-                  <div className="border-t pt-8">
-                    <p className="text-sm italic">
-                      By using Noor Financial, you acknowledge that you have read, understood, and agree to be bound 
-                      by these Terms and Conditions.
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-      </main>
+        </div>
+      </div>
 
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-12">
@@ -260,13 +214,13 @@ export default function TermsPage() {
 
               {/* Legal Text */}
               <p className="text-slate-400 text-xs leading-relaxed text-left md:max-w-4xl">
-                Noor Financing LLC is currently in the licensing process and is not yet accepting applications or conducting mortgage brokerage activities. Noor Financing technology and processes are proprietary to Noor Financing LLC. © 2026 Noor Financing LLC. All Rights Reserved. This site is directed at, and made available to, persons in Texas only.
+                  Noor Financing LLC is a Marketing Lead Generator and is a Duly Licensed Mortgage Company, as required by law, with its main office located at 800 Bonaventure Way Suite 111, Sugar Land, TX 77479. NMLS Unique Identifier #2780355. Noor Financing is a marketplace; we do not fund, originate, or service loans. All credit decisions are made by independent third-party lenders. Noor Financing technology and processes are proprietary to Noor Financing LLC. © 2026 Noor Financing LLC. All Rights Reserved. This site is directed at, and made available to, persons in Texas only. 
               </p>
 
               {/* Equal Housing Logo */}
               <div className="flex-shrink-0">
                 <Image
-                  src="/Equal-Housing-emblem.png"
+                  src="/EqualHousingWebLogo.png"
                   alt="Equal Housing Opportunity"
                   width={80}
                   height={80}

@@ -1,62 +1,88 @@
 import Image from "next/image"
 
-export default function AccessibilityStatementPage() {
+export default function AdvertisingDisclosurePage() {
   return (
     <div className="min-h-screen bg-white">
       <div className="py-12">
         <div className="max-w-4xl mx-auto px-6">
-          <h1 className="text-4xl font-bold text-slate-900 mb-8">
-            Noor Financing Website Accessibility Statement
+          <h1 className="text-4xl font-bold text-slate-900 mb-4">
+            Advertising Disclosure
           </h1>
+          <p className="text-sm text-slate-500 mb-8">Last Updated: February 23, 2026</p>
 
-          <div className="prose prose-slate max-w-none">
-            <p>
-              <strong>Our Commitment to Inclusion.</strong> Noor Financing is dedicated to ensuring
-              that our digital marketplace is accessible to the widest possible audience,
-              regardless of ability or technology. We believe that ethical finance should be
-              available to everyone, and we are continually working to improve the user
-              experience for those using assistive technologies such as screen readers,
-              magnifiers, and alternative input devices.
+          <div className="prose prose-slate max-w-none space-y-6">
+            <p className="font-semibold">
+              NOOR FINANCING LLC IS A MARKETING LEAD GENERATOR AND IS A DULY LICENSED MORTGAGE COMPANY, AS REQUIRED BY LAW, WITH ITS MAIN OFFICE LOCATED AT 434 Apple Core Way, Richmond, TX 77406, TELEPHONE NUMBER 346-521-8425.
             </p>
 
-            <p>
-              <strong>Accessibility Standards.</strong> To help us make the Noor Financing website
-              a positive place for everyone, we use the{" "}
-              <strong>Web Content Accessibility Guidelines (WCAG) 2.2 Level AA</strong> as our
-              operational standard. These guidelines explain how to make web content more
-              accessible for people with disabilities and more user-friendly for all visitors.
-            </p>
+            <div>
+              <p>
+                <strong>Advertised Terms and Information.</strong> The information and disclosures provided herein relate to advertised terms made by or through Noor Financing LLC.
+              </p>
+              <ul className="list-disc pl-6 space-y-2 mt-3">
+                <li>Noor Financing LLC is not a lender in any transaction and does not make loans, loan commitments, or lock-rates.</li>
+                <li>Interest rates, profit rates, and terms are provided by third-party Network Partners (lenders) with whom Noor Financing LLC may match you.</li>
+                <li>All credit decisions, including loan approval and the conditional rates and terms you are offered, are the sole responsibility of the participating lenders and will vary based upon your specific financial situation and the criteria determined by the lenders.</li>
+                <li>Not all consumers will qualify for the advertised rates and terms. Noor Financing LLC does not guarantee that any lender will make you a conditional loan offer. Noor Financing LLC arranges for multiple conditional financing offers through its network of nonaffiliated lenders.</li>
+              </ul>
+            </div>
 
-            <p>
-              <strong>Third-Party Content.</strong> While we strive to ensure every page under our
-              direct control is fully accessible, Noor Financing may occasionally use third-party
-              tools or links to external social media platforms (such as LinkedIn, X, or Instagram).
-              These providers may have their own accessibility challenges that are outside of our
-              immediate control. We encourage you to review the accessibility policies of these
-              third-party services directly.
-            </p>
+            <div>
+              <p>
+                <strong>Licensing and NMLS Identification.</strong> Noor Financing LLC is a licensed mortgage entity in the State of Texas. For a current list of applicable state licensing and specific regulatory disclosures, please visit our <a href="/licenses" className="text-blue-600 hover:underline font-semibold">Licenses and Disclosures</a> page or call for details.
+              </p>
+              <ul className="list-disc pl-6 space-y-2 mt-3">
+                <li>Noor Financing LLC NMLS Unique Identifier #2780355.</li>
+                <li>Amaar Asim Habib, Residential Mortgage Loan Originator, NMLS ID #2780631.</li>
+              </ul>
+            </div>
 
-            <p>
-              <strong>Accessibility Feedback.</strong> We welcome your feedback on how to improve
-              our digital experience. If you encounter any barriers while using our website, or
-              if you find any content difficult to access, please reach out to us so we can provide
-              the information in an alternative format:
-            </p>
+            <div>
+              <p>
+                <strong>Shariah-Compliant Product Transparency.</strong> Noor Financing specializes in facilitating access to Shariah-compliant financial products. While these products are structured as profit-sharing or cost-plus arrangements (such as Murabaha, Musharaka, or Ijara) and avoid the use of traditional interest (Riba), they remain subject to United States federal disclosure requirements.
+              </p>
+              <ul className="list-disc pl-6 space-y-2 mt-3">
+                <li>Annual Percentage Rate (APR). In accordance with the federal Truth in Lending Act (TILA) and Regulation Z, the cost of financing for any product featured on this platform is disclosed as an Annual Percentage Rate (APR). This is a regulatory requirement intended to provide consumers with a uniform standard for comparing the costs of different financial products.</li>
+                <li>Profit Rates. References to "rates" or "cost of financing" refer to the profit markup or rental rate associated with Shariah-compliant contracts. The APR may include other costs of credit, such as origination fees or points, as required by law.</li>
+              </ul>
+            </div>
 
-            <ul>
-              <li>
-                <strong>Email:</strong>{" "}
-                <a href="mailto:support@noorfinancing.com">
-                  support@noorfinancing.com
-                </a>
-              </li>
-              <li>
-                <strong>Phone:</strong> 346-521-8425
-              </li>
-              <li>
-                <strong>Mailing Address:</strong> Noor Financing, LLC
-              </li>
-            </ul>
+            <div>
+              <p>
+                <strong>Communications and Consent.</strong> By submitting an inquiry or providing your contact information, you are providing express written consent for Noor Financing LLC and its Network Partners to contact you for marketing and administrative purposes.
+              </p>
+              <ul className="list-disc pl-6 space-y-2 mt-3">
+                <li>Communications may include telephone calls, text messages, and emails.</li>
+                <li>You may be contacted via automated technology, including autodialers and pre-recorded messages, even if your number is on a National or State Do Not Call Registry.</li>
+                <li>Consent is not a condition of purchase or a requirement to use our Services. You may opt out of these communications at any time by following the instructions provided in our Privacy Policy.</li>
+              </ul>
+            </div>
+
+            <div>
+              <p>
+                <strong>Credit Score and FICO Disclosure.</strong> FICO score refers to the FICO credit score report that a lender receives from a consumer reporting agency. Use of this platform authorizes Noor Financing LLC and its participating Network Partners to obtain credit report information to facilitate your request for financing and provide accurate conditional offers.
+              </p>
+            </div>
+
+            <div>
+              <p>
+                <strong>Equal Housing Opportunity.</strong> Noor Financing LLC conducts business in accordance with the Fair Housing Act and the Equal Credit Opportunity Act. We do not discriminate on the basis of race, color, religion, national origin, sex, handicap, or familial status. All Shariah-compliant products are available to any qualified applicant regardless of religious or ethical affiliation.
+              </p>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h2 className="text-2xl font-bold text-slate-900 mb-4">Contact Us</h2>
+              <p className="mb-4">
+                If you have questions or concerns about this Advertising Disclosure, please contact us:
+              </p>
+              <div className="bg-slate-50 p-4 rounded-lg">
+                <p className="font-semibold">Noor Financial - Privacy Team</p>
+                <p>Email: <a href="mailto:support@noorfinancing.com" className="text-blue-600 hover:underline">support@noorfinancing.com</a></p>
+                <p>Phone: 346-521-8425</p>
+                <p>Address: 800 Bonaventure Way Suite 111, Sugar Land, TX 77479</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -121,7 +147,7 @@ export default function AccessibilityStatementPage() {
               {/* Equal Housing Logo */}
               <div className="flex-shrink-0">
                 <Image
-                  src="/Equal-Housing-emblem.png"
+                  src="/EqualHousingWebLogo.png"
                   alt="Equal Housing Opportunity"
                   width={80}
                   height={80}

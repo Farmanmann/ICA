@@ -5,9 +5,47 @@ export default function DNCPage() {
     <div className="min-h-screen bg-white">
       <div className="py-12">
         <div className="max-w-4xl mx-auto px-6">
-          <h1 className="text-4xl font-bold text-slate-900 mb-8">Do Not Call (DNC)</h1>
-          <div className="prose prose-slate max-w-none">
-            {/* Content will be added here */}
+          <h1 className="text-4xl font-bold text-slate-900 mb-4">Do Not Call Policy</h1>
+          <p className="text-sm text-slate-500 mb-8">Last Updated: February 23, 2026</p>
+
+          <div className="prose prose-slate max-w-none space-y-6">
+            <div>
+              <p>
+                <strong>Our Commitment to Your Privacy.</strong> Noor Financing respects your preferences regarding marketing communications. If you wish to limit the sales calls you receive, you may request to be added to our internal Do Not Call List. Once your request is processed, Noor Financing will refrain from initiating advertising or solicitation calls to the phone number(s) provided.
+              </p>
+            </div>
+
+            <div>
+              <p>
+                <strong>How to Join Our List.</strong> You may update your contact preferences at any time by emailing your request to <a href="mailto:support@noorfinancing.com" className="text-blue-600 hover:underline font-semibold">support@noorfinancing.com</a>. Please include your name and the specific phone number(s) you wish to register. We will process your request promptly; however, please allow up to 30 days for your information to be removed from any active outreach programs.
+              </p>
+            </div>
+
+            <div>
+              <p>
+                <strong>Sharing Your Request with Partners.</strong> If you were matched with participating Lenders through our marketplace within the 30 days prior to your request, Noor Financing will notify those specific Lenders of your preference. While we facilitate this notification, we recommend that you also contact those Lenders directly to ensure you are placed on their individual company-specific Do Not Call lists.
+              </p>
+            </div>
+
+            <div>
+              <p>
+                <strong>Important Exceptions.</strong> Please be advised that submitting a new inquiry on the Noor Financing website, or providing your phone number to us in a new request after your initial DNC registration, will be considered a "new established business relationship." This action will override your previous Do Not Call request and authorize Noor Financing and its partners to contact you regarding that specific inquiry. Additionally, Noor Financing may still contact you for non-marketing purposes, such as identity verification, fraud prevention, or administrative updates regarding an active request.
+              </p>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h2 className="text-2xl font-bold text-slate-900 mb-4">Contact Us</h2>
+              <p className="mb-4">
+                If you have questions or concerns about this Do Not Call Policy, please contact us:
+              </p>
+              <div className="bg-slate-50 p-4 rounded-lg">
+                <p className="font-semibold">Noor Financial - Privacy Team</p>
+                <p>Email: <a href="mailto:support@noorfinancing.com" className="text-blue-600 hover:underline">support@noorfinancing.com</a></p>
+                <p>Phone: 346-521-8425</p>
+                <p>Address: 800 Bonaventure Way Suite 111, Sugar Land, TX 77479</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -66,13 +104,13 @@ export default function DNCPage() {
 
               {/* Legal Text */}
               <p className="text-slate-400 text-xs leading-relaxed text-left md:max-w-4xl">
-                Noor Financing LLC is currently in the licensing process and is not yet accepting applications or conducting mortgage brokerage activities. Noor Financing technology and processes are proprietary to Noor Financing LLC. © 2026 Noor Financing LLC. All Rights Reserved. This site is directed at, and made available to, persons in Texas only.
+                Noor Financing LLC is a Marketing Lead Generator and is a Duly Licensed Mortgage Company, as required by law, with its main office located at 800 Bonaventure Way Suite 111, Sugar Land, TX 77479. NMLS Unique Identifier #2780355. Noor Financing is a marketplace; we do not fund, originate, or service loans. All credit decisions are made by independent third-party lenders. Noor Financing technology and processes are proprietary to Noor Financing LLC. © 2026 Noor Financing LLC. All Rights Reserved. This site is directed at, and made available to, persons in Texas only. 
               </p>
 
               {/* Equal Housing Logo */}
               <div className="flex-shrink-0">
                 <Image
-                  src="/Equal-Housing-emblem.png"
+                  src="/EqualHousingWebLogo.png"
                   alt="Equal Housing Opportunity"
                   width={80}
                   height={80}
