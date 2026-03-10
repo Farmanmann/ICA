@@ -310,7 +310,7 @@ export default function BorrowerSignupPage() {
           <div className="flex justify-center mb-6">
             <a href="/">
               <Image
-                src="/NoorFinancingLogo.png"
+                src="/NoorFinancingLogoHQ.png"
                 alt="Noor Financing"
                 width={200}
                 height={120}
