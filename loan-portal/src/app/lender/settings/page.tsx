@@ -88,7 +88,7 @@ export default function LenderSettingsPage() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-slate-900">Account Settings</h1>
-              <p className="text-sm text-slate-600">Manage your lender account preferences</p>
+              <p className="text-sm text-slate-600">Manage your financier account preferences</p>
             </div>
             <Button variant="outline" onClick={() => window.location.href = '/lender/dashboard'}>
               Back to Dashboard
@@ -125,7 +125,7 @@ export default function LenderSettingsPage() {
                 : "text-slate-600 hover:text-slate-900"
             }`}
           >
-            Lending Preferences
+            Financing Preferences
           </button>
           <button
             onClick={() => setActiveTab("security")}
@@ -149,7 +149,7 @@ export default function LenderSettingsPage() {
               {/* Lender Type */}
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Lender Type
+                  Financier Type
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   <button
@@ -257,14 +257,14 @@ export default function LenderSettingsPage() {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Lending Criteria</CardTitle>
+                <CardTitle>Financing Criteria</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* Min/Max Loan Amount */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Minimum Loan Amount
+                      Minimum Financing Amount
                     </label>
                     <div className="relative">
                       <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
@@ -278,7 +278,7 @@ export default function LenderSettingsPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Maximum Loan Amount
+                      Maximum Financing Amount
                     </label>
                     <div className="relative">
                       <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
@@ -295,7 +295,7 @@ export default function LenderSettingsPage() {
                 {/* Preferred Terms */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-3">
-                    Preferred Loan Terms
+                    Preferred Financing Terms
                   </label>
                   <div className="grid grid-cols-5 gap-3">
                     {["12", "24", "36", "48", "60"].map((term) => (
@@ -352,8 +352,8 @@ export default function LenderSettingsPage() {
 
                 <label className="flex items-center justify-between p-4 border rounded-lg cursor-pointer hover:bg-slate-50">
                   <div>
-                    <p className="font-medium text-slate-900">New Loan Alerts</p>
-                    <p className="text-sm text-slate-600">Get notified when new loans are available</p>
+                    <p className="font-medium text-slate-900">New Financing Alerts</p>
+                    <p className="text-sm text-slate-600">Get notified when new financing is available</p>
                   </div>
                   <input
                     type="checkbox"

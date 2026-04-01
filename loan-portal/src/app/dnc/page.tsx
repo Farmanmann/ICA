@@ -23,7 +23,7 @@ export default function DNCPage() {
 
             <div>
               <p>
-                <strong>Sharing Your Request with Partners.</strong> If you were matched with participating Lenders through our marketplace within the 30 days prior to your request, Noor Financing will notify those specific Lenders of your preference. While we facilitate this notification, we recommend that you also contact those Lenders directly to ensure you are placed on their individual company-specific Do Not Call lists.
+                <strong>Sharing Your Request with Partners.</strong> If you were matched with participating Financiers through our marketplace within the 30 days prior to your request, Noor Financing will notify those specific Financiers of your preference. While we facilitate this notification, we recommend that you also contact those Financiers directly to ensure you are placed on their individual company-specific Do Not Call lists.
               </p>
             </div>
 

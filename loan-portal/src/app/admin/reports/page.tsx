@@ -106,7 +106,7 @@ export default function ReportsAnalytics() {
                 </Button>
               </div>
               <h1 className="text-2xl font-bold text-slate-900">Reports & Analytics</h1>
-              <p className="text-sm text-slate-600">Comprehensive loan portfolio insights</p>
+              <p className="text-sm text-slate-600">Comprehensive financing portfolio insights</p>
             </div>
             <div className="flex gap-3">
               <Button variant="outline">
@@ -161,7 +161,7 @@ export default function ReportsAnalytics() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium">Total Loans</CardTitle>
+                  <CardTitle className="text-sm font-medium">Total Financing</CardTitle>
                   <BarChart3 className="h-4 w-4 opacity-75" />
                 </CardHeader>
                 <CardContent>
@@ -177,18 +177,18 @@ export default function ReportsAnalytics() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold">${metrics.totalDisbursed.toLocaleString()}</div>
-                  <p className="text-xs opacity-90 mt-1">Approved loans</p>
+                  <p className="text-xs opacity-90 mt-1">Approved financing</p>
                 </CardContent>
               </Card>
 
               <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium">Avg Loan Size</CardTitle>
+                  <CardTitle className="text-sm font-medium">Avg Financing Size</CardTitle>
                   <TrendingUp className="h-4 w-4 opacity-75" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold">${metrics.avgLoanSize.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
-                  <p className="text-xs opacity-90 mt-1">Per approved loan</p>
+                  <p className="text-xs opacity-90 mt-1">Per approved financing</p>
                 </CardContent>
               </Card>
 
@@ -199,7 +199,7 @@ export default function ReportsAnalytics() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold">{metrics.approvalRate.toFixed(1)}%</div>
-                  <p className="text-xs opacity-90 mt-1">{metrics.approved} of {metrics.totalLoans}</p>
+                  <p className="text-xs opacity-90 mt-1">{metrics.approved} of {metrics.totalLoans} applications</p>
                 </CardContent>
               </Card>
             </div>
@@ -210,7 +210,7 @@ export default function ReportsAnalytics() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <PieChart className="h-5 w-5" />
-                    Loan Status Distribution
+                    Financing Status Distribution
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -245,7 +245,7 @@ export default function ReportsAnalytics() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Calendar className="h-5 w-5" />
-                    Loans by Term Length
+                    Financing by Term Length
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -259,7 +259,7 @@ export default function ReportsAnalytics() {
                           <div key={term}>
                             <div className="flex justify-between mb-2">
                               <span className="text-sm font-medium text-slate-700">{term} months</span>
-                              <span className="text-sm text-slate-600">{count} loans</span>
+                              <span className="text-sm text-slate-600">{count} applications</span>
                             </div>
                             <div className="w-full bg-slate-200 rounded-full h-3">
                               <div
@@ -293,7 +293,7 @@ export default function ReportsAnalytics() {
                         <tr className="border-b">
                           <th className="text-left p-3 font-semibold">Rank</th>
                           <th className="text-left p-3 font-semibold">Borrower</th>
-                          <th className="text-left p-3 font-semibold">Loans</th>
+                          <th className="text-left p-3 font-semibold">Applications</th>
                           <th className="text-left p-3 font-semibold">Total Amount</th>
                         </tr>
                       </thead>
@@ -324,7 +324,7 @@ export default function ReportsAnalytics() {
               <Card>
                 <CardContent className="pt-6">
                   <div className="text-center">
-                    <p className="text-sm text-slate-600 mb-2">Active Loans</p>
+                    <p className="text-sm text-slate-600 mb-2">Active Financing</p>
                     <p className="text-4xl font-bold text-blue-600">{metrics.approved}</p>
                   </div>
                 </CardContent>

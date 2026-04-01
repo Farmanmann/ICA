@@ -90,7 +90,7 @@ export default function ApplyStep1() {
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Apply for a Loan</h1>
+          <h1 className="text-4xl font-bold text-slate-900 mb-2">Apply for Financing</h1>
           <p className="text-slate-600">Step 1 of 5: Personal Information</p>
         </div>
 
@@ -113,8 +113,8 @@ export default function ApplyStep1() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Loan Application</CardTitle>
-            <p className="text-sm text-slate-600">Tell us about yourself and the loan you need</p>
+            <CardTitle>Financing Application</CardTitle>
+            <p className="text-sm text-slate-600">Tell us about yourself and the financing you need</p>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Loan Type */}
@@ -134,7 +134,7 @@ export default function ApplyStep1() {
                 ))}
               </select>
               <p className="text-xs text-slate-500 mt-1">
-                Choose the Islamic financing structure for your loan
+                Choose the Islamic financing structure for your application
               </p>
             </div>
 
@@ -142,7 +142,7 @@ export default function ApplyStep1() {
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
                 <Briefcase className="h-4 w-4" />
-                Loan Purpose *
+                Financing Purpose *
               </label>
               <select
                 name="purpose"

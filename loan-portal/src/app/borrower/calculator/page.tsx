@@ -28,9 +28,9 @@ export default function LoanCalculator() {
         {/* Hero Section */}
         <section className="py-12 px-6 bg-gradient-to-br from-blue-50 to-white">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl font-bold text-slate-900 mb-4">Loan Calculator</h1>
+            <h1 className="text-5xl font-bold text-slate-900 mb-4">Financing Calculator</h1>
             <p className="text-xl text-slate-600">
-              Calculate your monthly payments for an interest-free loan
+              Calculate your monthly payments for interest-free financing
             </p>
           </div>
         </section>
@@ -44,7 +44,7 @@ export default function LoanCalculator() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Calculator className="h-5 w-5" />
-                    Loan Details
+                    Financing Details
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-8">
@@ -53,7 +53,7 @@ export default function LoanCalculator() {
                     <div className="flex items-center justify-between mb-4">
                       <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                         <DollarSign className="h-4 w-4" />
-                        Loan Amount
+                        Financing Amount
                       </label>
                       <span className="text-2xl font-bold text-blue-600">
                         ${loanAmount.toLocaleString()}
@@ -79,7 +79,7 @@ export default function LoanCalculator() {
                     <div className="flex items-center justify-between mb-4">
                       <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                         <Calendar className="h-4 w-4" />
-                        Loan Term
+                        Financing Term
                       </label>
                       <span className="text-2xl font-bold text-blue-600">
                         {loanTerm} months
@@ -102,7 +102,7 @@ export default function LoanCalculator() {
 
                   {/* Quick Selection Buttons */}
                   <div>
-                    <p className="text-sm font-medium text-slate-700 mb-3">Common Loan Amounts</p>
+                    <p className="text-sm font-medium text-slate-700 mb-3">Common Financing Amounts</p>
                     <div className="grid grid-cols-4 gap-2">
                       {[25000, 50000, 100000, 200000].map((amount) => (
                         <button
@@ -159,7 +159,7 @@ export default function LoanCalculator() {
                   <CardContent className="pt-6 space-y-4">
                     <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
                       <div>
-                        <p className="text-sm text-slate-600">Total Loan Amount</p>
+                        <p className="text-sm text-slate-600">Total Financing Amount</p>
                         <p className="text-2xl font-bold text-slate-900">
                           ${loanAmount.toLocaleString()}
                         </p>
@@ -207,7 +207,7 @@ export default function LoanCalculator() {
                   className="w-full bg-blue-600 hover:bg-blue-700 py-6 text-lg"
                   onClick={() => window.location.href = '/borrower/apply/personal-info'}
                 >
-                  Apply for This Loan
+                  Apply for This Financing
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </div>
@@ -216,14 +216,14 @@ export default function LoanCalculator() {
             {/* Comparison Table */}
             <Card className="mt-12">
               <CardHeader>
-                <CardTitle>Interest-Free vs Traditional Loan Comparison</CardTitle>
+                <CardTitle>Interest-Free vs Traditional Financing Comparison</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
                       <tr className="border-b bg-slate-50">
-                        <th className="text-left p-4 font-semibold">Loan Type</th>
+                        <th className="text-left p-4 font-semibold">Financing Type</th>
                         <th className="text-right p-4 font-semibold">Monthly Payment</th>
                         <th className="text-right p-4 font-semibold">Total Interest</th>
                         <th className="text-right p-4 font-semibold">Total Cost</th>

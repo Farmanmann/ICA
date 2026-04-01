@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Noor Financing - Interest-Free Property Financing",
-  description: "Sharia-compliant, interest-free property loans. Ethical and transparent financing for your property dreams.",
+  title: "Noor Financing - Interest-Free Home Financing",
+  description: "Sharia-compliant, interest-free home financing. Ethical and transparent financing for your home dreams.",
 };
 
 export default function RootLayout({

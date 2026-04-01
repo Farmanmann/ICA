@@ -13,7 +13,7 @@ export default function Footer() {
               <span className="text-xl font-bold">Noor Financing</span>
             </div>
             <p className="text-slate-400">
-              Interest-free, Sharia-compliant property financing for everyone.
+              Interest-free, Sharia-compliant home financing for everyone.
             </p>
           </div>
 
@@ -57,13 +57,13 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">Get Started</h4>
             <div className="space-y-2">
               <a href="/borrower/apply/personal-info" className="block text-slate-400 hover:text-white transition-colors">
-                Apply for Loan
+                Apply for Financing
               </a>
               <a href="/auth/signup-lender" className="block text-slate-400 hover:text-white transition-colors">
-                Become a Lender
+                Become a Financier
               </a>
               <a href="/borrower/calculator" className="block text-slate-400 hover:text-white transition-colors">
-                Loan Calculator
+                Financing Calculator
               </a>
               <a href="/auth/login" className="block text-slate-400 hover:text-white transition-colors">
                 Login

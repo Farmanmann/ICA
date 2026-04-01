@@ -13,7 +13,7 @@ export default function HowItWorksPage() {
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl font-bold text-slate-900 mb-6">How It Works</h1>
             <p className="text-xl text-slate-600">
-              Get your interest-free property loan in three simple steps. 
+              Get your interest-free home financing in three simple steps.
               We've made the process transparent, fast, and completely Sharia-compliant.
             </p>
           </div>
@@ -49,7 +49,7 @@ export default function HowItWorksPage() {
                       <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0 mt-1" />
                       <div>
                         <p className="font-semibold text-slate-900">Property Details</p>
-                        <p className="text-slate-600">Information about the property you want to finance</p>
+                        <p className="text-slate-600">Information about the home you want to finance</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
@@ -80,7 +80,7 @@ export default function HowItWorksPage() {
                   </div>
                   <p className="text-lg text-slate-600 mb-6">
                     Our team reviews your application within 2-3 business days. We carefully assess your 
-                    eligibility and match you with suitable lenders. You'll receive a notification once 
+                    eligibility and match you with suitable financiers. You'll receive a notification once
                     your application is approved.
                   </p>
                   <div className="space-y-3">
@@ -102,7 +102,7 @@ export default function HowItWorksPage() {
                       <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0 mt-1" />
                       <div>
                         <p className="font-semibold text-slate-900">Sharia Compliance Check</p>
-                        <p className="text-slate-600">Every loan is verified for Islamic compliance</p>
+                        <p className="text-slate-600">Every financing is verified for Islamic compliance</p>
                       </div>
                     </div>
                   </div>
@@ -142,7 +142,7 @@ export default function HowItWorksPage() {
                       <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0 mt-1" />
                       <div>
                         <p className="font-semibold text-slate-900">Online Management</p>
-                        <p className="text-slate-600">Track payments and loan status in your dashboard</p>
+                        <p className="text-slate-600">Track payments and financing status in your dashboard</p>
                       </div>
                     </div>
                   </div>
@@ -174,9 +174,9 @@ export default function HowItWorksPage() {
               <Card>
                 <CardContent className="pt-6">
                   <Users className="h-12 w-12 text-green-600 mb-4" />
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">Direct Lending</h3>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Direct Financing</h3>
                   <p className="text-slate-600">
-                    Connect directly with individual lenders. No banks involved, complete transparency in every transaction.
+                    Connect directly with individual financiers. No banks involved, complete transparency in every transaction.
                   </p>
                 </CardContent>
               </Card>
@@ -235,7 +235,7 @@ export default function HowItWorksPage() {
                 </div>
                 <div className="pb-8">
                   <h3 className="text-xl font-bold text-slate-900 mb-2">Day 3: Approval Decision</h3>
-                  <p className="text-slate-600">Receive notification of your approval status and loan terms.</p>
+                  <p className="text-slate-600">Receive notification of your approval status and financing terms.</p>
                 </div>
               </div>
 

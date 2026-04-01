@@ -111,7 +111,7 @@ export default function AdminDashboard() {
             >
               <Menu className="h-5 w-5" />
             </Button>
-            <h1 className="text-xl font-bold text-slate-900">Loan Management Dashboard</h1>
+            <h1 className="text-xl font-bold text-slate-900">Financing Management Dashboard</h1>
           </div>
           <div className="flex items-center gap-3">
             <Badge variant="outline" className="text-sm">Admin</Badge>
@@ -131,7 +131,7 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Total Loans</CardTitle>
+                <CardTitle className="text-sm font-medium">Total Financing</CardTitle>
                 <DollarSign className="h-4 w-4 opacity-75" />
               </CardHeader>
               <CardContent>
@@ -178,7 +178,7 @@ export default function AdminDashboard() {
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>Loan Applications</CardTitle>
+                <CardTitle>Financing Applications</CardTitle>
                 <Button onClick={fetchLoans} variant="outline" size="sm">
                   Refresh
                 </Button>

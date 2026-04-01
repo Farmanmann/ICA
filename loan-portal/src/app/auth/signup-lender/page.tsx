@@ -116,13 +116,13 @@ export default function LenderSignupPage() {
       <main className="pt-24 pb-20">
         <div className="max-w-md mx-auto px-6">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-slate-900 mb-2">Create Organization Lender Account</h1>
-            <p className="text-slate-600">Join our community of ethical organizational lenders</p>
+            <h1 className="text-4xl font-bold text-slate-900 mb-2">Create Organization Financier Account</h1>
+            <p className="text-slate-600">Join our community of ethical organizational financiers</p>
           </div>
 
           <Card>
             <CardHeader>
-              <CardTitle>Sign Up as Organization Lender</CardTitle>
+              <CardTitle>Sign Up as Organization Financier</CardTitle>
             </CardHeader>
             <CardContent>
               {error && (
@@ -275,12 +275,12 @@ export default function LenderSignupPage() {
 
                 {/* Lender Benefits Info */}
                 <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                  <p className="text-sm font-medium text-blue-900 mb-2">As a Lender, you'll be able to:</p>
+                  <p className="text-sm font-medium text-blue-900 mb-2">As a Financier, you'll be able to:</p>
                   <ul className="space-y-1 text-sm text-blue-800">
-                    <li>• Browse and bid on loan applications</li>
+                    <li>• Browse and bid on financing applications</li>
                     <li>• Support ethical, interest-free financing</li>
-                    <li>• Help families achieve property ownership</li>
-                    <li>• Earn social impact through Sharia-compliant lending</li>
+                    <li>• Help families achieve home ownership</li>
+                    <li>• Earn social impact through Sharia-compliant financing</li>
                   </ul>
                 </div>
 
@@ -310,7 +310,7 @@ export default function LenderSignupPage() {
                   disabled={loading}
                   className="w-full bg-green-600 hover:bg-green-700 py-6 text-lg"
                 >
-                  {loading ? "Creating Account..." : "Create Lender Account"}
+                  {loading ? "Creating Account..." : "Create Financier Account"}
                 </Button>
 
                 {/* Divider */}

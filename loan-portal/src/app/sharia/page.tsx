@@ -44,7 +44,7 @@ export default function ShariaPage() {
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-3">No Interest (Riba)</h3>
                   <p className="text-slate-600">
-                    Absolutely zero interest charged on any loans. Interest-based transactions are strictly prohibited in Islam.
+                    Absolutely zero interest charged on any financing. Interest-based transactions are strictly prohibited in Islam.
                   </p>
                 </CardContent>
               </Card>
@@ -92,7 +92,7 @@ export default function ShariaPage() {
                   <Badge className="mb-4 bg-blue-600">Murabaha</Badge>
                   <h3 className="text-2xl font-bold text-slate-900 mb-4">Cost-Plus Financing</h3>
                   <p className="text-slate-600 mb-4">
-                    In Murabaha, we purchase the property and sell it to you at a pre-agreed markup. You repay 
+                    In Murabaha, we purchase the home and sell it to you at a pre-agreed markup. You repay
                     the total amount in fixed installments with no interest charges.
                   </p>
                   <ul className="space-y-2 text-slate-600">
@@ -106,7 +106,7 @@ export default function ShariaPage() {
                     </li>
                     <li className="flex items-start gap-2">
                       <CheckCircle className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-                      <span>Property ownership transfers to you</span>
+                      <span>Home ownership transfers to you</span>
                     </li>
                   </ul>
                 </CardContent>
@@ -117,7 +117,7 @@ export default function ShariaPage() {
                   <Badge className="mb-4 bg-purple-600">Ijara</Badge>
                   <h3 className="text-2xl font-bold text-slate-900 mb-4">Lease-to-Own</h3>
                   <p className="text-slate-600 mb-4">
-                    Ijara is a lease agreement where we own the property and lease it to you. Over time, you 
+                    Ijara is a lease agreement where we own the home and lease it to you. Over time, you
                     gradually acquire ownership through payments that combine rent and equity building.
                   </p>
                   <ul className="space-y-2 text-slate-600">
@@ -210,7 +210,7 @@ export default function ShariaPage() {
                 <CardContent className="pt-6">
                   <h3 className="text-xl font-bold text-slate-900 mb-3">For Muslims</h3>
                   <p className="text-slate-600">
-                    Sharia compliance allows Muslims to finance property ownership without compromising their 
+                    Sharia compliance allows Muslims to finance home ownership without compromising their
                     religious beliefs. It provides peace of mind that all transactions are halal and ethical.
                   </p>
                 </CardContent>
@@ -246,7 +246,7 @@ export default function ShariaPage() {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold text-white mb-6">Experience Ethical Financing</h2>
             <p className="text-xl text-green-100 mb-8">
-              Join thousands who have chosen Sharia-compliant property financing
+              Join thousands who have chosen Sharia-compliant home financing
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 

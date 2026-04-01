@@ -48,12 +48,12 @@ export default function ApplyStep3() {
     setError("")
 
     if (!formData.amount || !formData.term) {
-      setError("Please enter loan amount and term")
+      setError("Please enter financing amount and term")
       return
     }
 
     if (parseFloat(formData.amount) < 1000) {
-      setError("Minimum loan amount is $1,000")
+      setError("Minimum financing amount is $1,000")
       return
     }
 
@@ -82,7 +82,7 @@ export default function ApplyStep3() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-50 py-8 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Apply for a Loan</h1>
+          <h1 className="text-4xl font-bold text-slate-900 mb-2">Apply for Financing</h1>
           <p className="text-slate-600">Step 3 of 5: Financial Information</p>
         </div>
 
@@ -112,7 +112,7 @@ export default function ApplyStep3() {
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
                 <DollarSign className="h-4 w-4" />
-                Loan Amount Requested *
+                Financing Amount Requested *
               </label>
               <input
                 type="number"

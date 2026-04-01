@@ -65,7 +65,7 @@ export default function ApplyStep5() {
             </div>
             <h1 className="text-3xl font-bold text-slate-900 mb-4">Application Submitted!</h1>
             <p className="text-slate-600 mb-6">
-              Your loan application has been received. We'll review it and get back to you within 2-3 business days.
+              Your financing application has been received. We'll review it and get back to you within 2-3 business days.
             </p>
             <div className="space-y-3">
               <Button 
@@ -107,7 +107,7 @@ export default function ApplyStep5() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-50 py-8 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Apply for a Loan</h1>
+          <h1 className="text-4xl font-bold text-slate-900 mb-2">Apply for Financing</h1>
           <p className="text-slate-600">Step 5 of 5: Review & Submit</p>
         </div>
 
@@ -189,7 +189,7 @@ export default function ApplyStep5() {
         <Card className="mb-6">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>
-              {applicationData.purpose === "car" ? "Vehicle Details" : "Property Details"}
+              {applicationData.purpose === "car" ? "Vehicle Details" : "Home Details"}
             </CardTitle>
             <Button
               variant="ghost"
@@ -204,11 +204,11 @@ export default function ApplyStep5() {
             {(applicationData.purpose === "property" || applicationData.purpose === "renovation") && (
               <>
                 <div className="col-span-2">
-                  <p className="text-sm text-slate-600">Property Address</p>
+                  <p className="text-sm text-slate-600">Home Address</p>
                   <p className="font-semibold">{applicationData.property_address || "Not provided"}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-600">Property Value</p>
+                  <p className="text-sm text-slate-600">Home Value</p>
                   <p className="font-semibold">
                     {applicationData.property_value ? `$${parseFloat(applicationData.property_value).toLocaleString()}` : "Not provided"}
                   </p>
@@ -256,7 +256,7 @@ export default function ApplyStep5() {
           <CardContent>
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
-                <p className="text-sm text-slate-600">Loan Amount</p>
+                <p className="text-sm text-slate-600">Financing Amount</p>
                 <p className="text-2xl font-bold text-blue-600">
                   ${parseFloat(applicationData.amount).toLocaleString()}
                 </p>

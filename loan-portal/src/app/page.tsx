@@ -12,7 +12,7 @@ export default function ComingSoon() {
   }, []);
 
   // Expected launch date - update this as needed
-  const launchDate = new Date("2025-05-01");
+  const launchDate = new Date("2026-05-01");
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "long",
@@ -57,7 +57,7 @@ export default function ComingSoon() {
             Interest-Free Financing Marketplace
           </p>
           <p className="text-lg md:text-xl text-slate-300 mb-12 max-w-2xl mx-auto">
-            Sharia-compliant, ethical lending for your property dreams
+            Sharia-compliant, ethical financing for your home dreams
           </p>
           {/* Coming soon badge */}
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-6 py-3 mb-12">
@@ -88,11 +88,11 @@ export default function ComingSoon() {
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-500 hover:to-blue-400 text-white font-semibold px-8 py-4 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
               >
                 <TrendingUp className="h-5 w-5" />
-                <span>Sign Up As A Lender</span>
+                <span>Sign Up As A Financier</span>
               </a>
             </div>
             <p className="text-slate-400 text-sm text-center">
-              Be among the first to access ethical, interest-free property
+              Be among the first to access ethical, interest-free home
               financing
             </p>
           </div>

@@ -57,7 +57,7 @@ export default function LenderDashboard() {
       {sidebarOpen && (
         <aside className="w-64 bg-slate-900 text-white flex flex-col p-4 shadow-lg">
           <div className="mb-8">
-            <h2 className="text-2xl font-bold">Lender Portal</h2>
+            <h2 className="text-2xl font-bold">Financier Portal</h2>
             <p className="text-slate-400 text-sm">Welcome back</p>
           </div>
           <nav className="flex flex-col gap-2">
@@ -94,10 +94,10 @@ export default function LenderDashboard() {
             >
               <Menu className="h-5 w-5" />
             </Button>
-            <h1 className="text-xl font-bold text-slate-900">Lender Dashboard</h1>
+            <h1 className="text-xl font-bold text-slate-900">Financier Dashboard</h1>
           </div>
           <div className="flex items-center gap-3">
-            <Badge variant="outline" className="text-sm">Lender</Badge>
+            <Badge variant="outline" className="text-sm">Financier</Badge>
             <Button variant="outline">
               <LogOut className="h-4 w-4 mr-2" />
               Logout
@@ -122,13 +122,13 @@ export default function LenderDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">${stats.totalInvested.toLocaleString()}</div>
-                <p className="text-xs opacity-90 mt-1">Across all loans</p>
+                <p className="text-xs opacity-90 mt-1">Across all financing</p>
               </CardContent>
             </Card>
 
             <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white border-0">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium">Active Loans</CardTitle>
+                <CardTitle className="text-sm font-medium">Active Financing</CardTitle>
                 <Home className="h-4 w-4 opacity-75" />
               </CardHeader>
               <CardContent>
@@ -170,7 +170,7 @@ export default function LenderDashboard() {
                   size="sm"
                   onClick={() => window.location.href = '/lender/bidding'}
                 >
-                  Browse More Loans
+                  Browse More Financing
                 </Button>
               </div>
             </CardHeader>
@@ -181,11 +181,11 @@ export default function LenderDashboard() {
                 <div className="text-center py-8">
                   <Users className="h-16 w-16 text-slate-300 mx-auto mb-4" />
                   <p className="text-slate-500 mb-4">You haven't placed any bids yet</p>
-                  <Button 
+                  <Button
                     className="bg-blue-600 hover:bg-blue-700"
                     onClick={() => window.location.href = '/lender/bidding'}
                   >
-                    Browse Available Loans
+                    Browse Available Financing
                   </Button>
                 </div>
               ) : (
@@ -203,7 +203,7 @@ export default function LenderDashboard() {
                           }`} />
                         </div>
                         <div>
-                          <h4 className="font-semibold text-slate-900">Loan #{bid.loanId}</h4>
+                          <h4 className="font-semibold text-slate-900">Financing #{bid.loanId}</h4>
                           <p className="text-sm text-slate-600">
                             Bid Amount: ${bid.amount.toLocaleString()} · {new Date(bid.bidDate).toLocaleDateString()}
                           </p>
@@ -232,19 +232,19 @@ export default function LenderDashboard() {
           {/* Available Loans Preview */}
           <Card>
             <CardHeader>
-              <CardTitle>Available Loan Applications</CardTitle>
+              <CardTitle>Available Financing Applications</CardTitle>
             </CardHeader>
             <CardContent>
               {loading ? (
-                <div className="text-center py-8 text-slate-500">Loading loans...</div>
+                <div className="text-center py-8 text-slate-500">Loading financing...</div>
               ) : loans.length === 0 ? (
-                <div className="text-center py-8 text-slate-500">No loans available at the moment</div>
+                <div className="text-center py-8 text-slate-500">No financing available at the moment</div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
                       <tr className="border-b">
-                        <th className="text-left p-3 font-semibold">Loan ID</th>
+                        <th className="text-left p-3 font-semibold">Financing ID</th>
                         <th className="text-left p-3 font-semibold">Borrower</th>
                         <th className="text-left p-3 font-semibold">Amount</th>
                         <th className="text-left p-3 font-semibold">Term</th>
@@ -288,8 +288,8 @@ export default function LenderDashboard() {
                 <div>
                   <h3 className="text-xl font-bold text-slate-900 mb-2">Your Social Impact</h3>
                   <p className="text-slate-700 mb-4">
-                    By lending ${stats.totalInvested.toLocaleString()} interest-free, you've helped {stats.activeLoans} 
-                    {stats.activeLoans === 1 ? ' family' : ' families'} achieve their property ownership dreams. 
+                    By financing ${stats.totalInvested.toLocaleString()} interest-free, you've helped {stats.activeLoans}
+                    {stats.activeLoans === 1 ? ' family' : ' families'} achieve their home ownership dreams. 
                     Your contribution follows Sharia principles and makes a real difference in people's lives.
                   </p>
                   <div className="flex gap-4 text-sm">

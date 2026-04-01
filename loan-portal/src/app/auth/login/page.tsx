@@ -143,7 +143,7 @@ export default function LoginPage() {
                         : "border-slate-200 hover:border-slate-300"
                     }`}
                   >
-                    Lender
+                    Financier
                   </button>
                   <button
                     type="button"
@@ -251,7 +251,7 @@ export default function LoginPage() {
                     className="w-full"
                     onClick={() => window.location.href = '/auth/signup-lender'}
                   >
-                    Sign up as Lender
+                    Sign up as Financier
                   </Button>
                 </div>
               </div>

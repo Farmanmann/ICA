@@ -9,11 +9,11 @@ export default function ProductsPage() {
   const products = [
     {
       icon: Home,
-      name: "Home Purchase Loan",
+      name: "Home Purchase Financing",
       tagline: "Buy Your Dream Home",
-      description: "Finance the purchase of your residential property with our interest-free home loans. Perfect for first-time buyers and families looking to upgrade.",
+      description: "Finance the purchase of your residential home with our interest-free home financing. Perfect for first-time buyers and families looking to upgrade.",
       features: [
-        "Up to $500,000 loan amount",
+        "Up to $500,000 financing amount",
         "12 to 60 months repayment terms",
         "0% interest rate",
         "Quick approval within 3 days",
@@ -23,25 +23,25 @@ export default function ProductsPage() {
     },
     {
       icon: Building,
-      name: "Investment Property Loan",
+      name: "Investment Home Financing",
       tagline: "Build Your Portfolio",
-      description: "Expand your real estate investment portfolio with Sharia-compliant financing. Ideal for investors looking to purchase rental properties.",
+      description: "Expand your real estate investment portfolio with Sharia-compliant financing. Ideal for investors looking to purchase rental homes.",
       features: [
-        "Up to $750,000 loan amount",
+        "Up to $750,000 financing amount",
         "24 to 60 months repayment terms",
         "0% interest rate",
         "Investment property qualified",
-        "Multiple property financing available"
+        "Multiple home financing available"
       ],
       color: "green"
     },
     {
       icon: Hammer,
-      name: "Renovation Loan",
+      name: "Renovation Financing",
       tagline: "Upgrade Your Space",
-      description: "Transform your existing property with our renovation financing. From minor upgrades to major remodels, we've got you covered.",
+      description: "Transform your existing home with our renovation financing. From minor upgrades to major remodels, we've got you covered.",
       features: [
-        "Up to $200,000 loan amount",
+        "Up to $200,000 financing amount",
         "12 to 48 months repayment terms",
         "0% interest rate",
         "No collateral required",
@@ -51,9 +51,9 @@ export default function ProductsPage() {
     },
     {
       icon: RefreshCw,
-      name: "Refinancing Loan",
-      tagline: "Better Terms, Same Property",
-      description: "Refinance your existing mortgage with interest-free terms. Switch from conventional financing to Sharia-compliant loans.",
+      name: "Refinancing",
+      tagline: "Better Terms, Same Home",
+      description: "Refinance your existing mortgage with interest-free terms. Switch from conventional financing to Sharia-compliant financing.",
       features: [
         "Replace existing mortgages",
         "12 to 60 months repayment terms",
@@ -78,10 +78,10 @@ export default function ProductsPage() {
         {/* Hero Section */}
         <section className="py-20 px-6 bg-gradient-to-br from-blue-50 to-white">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl font-bold text-slate-900 mb-6">Our Loan Products</h1>
+            <h1 className="text-5xl font-bold text-slate-900 mb-6">Our Financing Products</h1>
             <p className="text-xl text-slate-600">
-              Choose from our range of interest-free, Sharia-compliant loan products. 
-              Whatever your property needs, we have a solution that fits.
+              Choose from our range of interest-free, Sharia-compliant financing products.
+              Whatever your home needs, we have a solution that fits.
             </p>
           </div>
         </section>
@@ -125,7 +125,7 @@ export default function ProductsPage() {
                         className="w-full bg-slate-900 hover:bg-slate-800"
                         onClick={() => window.location.href = '/borrower/apply/personal-info'}
                       >
-                        Apply for This Loan
+                        Apply for This Financing
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </CardContent>
@@ -154,28 +154,28 @@ export default function ProductsPage() {
                 </thead>
                 <tbody>
                   <tr className="border-b hover:bg-blue-50">
-                    <td className="p-4 font-medium">Home Purchase Loan</td>
+                    <td className="p-4 font-medium">Home Purchase Financing</td>
                     <td className="p-4">$500,000</td>
                     <td className="p-4">12-60 months</td>
                     <td className="p-4"><Badge className="bg-green-100 text-green-800">0%</Badge></td>
                     <td className="p-4">First-time homebuyers</td>
                   </tr>
                   <tr className="border-b hover:bg-blue-50">
-                    <td className="p-4 font-medium">Investment Property Loan</td>
+                    <td className="p-4 font-medium">Investment Home Financing</td>
                     <td className="p-4">$750,000</td>
                     <td className="p-4">24-60 months</td>
                     <td className="p-4"><Badge className="bg-green-100 text-green-800">0%</Badge></td>
                     <td className="p-4">Real estate investors</td>
                   </tr>
                   <tr className="border-b hover:bg-blue-50">
-                    <td className="p-4 font-medium">Renovation Loan</td>
+                    <td className="p-4 font-medium">Renovation Financing</td>
                     <td className="p-4">$200,000</td>
                     <td className="p-4">12-48 months</td>
                     <td className="p-4"><Badge className="bg-green-100 text-green-800">0%</Badge></td>
                     <td className="p-4">Home improvement</td>
                   </tr>
                   <tr className="hover:bg-blue-50">
-                    <td className="p-4 font-medium">Refinancing Loan</td>
+                    <td className="p-4 font-medium">Refinancing</td>
                     <td className="p-4">Varies</td>
                     <td className="p-4">12-60 months</td>
                     <td className="p-4"><Badge className="bg-green-100 text-green-800">0%</Badge></td>
@@ -249,7 +249,7 @@ export default function ProductsPage() {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold text-white mb-6">Ready to Apply?</h2>
             <p className="text-xl text-blue-100 mb-8">
-              Choose the loan product that fits your needs and get started today
+              Choose the financing product that fits your needs and get started today
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 

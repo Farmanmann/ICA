@@ -106,7 +106,7 @@ export default function BorrowerSignupPage() {
         <div className="max-w-md mx-auto px-6">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-slate-900 mb-2">Create Borrower Account</h1>
-            <p className="text-slate-600">Join thousands getting interest-free property loans</p>
+            <p className="text-slate-600">Join thousands getting interest-free home financing</p>
           </div>
 
           <Card>
@@ -295,9 +295,9 @@ export default function BorrowerSignupPage() {
 
           {/* Additional Info */}
           <div className="mt-6 text-center">
-            <p className="text-sm text-slate-600 mb-2">Are you a lender?</p>
+            <p className="text-sm text-slate-600 mb-2">Are you a financier?</p>
             <a href="/auth/signup-lender" className="text-blue-600 hover:underline text-sm font-medium">
-              Create a Lender Account instead
+              Create a Financier Account instead
             </a>
           </div>
         </div>

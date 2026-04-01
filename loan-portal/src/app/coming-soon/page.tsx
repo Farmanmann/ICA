@@ -48,11 +48,11 @@ export default function ComingSoon() {
 
           {/* Tagline */}
           <p className="text-2xl md:text-3xl text-blue-200 mb-4 font-light">
-            Interest-Free Property Financing
+            Interest-Free Home Financing
           </p>
 
           <p className="text-lg md:text-xl text-slate-300 mb-12 max-w-2xl mx-auto">
-            Sharia-compliant, ethical lending for your property dreams
+            Sharia-compliant, ethical financing for your home dreams
           </p>
 
           {/* Coming soon badge */}

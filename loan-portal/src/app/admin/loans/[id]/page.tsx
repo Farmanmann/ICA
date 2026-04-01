@@ -89,7 +89,7 @@ export default function LoanDetailPage() {
                 <ArrowLeft className="h-5 w-5" />
               </Button>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900">Loan #{loan.id}</h1>
+                <h1 className="text-2xl font-bold text-slate-900">Financing #{loan.id}</h1>
                 <p className="text-sm text-slate-600">
                   {loan.loan_type_display} - {loan.purpose_display}
                 </p>
@@ -120,14 +120,14 @@ export default function LoanDetailPage() {
               className="bg-green-600 hover:bg-green-700"
             >
               <CheckCircle className="h-4 w-4 mr-2" />
-              Approve Loan
+              Approve Financing
             </Button>
             <Button
               onClick={() => updateLoanStatus("Rejected")}
               variant="destructive"
             >
               <XCircle className="h-4 w-4 mr-2" />
-              Reject Loan
+              Reject Financing
             </Button>
           </div>
         )}
@@ -138,18 +138,18 @@ export default function LoanDetailPage() {
             {/* Loan Summary */}
             <Card>
               <CardHeader>
-                <CardTitle>Loan Summary</CardTitle>
+                <CardTitle>Financing Summary</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-6">
                   <div>
-                    <p className="text-sm text-slate-600 mb-1">Loan Amount</p>
+                    <p className="text-sm text-slate-600 mb-1">Financing Amount</p>
                     <p className="text-3xl font-bold text-slate-900">
                       ${parseFloat(loan.amount).toLocaleString()}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-slate-600 mb-1">Loan Term</p>
+                    <p className="text-sm text-slate-600 mb-1">Financing Term</p>
                     <p className="text-3xl font-bold text-slate-900">{loan.term} months</p>
                   </div>
                   <div>
@@ -218,7 +218,7 @@ export default function LoanDetailPage() {
                   {loan.purpose === "car" ? (
                     <><Car className="h-5 w-5" />Vehicle Details</>
                   ) : (
-                    <><Building className="h-5 w-5" />Property Details</>
+                    <><Building className="h-5 w-5" />Home Details</>
                   )}
                 </CardTitle>
               </CardHeader>
@@ -247,11 +247,11 @@ export default function LoanDetailPage() {
                 ) : (
                   <div className="space-y-4">
                     <div>
-                      <p className="text-sm text-slate-600 mb-1">Property Address</p>
+                      <p className="text-sm text-slate-600 mb-1">Home Address</p>
                       <p className="font-semibold">{loan.property_address || "N/A"}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-slate-600 mb-1">Property Value</p>
+                      <p className="text-sm text-slate-600 mb-1">Home Value</p>
                       <p className="font-semibold">
                         {loan.property_value ? `$${parseFloat(loan.property_value).toLocaleString()}` : "N/A"}
                       </p>

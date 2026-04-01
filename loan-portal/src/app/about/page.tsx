@@ -15,10 +15,10 @@ export default function AboutPage() {
         {/* Hero Section */}
         <section className="py-20 px-6 bg-gradient-to-br from-blue-50 to-white">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl font-bold text-slate-900 mb-6">About PropertyLoans</h1>
+            <h1 className="text-5xl font-bold text-slate-900 mb-6">About HomeFinancing</h1>
             <p className="text-xl text-slate-600">
-              We're on a mission to make ethical, interest-free property financing accessible to everyone. 
-              No banks, no interest, just transparent and fair lending.
+              We're on a mission to make ethical, interest-free home financing accessible to everyone.
+              No banks, no interest, just transparent and fair financing.
             </p>
           </div>
         </section>
@@ -30,18 +30,18 @@ export default function AboutPage() {
               <div>
                 <h2 className="text-4xl font-bold text-slate-900 mb-6">Our Story</h2>
                 <p className="text-lg text-slate-600 mb-4">
-                  PropertyLoans was founded in 2023 with a simple belief: property financing should be 
-                  accessible, ethical, and aligned with your values. We saw too many people struggling 
-                  with high-interest mortgages and predatory lending practices.
+                  HomeFinancing was founded in 2023 with a simple belief: home financing should be
+                  accessible, ethical, and aligned with your values. We saw too many people struggling
+                  with high-interest mortgages and predatory financing practices.
                 </p>
                 <p className="text-lg text-slate-600 mb-4">
-                  We created a platform that connects borrowers directly with ethical lenders, eliminating 
-                  banks and their interest charges. Every loan on our platform is completely interest-free 
-                  and Sharia-compliant, making property ownership accessible to everyone.
+                  We created a platform that connects borrowers directly with ethical financiers, eliminating
+                  banks and their interest charges. Every financing on our platform is completely interest-free
+                  and Sharia-compliant, making home ownership accessible to everyone.
                 </p>
                 <p className="text-lg text-slate-600">
-                  Today, we've helped thousands of families achieve their property dreams through transparent, 
-                  fair, and ethical financing. We're proud to be leading the way in interest-free lending.
+                  Today, we've helped thousands of families achieve their home dreams through transparent,
+                  fair, and ethical financing. We're proud to be leading the way in interest-free financing.
                 </p>
               </div>
               <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl p-12 flex items-center justify-center h-96">
@@ -60,8 +60,8 @@ export default function AboutPage() {
                   <Target className="h-12 w-12 text-blue-600 mb-4" />
                   <h3 className="text-2xl font-bold text-slate-900 mb-4">Our Mission</h3>
                   <p className="text-lg text-slate-600">
-                    To provide accessible, ethical, and interest-free property financing that empowers 
-                    individuals and families to achieve their homeownership dreams without compromising 
+                    To provide accessible, ethical, and interest-free home financing that empowers
+                    individuals and families to achieve their homeownership dreams without compromising
                     their values or financial wellbeing.
                   </p>
                 </CardContent>
@@ -72,8 +72,8 @@ export default function AboutPage() {
                   <TrendingUp className="h-12 w-12 text-green-600 mb-4" />
                   <h3 className="text-2xl font-bold text-slate-900 mb-4">Our Vision</h3>
                   <p className="text-lg text-slate-600">
-                    To become the leading platform for interest-free property financing globally, setting 
-                    the standard for transparent, ethical lending and making Sharia-compliant financing 
+                    To become the leading platform for interest-free home financing globally, setting
+                    the standard for transparent, ethical financing and making Sharia-compliant financing
                     the norm rather than the exception.
                   </p>
                 </CardContent>
@@ -121,7 +121,7 @@ export default function AboutPage() {
                   </div>
                   <h3 className="text-xl font-bold text-slate-900 mb-3">Community</h3>
                   <p className="text-slate-600">
-                    We connect borrowers directly with lenders, building a community of ethical 
+                    We connect borrowers directly with financiers, building a community of ethical
                     finance supporters.
                   </p>
                 </CardContent>
@@ -138,7 +138,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
               <div>
                 <div className="text-5xl font-bold text-white mb-2">$50M+</div>
-                <div className="text-blue-100">Total Loans Funded</div>
+                <div className="text-blue-100">Total Financing Funded</div>
               </div>
               <div>
                 <div className="text-5xl font-bold text-white mb-2">2,500+</div>
@@ -171,7 +171,7 @@ export default function AboutPage() {
                   <h3 className="text-xl font-bold text-slate-900 mb-1">Ahmed Hassan</h3>
                   <p className="text-blue-600 mb-3">Founder & CEO</p>
                   <p className="text-slate-600 text-sm">
-                    15 years in Islamic finance. Passionate about making ethical lending accessible.
+                    15 years in Islamic finance. Passionate about making ethical financing accessible.
                   </p>
                 </CardContent>
               </Card>
@@ -206,7 +206,7 @@ export default function AboutPage() {
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold text-slate-900 mb-6">Join Our Community</h2>
             <p className="text-xl text-slate-600 mb-8">
-              Be part of the movement towards ethical, interest-free property financing
+              Be part of the movement towards ethical, interest-free home financing
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
@@ -214,7 +214,7 @@ export default function AboutPage() {
                 className="bg-blue-600 hover:bg-blue-700"
                 onClick={() => window.location.href = '/borrower/apply/personal-info'}
               >
-                Apply for a Loan
+                Apply for Financing
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button 

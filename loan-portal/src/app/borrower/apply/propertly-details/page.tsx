@@ -82,7 +82,7 @@ export default function ApplyStep2() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-50 py-8 px-4">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">Apply for a Loan</h1>
+          <h1 className="text-4xl font-bold text-slate-900 mb-2">Apply for Financing</h1>
           <p className="text-slate-600">Step 2 of 5: Asset Details</p>
         </div>
 
@@ -110,7 +110,7 @@ export default function ApplyStep2() {
             <p className="text-sm text-slate-600">
               {formData.purpose === "car"
                 ? "Tell us about the vehicle you want to finance"
-                : "Tell us about the property"}
+                : "Tell us about the home"}
             </p>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -120,7 +120,7 @@ export default function ApplyStep2() {
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
                     <Home className="h-4 w-4" />
-                    Property Address *
+                    Home Address *
                   </label>
                   <textarea
                     name="property_address"
@@ -128,14 +128,14 @@ export default function ApplyStep2() {
                     onChange={handleChange}
                     rows={3}
                     className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="456 Property Ave, City, State, ZIP"
+                    placeholder="456 Home Ave, City, State, ZIP"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
                     <DollarSign className="h-4 w-4" />
-                    Estimated Property Value
+                    Estimated Home Value
                   </label>
                   <input
                     type="number"

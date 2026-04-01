@@ -76,8 +76,8 @@ export default function LenderBiddingPage() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">Browse Loan Applications</h1>
-              <p className="text-sm text-slate-600">Review and bid on available loans</p>
+              <h1 className="text-2xl font-bold text-slate-900">Browse Financing Applications</h1>
+              <p className="text-sm text-slate-600">Review and bid on available financing</p>
             </div>
             <Button variant="outline" onClick={() => window.location.href = '/lender/dashboard'}>
               Back to Dashboard
@@ -117,7 +117,7 @@ export default function LenderBiddingPage() {
                 <option value="48">48 months</option>
                 <option value="60">60 months</option>
               </select>
-              <Badge variant="outline">{filteredLoans.length} loans available</Badge>
+              <Badge variant="outline">{filteredLoans.length} financing available</Badge>
             </div>
           </CardContent>
         </Card>
@@ -126,14 +126,14 @@ export default function LenderBiddingPage() {
         {loading ? (
           <Card>
             <CardContent className="py-12 text-center text-slate-500">
-              Loading available loans...
+              Loading available financing...
             </CardContent>
           </Card>
         ) : filteredLoans.length === 0 ? (
           <Card>
             <CardContent className="py-12 text-center">
               <Home className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-              <p className="text-slate-500">No loans available for bidding at the moment</p>
+              <p className="text-slate-500">No financing available for bidding at the moment</p>
             </CardContent>
           </Card>
         ) : (
@@ -142,7 +142,7 @@ export default function LenderBiddingPage() {
               <Card key={loan.id} className="border-2 hover:shadow-lg transition-all">
                 <CardHeader className="bg-gradient-to-r from-blue-50 to-slate-50">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-xl">Loan #{loan.id}</CardTitle>
+                    <CardTitle className="text-xl">Financing #{loan.id}</CardTitle>
                     <Badge className="bg-blue-600">Available</Badge>
                   </div>
                 </CardHeader>
@@ -152,7 +152,7 @@ export default function LenderBiddingPage() {
                     <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                       <div className="flex items-center gap-2">
                         <DollarSign className="h-5 w-5 text-blue-600" />
-                        <span className="text-sm text-slate-600">Loan Amount</span>
+                        <span className="text-sm text-slate-600">Financing Amount</span>
                       </div>
                       <span className="font-bold text-xl text-slate-900">
                         ${parseFloat(loan.amount).toLocaleString()}
@@ -242,7 +242,7 @@ export default function LenderBiddingPage() {
             <CardContent className="space-y-4">
               <div className="bg-blue-50 p-4 rounded-lg">
                 <p className="text-sm text-blue-900 mb-2">
-                  <strong>Loan #{selectedLoan.id}</strong>
+                  <strong>Financing #{selectedLoan.id}</strong>
                 </p>
                 <p className="text-sm text-blue-800">
                   Requested Amount: ${parseFloat(selectedLoan.amount).toLocaleString()}
@@ -269,10 +269,10 @@ export default function LenderBiddingPage() {
               </div>
 
               <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                <p className="text-sm text-green-900 font-medium mb-2">Interest-Free Lending</p>
+                <p className="text-sm text-green-900 font-medium mb-2">Interest-Free Financing</p>
                 <p className="text-sm text-green-800">
-                  This is a 0% interest loan. You'll receive back exactly what you lend, 
-                  helping families achieve property ownership through ethical finance.
+                  This is a 0% interest financing. You'll receive back exactly what you contribute,
+                  helping families achieve home ownership through ethical finance.
                 </p>
               </div>
 
