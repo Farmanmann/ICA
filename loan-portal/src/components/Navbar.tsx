@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Home, Menu, X } from "lucide-react"
+import { Menu, X } from "lucide-react"
+import Image from "next/image"
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -11,9 +12,15 @@ export default function Navbar() {
     <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b z-50">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <a href="/" className="flex items-center gap-2">
-            <Home className="h-8 w-8 text-blue-600" />
-            <span className="text-2xl font-bold text-slate-900">Noor Financing</span>
+          <a href="/">
+            <Image
+              src="/nflogowhite.png"
+              alt="Noor Financing"
+              width={160}
+              height={48}
+              className="h-12 w-auto object-contain"
+              priority
+            />
           </a>
 
           {/* Desktop Navigation */}

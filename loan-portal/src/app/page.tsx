@@ -42,7 +42,7 @@ export default function ComingSoon() {
               <div className="absolute w-[350px] h-[350px] bg-blue-500 blur-[100px] opacity-20 rounded-full"></div>
 
               <Image
-                src="/NoorFinancingLogoHQ.png"
+                src="/nflogowhite.png"
                 alt="Noor Financing"
                 width={800}
                 height={400}
@@ -142,7 +142,7 @@ export default function ComingSoon() {
           <div className="flex justify-center mb-6">
             <a href="/">
               <Image
-                src="/NoorFinancingLogoHQ.png"
+                src="/nflogowhite.png"
                 alt="Noor Financing"
                 width={200}
                 height={120}

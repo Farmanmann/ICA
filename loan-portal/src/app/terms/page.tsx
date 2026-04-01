@@ -167,7 +167,7 @@ export default function TermsPage() {
           <div className="flex justify-center mb-6">
             <a href="/">
               <Image
-                src="/NoorFinancingLogoHQ.png"
+                src="/nflogowhite.png"
                 alt="Noor Financing"
                 width={200}
                 height={120}
