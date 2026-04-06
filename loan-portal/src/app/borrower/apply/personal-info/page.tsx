@@ -20,20 +20,23 @@ export default function ApplyStep1() {
     loan_type: "murabaha",
     purpose: ""
   })
-  const [loanTypes, setLoanTypes] = useState<LoanOption[]>([])
-  const [purposes, setPurposes] = useState<LoanOption[]>([])
+  const loanTypes: LoanOption[] = [
+    { value: "murabaha", label: "Murabaha (Cost-Plus Financing)" },
+    { value: "ijara", label: "Ijara (Lease-to-Own)" },
+    { value: "musharaka", label: "Musharaka (Partnership)" },
+    { value: "diminishing_musharaka", label: "Diminishing Musharaka" },
+  ]
+  const purposes: LoanOption[] = [
+    { value: "property", label: "Home Purchase" },
+    { value: "renovation", label: "Home Renovation" },
+    { value: "car", label: "Vehicle Purchase" },
+    { value: "business", label: "Business Financing" },
+    { value: "education", label: "Education" },
+    { value: "other", label: "Other" },
+  ]
   const [error, setError] = useState("")
 
   useEffect(() => {
-    // Fetch loan types and purposes from API
-    fetch("http://localhost:8000/api/loan-options/")
-      .then(res => res.json())
-      .then(data => {
-        setLoanTypes(data.loan_types || [])
-        setPurposes(data.purposes || [])
-      })
-      .catch(err => console.error("Failed to fetch loan options:", err))
-
     // Load saved data from localStorage
     const saved = localStorage.getItem("loanApplication")
     if (saved) {

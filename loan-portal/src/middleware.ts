@@ -2,19 +2,42 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 
+// ─── Stakeholder Demo Bypass ──────────────────────────────────────────────────
+// These routes skip auth entirely so the app can be demoed without a backend.
+// Remove this block once Supabase is configured and auth is ready.
+const DEMO_ROUTES = [
+  '/borrower/dashboard',
+  '/lender/dashboard',
+  '/loans',
+]
+// ─────────────────────────────────────────────────────────────────────────────
+
 export async function middleware(request: NextRequest) {
-  const { supabaseResponse, user } = await updateSession(request)
+  // ─── Stakeholder Demo Mode ────────────────────────────────────────────────
+  // Supabase auth fully disabled. Remove this return to re-enable auth.
+  return NextResponse.next()
+  // ─────────────────────────────────────────────────────────────────────────
+
   const { pathname } = request.nextUrl
 
-  // 🚫 Completely block all dashboard routes
-  const blockedDashboards = [
-    '/borrower/dashboard',
-    '/lender/dashboard',
-    '/admin/dashboard',
-  ]
+  // Allow demo routes through with no auth check
+  if (DEMO_ROUTES.some((route) => pathname.startsWith(route))) {
+    return NextResponse.next()
+  }
 
-  if (blockedDashboards.some((route) => pathname.startsWith(route))) {
-    return NextResponse.redirect(new URL('/', request.url))
+  // Skip all Supabase auth if credentials are not configured
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return NextResponse.next()
+  }
+
+  let supabaseResponse: ReturnType<typeof import('next/server').NextResponse.next>
+  let user: Awaited<ReturnType<typeof updateSession>>['user'] = null
+
+  try {
+    ;({ supabaseResponse, user } = await updateSession(request))
+  } catch {
+    // Supabase is unreachable (e.g. project paused). Treat as unauthenticated.
+    supabaseResponse = NextResponse.next()
   }
 
   // Define protected routes
@@ -37,7 +60,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // If authenticated, verify role (but NEVER redirect to dashboard)
-  if (isProtectedRoute && user) {
+  if (isProtectedRoute && user != null) {
     const supabase = (await import('@/lib/supabase/server')).createClient
     const supabaseClient = await supabase()
 
@@ -47,7 +70,7 @@ export async function middleware(request: NextRequest) {
       .eq('id', user.id)
       .single()
 
-    if (profile) {
+    if (profile != null) {
       if (pathname.startsWith('/borrower') && profile.role !== 'borrower') {
         return NextResponse.redirect(new URL('/', request.url))
       }

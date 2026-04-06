@@ -25,24 +25,35 @@ export default function ApplyStep5() {
     setError("")
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/loans/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...applicationData,
-          status: "Pending",
-          amount: parseFloat(applicationData.amount),
-          term: parseInt(applicationData.term)
-        })
+      const { createClient } = await import("@/lib/supabase/client")
+      const supabase = createClient()
+
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error("You must be logged in to submit an application")
+
+      const { error: insertError } = await supabase.from("loans").insert({
+        borrower_id: user.id,
+        borrower_name: applicationData.borrower_name,
+        email: applicationData.email,
+        phone: applicationData.phone,
+        address: applicationData.address,
+        loan_type: applicationData.loan_type,
+        purpose: applicationData.purpose,
+        property_address: applicationData.property_address,
+        property_value: applicationData.property_value ? parseFloat(applicationData.property_value) : null,
+        amount: parseFloat(applicationData.amount),
+        term: parseInt(applicationData.term),
+        employment_status: applicationData.employment_status,
+        annual_income: applicationData.annual_income ? parseFloat(applicationData.annual_income) : null,
+        status: "Pending",
       })
 
-      if (!res.ok) throw new Error("Failed to submit application")
+      if (insertError) throw insertError
 
-      // Clear saved data
       localStorage.removeItem("loanApplication")
       setSuccess(true)
-    } catch (err) {
-      setError("Failed to submit application. Please try again.")
+    } catch (err: any) {
+      setError(err.message || "Failed to submit application. Please try again.")
       console.error("Submission error:", err)
     } finally {
       setLoading(false)

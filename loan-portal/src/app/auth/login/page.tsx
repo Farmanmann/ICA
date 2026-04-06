@@ -16,7 +16,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
-  const [userType, setUserType] = useState<"borrower" | "lender" | "admin">("borrower")
+  const [userType, setUserType] = useState<"borrower" | "lender">("borrower")
 
   const handleChange = (e: any) => {
     setFormData({
@@ -122,7 +122,7 @@ export default function LoginPage() {
                 <label className="block text-sm font-medium text-slate-700 mb-3">
                   I am a:
                 </label>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 gap-3">
                   <button
                     type="button"
                     onClick={() => setUserType("borrower")}
@@ -144,17 +144,6 @@ export default function LoginPage() {
                     }`}
                   >
                     Financier
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setUserType("admin")}
-                    className={`p-3 border-2 rounded-lg text-sm font-medium transition-all ${
-                      userType === "admin"
-                        ? "border-blue-600 bg-blue-50 text-blue-600"
-                        : "border-slate-200 hover:border-slate-300"
-                    }`}
-                  >
-                    Admin
                   </button>
                 </div>
               </div>
