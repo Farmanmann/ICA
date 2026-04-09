@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { DollarSign, Calendar, User, MapPin, Briefcase, TrendingUp, X, CheckCircle } from "lucide-react"
+import { X, CheckCircle, Info, DollarSign, Percent, Home, Briefcase, TrendingUp } from "lucide-react"
 
 function Icon({ name, className = "" }: { name: string; className?: string }) {
   return (
@@ -17,16 +17,52 @@ function Icon({ name, className = "" }: { name: string; className?: string }) {
   )
 }
 
+function DetailRow({ label, value }: { label: string; value?: string | number | null }) {
+  return (
+    <div className="flex items-start justify-between py-2.5 border-b border-slate-100 last:border-0">
+      <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 shrink-0 w-44">{label}</span>
+      <span className="text-sm font-medium text-[#131b2e] text-right">{value || "—"}</span>
+    </div>
+  )
+}
+
+const PROPERTY_TYPE_LABELS: Record<string, string> = {
+  single_family: "Single Family Home",
+  townhome: "Townhome",
+  condominium: "Condominium",
+  multi_family: "Multi-Family Home",
+}
+const OCCUPANCY_LABELS: Record<string, string> = {
+  primary: "Primary Residence",
+  secondary: "Secondary / Vacation",
+  investment: "Investment Property",
+}
+const PURPOSE_LABELS: Record<string, string> = {
+  home_purchase: "Home Purchase",
+  refinance: "Refinance",
+  investment_home: "Investment Home",
+}
+const LOAN_TYPE_LABELS: Record<string, string> = {
+  murabaha: "Murabaha",
+  musharaka: "Musharakah",
+  no_preference: "No Preference",
+}
+
 export default function LenderBiddingPage() {
   const [loans, setLoans] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
-  const [selectedLoan, setSelectedLoan] = useState<any>(null)
-  const [bidAmount, setBidAmount] = useState("")
-  const [bidSubmitting, setBidSubmitting] = useState(false)
   const [success, setSuccess] = useState("")
   const [filterTerm, setFilterTerm] = useState("all")
   const [currentUser, setCurrentUser] = useState<any>(null)
+
+  // Detail panel
+  const [detailLoan, setDetailLoan] = useState<any>(null)
+
+  // Offer modal
+  const [offerLoan, setOfferLoan] = useState<any>(null)
+  const [offerData, setOfferData] = useState({ profit_rate: "", apr: "", monthly_payment: "", note: "" })
+  const [offerSubmitting, setOfferSubmitting] = useState(false)
 
   useEffect(() => {
     const link = document.createElement("link")
@@ -52,62 +88,52 @@ export default function LenderBiddingPage() {
         .select("*")
         .eq("status", "Pending")
         .order("created_at", { ascending: false })
-
       if (fetchError) throw fetchError
       setLoans(data ?? [])
       setError("")
     } catch (err) {
       setError("Unable to load loan applications.")
-      console.error("Failed to load loans:", err)
     } finally {
       setLoading(false)
     }
   }
 
-  const handleBid = async () => {
-    if (!bidAmount || parseFloat(bidAmount) <= 0) {
-      setError("Please enter a valid bid amount")
+  const handleSendOffer = async () => {
+    if (!offerData.profit_rate && !offerData.apr && !offerData.monthly_payment) {
+      setError("Please enter at least one offer term (profit rate, APR, or monthly payment)")
       return
     }
-    if (parseFloat(bidAmount) > parseFloat(selectedLoan.amount)) {
-      setError("Bid amount cannot exceed loan amount")
-      return
-    }
-    if (!currentUser) {
-      setError("You must be logged in to place a bid")
-      return
-    }
+    if (!currentUser) { setError("You must be logged in to send an offer"); return }
 
-    setBidSubmitting(true)
+    setOfferSubmitting(true)
     setError("")
-
     try {
       const { createClient } = await import("@/lib/supabase/client")
       const supabase = createClient()
-
       const { error: insertError } = await supabase.from("bids").insert({
-        loan_id: selectedLoan.id,
+        loan_id: offerLoan.id,
         lender_id: currentUser.id,
-        amount: parseFloat(bidAmount),
+        amount: parseFloat(offerLoan.amount),
+        profit_rate: offerData.profit_rate ? parseFloat(offerData.profit_rate) : null,
+        apr: offerData.apr ? parseFloat(offerData.apr) : null,
+        monthly_payment: offerData.monthly_payment ? parseFloat(offerData.monthly_payment) : null,
+        note: offerData.note || null,
         status: "pending",
       })
-
       if (insertError) throw insertError
-
-      setSuccess(`Bid of $${parseFloat(bidAmount).toLocaleString()} placed successfully!`)
-      setSelectedLoan(null)
-      setBidAmount("")
+      setSuccess("Offer sent successfully!")
+      setOfferLoan(null)
+      setDetailLoan(null)
+      setOfferData({ profit_rate: "", apr: "", monthly_payment: "", note: "" })
       setTimeout(() => setSuccess(""), 4000)
     } catch (err: any) {
-      setError(err.message || "Failed to submit bid. Please try again.")
+      setError(err.message || "Failed to send offer. Please try again.")
     } finally {
-      setBidSubmitting(false)
+      setOfferSubmitting(false)
     }
   }
 
-  const filteredLoans = filterTerm === "all"
-    ? loans
-    : loans.filter((l: any) => l.term === parseInt(filterTerm))
+  const filteredLoans = filterTerm === "all" ? loans : loans.filter((l: any) => l.term === parseInt(filterTerm))
 
   return (
     <div className="min-h-screen" style={{ fontFamily: "Inter, sans-serif" }}>
@@ -117,7 +143,6 @@ export default function LenderBiddingPage() {
           <h1 className="text-lg font-bold text-white tracking-tight">Noor Financing</h1>
           <p className="text-[10px] uppercase tracking-[0.2em] text-emerald-500 font-bold mt-1">Ethical Capital</p>
         </div>
-
         <div className="flex items-center px-6 mb-10 space-x-3">
           <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
             <Icon name="person" className="text-emerald-400" />
@@ -127,19 +152,18 @@ export default function LenderBiddingPage() {
             <p className="text-xs text-slate-400">{currentUser?.email ?? "Verified Financier"}</p>
           </div>
         </div>
-
         <nav className="flex-1 px-2 space-y-1">
           <a className="flex items-center space-x-3 text-slate-400 hover:text-white py-3 px-4 hover:bg-slate-900 transition-all hover:translate-x-1" href="/lender/dashboard">
             <Icon name="dashboard" className="text-[20px]" />
             <span className="text-sm font-medium">Dashboard</span>
           </a>
-          <a className="flex items-center space-x-3 bg-emerald-500/10 text-emerald-400 border-l-4 border-emerald-500 py-3 px-4 transition-transform duration-200" href="/lender/bidding">
+          <a className="flex items-center space-x-3 bg-emerald-500/10 text-emerald-400 border-l-4 border-emerald-500 py-3 px-4" href="/lender/bidding">
             <Icon name="search_check" className="text-[20px]" />
             <span className="text-sm font-medium">Browse Applications</span>
           </a>
           <a className="flex items-center space-x-3 text-slate-400 hover:text-white py-3 px-4 hover:bg-slate-900 transition-all hover:translate-x-1" href="#">
             <Icon name="account_balance_wallet" className="text-[20px]" />
-            <span className="text-sm font-medium">My Investments</span>
+            <span className="text-sm font-medium">My Offers</span>
           </a>
           <a className="flex items-center space-x-3 text-slate-400 hover:text-white py-3 px-4 hover:bg-slate-900 transition-all hover:translate-x-1" href="#">
             <Icon name="analytics" className="text-[20px]" />
@@ -150,7 +174,6 @@ export default function LenderBiddingPage() {
             <span className="text-sm font-medium">Settings</span>
           </a>
         </nav>
-
         <div className="px-4 mt-auto">
           <a className="flex items-center space-x-3 text-slate-400 hover:text-white py-3 px-4 hover:bg-slate-900 transition-all rounded-lg" href="#">
             <Icon name="logout" className="text-[20px]" />
@@ -164,7 +187,7 @@ export default function LenderBiddingPage() {
         <header className="flex justify-between items-center mb-10">
           <div>
             <h2 className="text-3xl font-extrabold tracking-tight text-[#131b2e]">Browse Applications</h2>
-            <p className="text-[#565e74] text-sm mt-1">Review and fund available financing requests.</p>
+            <p className="text-[#565e74] text-sm mt-1">Review borrower profiles and send financing offers.</p>
           </div>
         </header>
 
@@ -174,7 +197,6 @@ export default function LenderBiddingPage() {
             <AlertDescription className="text-emerald-800">{success}</AlertDescription>
           </Alert>
         )}
-
         {error && (
           <Alert variant="destructive" className="mb-6">
             <AlertDescription>{error}</AlertDescription>
@@ -190,29 +212,26 @@ export default function LenderBiddingPage() {
             className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm"
           >
             <option value="all">All Terms</option>
-            <option value="12">12 months</option>
-            <option value="24">24 months</option>
-            <option value="60">60 months</option>
-            <option value="120">120 months</option>
-            <option value="180">180 months</option>
-            <option value="360">360 months</option>
+            <option value="180">180 months (15 yr)</option>
+            <option value="240">240 months (20 yr)</option>
+            <option value="360">360 months (30 yr)</option>
           </select>
           <Badge variant="outline">{filteredLoans.length} available</Badge>
         </div>
 
         {/* Loans Grid */}
         {loading ? (
-          <div className="bg-white rounded-xl shadow-sm p-12 text-center text-[#565e74]">
-            Loading available financing...
-          </div>
+          <div className="bg-white rounded-xl shadow-sm p-12 text-center text-[#565e74]">Loading available financing...</div>
         ) : filteredLoans.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-sm p-12 text-center text-[#565e74]">
-            No financing applications available at the moment.
-          </div>
+          <div className="bg-white rounded-xl shadow-sm p-12 text-center text-[#565e74]">No financing applications available at the moment.</div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {filteredLoans.map((loan: any, idx: number) => (
-              <div key={loan.id} className="bg-white rounded-xl shadow-sm border-2 border-transparent hover:border-emerald-200 hover:shadow-md transition-all overflow-hidden">
+              <div
+                key={loan.id}
+                className="bg-white rounded-xl shadow-sm border-2 border-transparent hover:border-emerald-200 hover:shadow-md transition-all overflow-hidden cursor-pointer"
+                onClick={() => setDetailLoan(loan)}
+              >
                 {/* Property Image */}
                 <div className="relative h-48 w-full overflow-hidden bg-slate-100">
                   <img
@@ -227,71 +246,42 @@ export default function LenderBiddingPage() {
                   <span className="absolute top-3 right-3 px-2 py-1 bg-emerald-500 text-white text-[10px] font-bold rounded-md uppercase tracking-wider">Available</span>
                 </div>
 
-                <div className="px-6 py-4 border-b border-slate-100 flex items-start justify-between">
-                  <div>
-                    <h3 className="font-bold text-[#131b2e] text-sm leading-tight">{loan.property_address || loan.borrower_name || "Financing Application"}</h3>
-                    <p className="text-xs text-slate-400 font-mono mt-0.5">Ref: {loan.id.slice(0, 8).toUpperCase()}</p>
-                  </div>
-                </div>
-
-                <div className="p-6 space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      <DollarSign className="h-4 w-4 text-emerald-600" />
-                      <span className="text-sm text-slate-600">Financing Amount</span>
+                <div className="p-5">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 className="font-bold text-[#131b2e] text-sm">{loan.property_address || "Financing Application"}</h3>
+                      <p className="text-xs text-slate-400 font-mono mt-0.5">Ref: {loan.id.slice(0, 8).toUpperCase()}</p>
                     </div>
-                    <span className="font-bold text-lg text-[#131b2e]">${parseFloat(loan.amount).toLocaleString()}</span>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-slate-400" />
-                      <span className="text-sm text-slate-600">Term</span>
-                    </div>
-                    <span className="font-semibold text-sm text-[#131b2e]">{loan.term} months</span>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="h-4 w-4 text-slate-400" />
-                      <span className="text-sm text-slate-600">Monthly Payment</span>
-                    </div>
-                    <span className="font-semibold text-sm text-emerald-600">
-                      ${(parseFloat(loan.amount) / parseInt(loan.term)).toFixed(2)}
+                    <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-1 rounded-md">
+                      {PROPERTY_TYPE_LABELS[loan.property_type] || "—"}
                     </span>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-100 space-y-1.5">
-                    {loan.borrower_name && (
-                      <div className="flex items-center gap-2">
-                        <User className="h-3.5 w-3.5 text-slate-400" />
-                        <span className="text-xs text-slate-600">{loan.borrower_name}</span>
-                      </div>
-                    )}
-                    {loan.property_address && (
-                      <div className="flex items-start gap-2">
-                        <MapPin className="h-3.5 w-3.5 text-slate-400 mt-0.5 shrink-0" />
-                        <span className="text-xs text-slate-600">{loan.property_address}</span>
-                      </div>
-                    )}
-                    {loan.employment_status && (
-                      <div className="flex items-center gap-2">
-                        <Briefcase className="h-3.5 w-3.5 text-slate-400" />
-                        <span className="text-xs text-slate-600 capitalize">{loan.employment_status}</span>
-                      </div>
-                    )}
+                  <div className="grid grid-cols-2 gap-3 mb-4">
+                    <div className="bg-slate-50 rounded-lg p-3">
+                      <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-0.5">Purchase Price</p>
+                      <p className="font-bold text-[#131b2e]">${parseFloat(loan.amount).toLocaleString()}</p>
+                    </div>
+                    <div className="bg-slate-50 rounded-lg p-3">
+                      <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-0.5">Term</p>
+                      <p className="font-bold text-[#131b2e]">{loan.term} mo</p>
+                    </div>
+                    <div className="bg-slate-50 rounded-lg p-3">
+                      <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-0.5">Down Payment</p>
+                      <p className="font-bold text-[#131b2e]">{loan.down_payment_percent ? `${loan.down_payment_percent}%` : "—"}</p>
+                    </div>
+                    <div className="bg-slate-50 rounded-lg p-3">
+                      <p className="text-[10px] uppercase tracking-wider text-slate-500 font-bold mb-0.5">Occupancy</p>
+                      <p className="font-bold text-[#131b2e] text-xs">{OCCUPANCY_LABELS[loan.occupancy_type] || "—"}</p>
+                    </div>
                   </div>
 
                   <button
-                    className="w-full py-3 text-white rounded-lg font-bold text-sm transition-colors mt-2"
-                    style={{ background: "linear-gradient(135deg, #006948, #00855d)" }}
-                    onClick={() => {
-                      setSelectedLoan(loan)
-                      setBidAmount(loan.amount)
-                      setError("")
-                    }}
+                    className="w-full py-2.5 rounded-lg font-bold text-sm flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 transition-colors"
+                    onClick={(e) => { e.stopPropagation(); setDetailLoan(loan) }}
                   >
-                    Place Bid
+                    <Info className="h-4 w-4" />
+                    View Full Profile
                   </button>
                 </div>
               </div>
@@ -300,14 +290,11 @@ export default function LenderBiddingPage() {
         )}
       </main>
 
-      {/* Footer */}
       <footer className="ml-64 bg-white border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-8 py-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
             <h4 className="text-lg font-bold text-slate-900 mb-2">Noor Financing</h4>
-            <p className="text-sm text-slate-500 max-w-md leading-relaxed">
-              © 2025 Noor Financing. Sharia-Compliant Ethical Investing.
-            </p>
+            <p className="text-sm text-slate-500">© 2026 Noor Financing. Sharia-Compliant Ethical Investing.</p>
           </div>
           <div className="flex flex-wrap gap-6 md:justify-end">
             <a className="text-xs uppercase tracking-widest font-bold text-slate-500 hover:text-emerald-600 transition-all" href="#">Privacy Policy</a>
@@ -317,17 +304,112 @@ export default function LenderBiddingPage() {
         </div>
       </footer>
 
-      {/* Bid Modal */}
-      {selectedLoan && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-6 z-50">
+      {/* Detail Panel */}
+      {detailLoan && !offerLoan && (
+        <div className="fixed inset-0 bg-black/50 flex items-start justify-end z-50" onClick={() => setDetailLoan(null)}>
+          <div
+            className="bg-white h-full w-full max-w-xl shadow-2xl overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="sticky top-0 bg-white border-b border-slate-100 px-6 py-5 flex items-center justify-between z-10">
+              <div>
+                <h2 className="text-lg font-bold text-[#131b2e]">Borrower Profile</h2>
+                <p className="text-xs text-slate-400 font-mono">Ref: {detailLoan.id.slice(0, 8).toUpperCase()}</p>
+              </div>
+              <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors" onClick={() => setDetailLoan(null)}>
+                <X className="h-5 w-5 text-slate-500" />
+              </button>
+            </div>
+
+            {/* Property Image */}
+            <div className="relative h-52 w-full overflow-hidden">
+              <img
+                src={["/house1.jpg","/house2.jpg","/house3.avif","/house4.webp","/house5.webp","/house6.jpg"][loans.indexOf(detailLoan) % 6]}
+                alt={detailLoan.property_address || "Property"}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute bottom-4 left-5 text-white">
+                <p className="font-bold text-sm">{detailLoan.property_address || "Property"}</p>
+                <p className="text-xs text-white/80">{PROPERTY_TYPE_LABELS[detailLoan.property_type] || ""}</p>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Property Details */}
+              <section>
+                <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-2">
+                  <Home className="h-3.5 w-3.5" /> Property Details
+                </h3>
+                <div className="bg-slate-50 rounded-xl p-4">
+                  <DetailRow label="Address" value={detailLoan.property_address} />
+                  <DetailRow label="Home to Finance" value={detailLoan.property_address} />
+                  <DetailRow label="Property Type" value={PROPERTY_TYPE_LABELS[detailLoan.property_type]} />
+                  <DetailRow label="Occupancy" value={OCCUPANCY_LABELS[detailLoan.occupancy_type]} />
+                  <DetailRow label="Est. Property Value" value={detailLoan.property_value ? `$${parseFloat(detailLoan.property_value).toLocaleString()}` : null} />
+                  <DetailRow label="First Time Buyer" value={detailLoan.first_time_buyer === "yes" ? "Yes" : detailLoan.first_time_buyer === "no" ? "No" : null} />
+                  <DetailRow label="Co-Borrower" value={detailLoan.has_co_borrower === "yes" ? "Yes" : detailLoan.has_co_borrower === "no" ? "No" : null} />
+                </div>
+              </section>
+
+              {/* Financing Details */}
+              <section>
+                <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-2">
+                  <DollarSign className="h-3.5 w-3.5" /> Financing Request
+                </h3>
+                <div className="bg-slate-50 rounded-xl p-4">
+                  <DetailRow label="Financing Type" value={LOAN_TYPE_LABELS[detailLoan.loan_type]} />
+                  <DetailRow label="Purpose" value={PURPOSE_LABELS[detailLoan.purpose]} />
+                  <DetailRow label="Est. Purchase Price" value={detailLoan.amount ? `$${parseFloat(detailLoan.amount).toLocaleString()}` : null} />
+                  <DetailRow label="Repayment Term" value={detailLoan.term ? `${detailLoan.term} months` : null} />
+                  <DetailRow label="Down Payment" value={detailLoan.down_payment_percent ? `${detailLoan.down_payment_percent}%` : null} />
+                </div>
+              </section>
+
+              {/* Borrower Profile */}
+              <section>
+                <h3 className="text-xs font-black uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-2">
+                  <Briefcase className="h-3.5 w-3.5" /> Borrower Profile
+                </h3>
+                <div className="bg-slate-50 rounded-xl p-4">
+                  <DetailRow label="Employment Status" value={detailLoan.employment_status ? detailLoan.employment_status.replace(/-/g, " ") : null} />
+                  <DetailRow label="Annual Income" value={detailLoan.annual_income ? `$${parseFloat(detailLoan.annual_income).toLocaleString()}` : null} />
+                  <DetailRow label="Credit Score" value={detailLoan.credit_score} />
+                  <DetailRow label="Date of Birth" value={detailLoan.date_of_birth} />
+                  <DetailRow label="Buying Stage" value={detailLoan.buying_stage?.replace(/_/g, " ")} />
+                  <DetailRow label="Home Address" value={detailLoan.address} />
+                </div>
+              </section>
+
+              {/* Send Offer CTA */}
+              <button
+                className="w-full py-4 text-white rounded-xl font-bold text-sm transition-all hover:opacity-90 shadow-lg"
+                style={{ background: "linear-gradient(135deg, #006948, #00855d)" }}
+                onClick={() => {
+                  setOfferData({ profit_rate: "", apr: "", monthly_payment: "", note: "" })
+                  setError("")
+                  setOfferLoan(detailLoan)
+                }}
+              >
+                Send Offer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Send Offer Modal */}
+      {offerLoan && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-6 z-50">
           <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl">
             <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
-              <h2 className="text-lg font-bold text-[#131b2e]">Place Your Bid</h2>
-              <button
-                className="text-slate-400 hover:text-slate-600 transition-colors"
-                onClick={() => { setSelectedLoan(null); setBidAmount(""); setError("") }}
-              >
-                <X className="h-5 w-5" />
+              <div>
+                <h2 className="text-lg font-bold text-[#131b2e]">Send Financing Offer</h2>
+                <p className="text-xs text-slate-500 mt-0.5">{offerLoan.property_address || "Application"}</p>
+              </div>
+              <button className="p-1 hover:bg-slate-100 rounded-lg transition-colors" onClick={() => { setOfferLoan(null); setError("") }}>
+                <X className="h-5 w-5 text-slate-500" />
               </button>
             </div>
 
@@ -338,51 +420,93 @@ export default function LenderBiddingPage() {
                 </Alert>
               )}
 
-              <div className="bg-slate-50 p-4 rounded-xl">
-                <p className="font-bold text-sm text-[#131b2e] mb-1">
-                  {selectedLoan.property_address || selectedLoan.borrower_name || "Financing Application"}
-                </p>
-                <p className="text-sm text-slate-600">Requested: <strong>${parseFloat(selectedLoan.amount).toLocaleString()}</strong></p>
-                <p className="text-sm text-slate-600">Term: <strong>{selectedLoan.term} months</strong></p>
+              <div className="bg-slate-50 rounded-xl p-4 text-sm">
+                <p className="font-bold text-[#131b2e]">{offerLoan.property_address || "Financing Application"}</p>
+                <p className="text-slate-500 mt-1">Requested: <strong>${parseFloat(offerLoan.amount).toLocaleString()}</strong> · {offerLoan.term} months</p>
               </div>
 
+              <p className="text-xs text-slate-500">Enter the loan terms you are willing to offer. Fill in the fields that apply.</p>
+
+              {/* Profit Rate */}
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Your Bid Amount</label>
-                <div className="relative">
-                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold">$</span>
-                  <input
-                    type="number"
-                    value={bidAmount}
-                    onChange={(e) => setBidAmount(e.target.value)}
-                    className="w-full pl-8 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none"
-                    placeholder="Enter bid amount"
-                  />
-                </div>
-                <p className="text-xs text-slate-500 mt-1">You can bid the full amount or a portion of it</p>
+                <label className="flex text-sm font-medium text-slate-700 mb-1.5 items-center gap-2">
+                  <Percent className="h-4 w-4" />
+                  Profit Rate (%)
+                </label>
+                <input
+                  type="number"
+                  value={offerData.profit_rate}
+                  onChange={(e) => setOfferData({ ...offerData, profit_rate: e.target.value })}
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm"
+                  placeholder="e.g. 5.25"
+                  step="0.01"
+                  min="0"
+                />
               </div>
 
-              <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
-                <p className="text-sm text-emerald-900 font-medium">0% Interest · Sharia Compliant</p>
-                <p className="text-xs text-emerald-800 mt-1">You'll receive back exactly what you contribute — no interest charged.</p>
+              {/* APR */}
+              <div>
+                <label className="flex text-sm font-medium text-slate-700 mb-1.5 items-center gap-2">
+                  <TrendingUp className="h-4 w-4" />
+                  APR (%)
+                </label>
+                <input
+                  type="number"
+                  value={offerData.apr}
+                  onChange={(e) => setOfferData({ ...offerData, apr: e.target.value })}
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm"
+                  placeholder="e.g. 5.50"
+                  step="0.01"
+                  min="0"
+                />
               </div>
 
-              {!currentUser && (
-                <p className="text-sm text-amber-600 font-medium text-center">You must be logged in to place a bid.</p>
-              )}
+              {/* Monthly Payment */}
+              <div>
+                <label className="flex text-sm font-medium text-slate-700 mb-1.5 items-center gap-2">
+                  <DollarSign className="h-4 w-4" />
+                  Total Monthly Payment ($)
+                </label>
+                <input
+                  type="number"
+                  value={offerData.monthly_payment}
+                  onChange={(e) => setOfferData({ ...offerData, monthly_payment: e.target.value })}
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm"
+                  placeholder="e.g. 1850.00"
+                  step="0.01"
+                  min="0"
+                />
+              </div>
 
-              <div className="flex gap-3 pt-2">
-                <Button variant="outline" className="flex-1" onClick={() => { setSelectedLoan(null); setBidAmount(""); setError("") }}>
-                  Cancel
-                </Button>
+              {/* Note */}
+              <div>
+                <label className="text-sm font-medium text-slate-700 mb-1.5 block">Note (optional)</label>
+                <textarea
+                  value={offerData.note}
+                  onChange={(e) => setOfferData({ ...offerData, note: e.target.value })}
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none text-sm"
+                  rows={2}
+                  placeholder="Any additional terms or conditions..."
+                />
+              </div>
+
+              <div className="bg-emerald-50 p-3 rounded-xl border border-emerald-100">
+                <p className="text-sm text-emerald-900 font-medium">Sharia-Compliant Offer</p>
+                <p className="text-xs text-emerald-800 mt-0.5">All financing is structured to be interest-free and compliant with Islamic finance principles.</p>
+              </div>
+
+              <div className="flex gap-3 pt-1">
+                <Button variant="outline" className="flex-1" onClick={() => { setOfferLoan(null); setError("") }}>Cancel</Button>
                 <button
-                  className="flex-1 py-2 text-white rounded-lg font-bold text-sm disabled:opacity-60 transition-opacity"
+                  className="flex-1 py-2.5 text-white rounded-lg font-bold text-sm disabled:opacity-60 transition-opacity"
                   style={{ background: "linear-gradient(135deg, #006948, #00855d)" }}
-                  onClick={handleBid}
-                  disabled={bidSubmitting || !currentUser}
+                  onClick={handleSendOffer}
+                  disabled={offerSubmitting || !currentUser}
                 >
-                  {bidSubmitting ? "Submitting..." : "Submit Bid"}
+                  {offerSubmitting ? "Sending..." : "Send Offer"}
                 </button>
               </div>
+              {!currentUser && <p className="text-sm text-amber-600 font-medium text-center">You must be logged in to send an offer.</p>}
             </div>
           </div>
         </div>

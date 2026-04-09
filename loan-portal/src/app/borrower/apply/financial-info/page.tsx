@@ -68,7 +68,7 @@ export default function ApplyStep3() {
       ...existingData,
       ...formData
     }))
-    window.location.href = "/borrower/apply/property-details"
+    window.location.href = "/borrower/apply/propertly-details"
   }
 
   return (
@@ -105,7 +105,7 @@ export default function ApplyStep3() {
             <div>
               <label className="flex text-sm font-medium text-slate-700 mb-2 items-center gap-2">
                 <DollarSign className="h-4 w-4" />
-                Financing Amount Requested *
+                Estimated Purchase Price *
               </label>
               <input
                 type="number"
@@ -125,17 +125,16 @@ export default function ApplyStep3() {
                 <Calendar className="h-4 w-4" />
                 Repayment Term *
               </label>
-              <select
+              <input
+                type="number"
                 name="term"
                 value={formData.term}
                 onChange={handleChange}
                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              >
-                <option value="">Select term</option>
-                <option value="180">15 years</option>
-                <option value="240">20 years</option>
-                <option value="360">30 years</option>
-              </select>
+                placeholder="e.g. 360"
+                min="1"
+              />
+              <p className="text-xs text-slate-500 mt-1">Enter term in months (e.g. 180 = 15 yrs, 240 = 20 yrs, 360 = 30 yrs)</p>
             </div>
 
             {/* Employment Status */}

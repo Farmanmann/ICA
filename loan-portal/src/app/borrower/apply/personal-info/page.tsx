@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { MapPin, ArrowRight, Building, Briefcase, Home } from "lucide-react"
+import { MapPin, ArrowRight, Building, Briefcase, Home, Calendar } from "lucide-react"
 
 interface LoanOption {
   value: string
@@ -16,7 +16,9 @@ export default function ApplyStep1() {
     loan_type: "murabaha",
     purpose: "",
     home_address: "",
-    buying_stage: ""
+    buying_stage: "",
+    date_of_birth: "",
+    credit_event: ""
   })
   const loanTypes: LoanOption[] = [
     { value: "murabaha", label: "Murabaha (Cost-Plus Financing)" },
@@ -45,7 +47,9 @@ export default function ApplyStep1() {
         loan_type: data.loan_type || "murabaha",
         purpose: data.purpose || "",
         home_address: data.home_address || "",
-        buying_stage: data.buying_stage || ""
+        buying_stage: data.buying_stage || "",
+        date_of_birth: data.date_of_birth || "",
+        credit_event: data.credit_event || ""
       })
     }
   }, [])
@@ -60,7 +64,7 @@ export default function ApplyStep1() {
   const handleNext = () => {
     setError("")
 
-    if (!formData.loan_type || !formData.purpose || !formData.buying_stage) {
+    if (!formData.loan_type || !formData.purpose || !formData.buying_stage || !formData.home_address || !formData.date_of_birth || !formData.credit_event) {
       setError("Please fill in all required fields")
       return
     }
@@ -185,6 +189,57 @@ export default function ApplyStep1() {
                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 placeholder="123 Main St, City, State, ZIP"
               />
+            </div>
+
+            {/* Date of Birth */}
+            <div>
+              <label className="flex text-sm font-medium text-slate-700 mb-2 items-center gap-2">
+                <Calendar className="h-4 w-4" />
+                Date of Birth *
+              </label>
+              <input
+                type="date"
+                name="date_of_birth"
+                value={formData.date_of_birth}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split("T")[0]}
+              />
+              <p className="text-xs text-slate-500 mt-1">You must be at least 18 years old to apply</p>
+            </div>
+
+            {/* Credit Event */}
+            <div>
+              <label className="flex text-sm font-medium text-slate-700 mb-3 items-center gap-2">
+                Have you had a foreclosure or bankruptcy in the last 10 years? *
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { value: "no", label: "No" },
+                  { value: "yes", label: "Yes" },
+                  { value: "bankruptcy", label: "Bankruptcy" },
+                  { value: "foreclosure", label: "Foreclosure" },
+                ].map((opt) => (
+                  <label
+                    key={opt.value}
+                    className={`flex items-center justify-center p-3 rounded-lg border-2 cursor-pointer transition-all text-sm font-medium ${
+                      formData.credit_event === opt.value
+                        ? "border-blue-500 bg-blue-50 text-blue-700"
+                        : "border-slate-200 hover:border-slate-300 text-slate-700"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="credit_event"
+                      value={opt.value}
+                      checked={formData.credit_event === opt.value}
+                      onChange={handleChange}
+                      className="hidden"
+                    />
+                    {opt.label}
+                  </label>
+                ))}
+              </div>
             </div>
 
             {/* Navigation */}

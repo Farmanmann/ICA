@@ -4,17 +4,17 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Home, DollarSign, ArrowRight, ArrowLeft, Car } from "lucide-react"
+import { Home, DollarSign, ArrowRight, ArrowLeft, Percent, Users } from "lucide-react"
 
 export default function ApplyStep2() {
   const [formData, setFormData] = useState({
-    purpose: "",
     property_address: "",
     property_value: "",
-    vehicle_make: "",
-    vehicle_model: "",
-    vehicle_year: "",
-    vehicle_value: ""
+    property_type: "",
+    occupancy_type: "",
+    down_payment_percent: "",
+    first_time_buyer: "",
+    has_co_borrower: ""
   })
   const [error, setError] = useState("")
 
@@ -23,38 +23,42 @@ export default function ApplyStep2() {
     if (saved) {
       const data = JSON.parse(saved)
       setFormData({
-        purpose: data.purpose || "",
         property_address: data.property_address || "",
         property_value: data.property_value || "",
-        vehicle_make: data.vehicle_make || "",
-        vehicle_model: data.vehicle_model || "",
-        vehicle_year: data.vehicle_year || "",
-        vehicle_value: data.vehicle_value || ""
+        property_type: data.property_type || "",
+        occupancy_type: data.occupancy_type || "",
+        down_payment_percent: data.down_payment_percent || "",
+        first_time_buyer: data.first_time_buyer || "",
+        has_co_borrower: data.has_co_borrower || ""
       })
     }
   }, [])
 
   const handleChange = (e: any) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
+    setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
   const handleNext = () => {
     setError("")
-
-    // Validate based on purpose
-    if (formData.purpose === "property" || formData.purpose === "renovation") {
-      if (!formData.property_address) {
-        setError("Please enter the property address")
-        return
-      }
-    } else if (formData.purpose === "car") {
-      if (!formData.vehicle_make || !formData.vehicle_model || !formData.vehicle_year) {
-        setError("Please fill in all vehicle details")
-        return
-      }
+    if (!formData.property_address) {
+      setError("Please enter the property address")
+      return
+    }
+    if (!formData.property_type) {
+      setError("Please select a property type")
+      return
+    }
+    if (!formData.occupancy_type) {
+      setError("Please select how you will use this property")
+      return
+    }
+    if (!formData.first_time_buyer) {
+      setError("Please indicate if this is your first home purchase")
+      return
+    }
+    if (!formData.has_co_borrower) {
+      setError("Please indicate if you will have a co-borrower")
+      return
     }
 
     const saved = localStorage.getItem("loanApplication")
@@ -64,17 +68,13 @@ export default function ApplyStep2() {
       ...formData,
       currentStep: 2
     }))
-
     window.location.href = "/borrower/apply/financial-info"
   }
 
   const handleBack = () => {
     const saved = localStorage.getItem("loanApplication")
     const existingData = saved ? JSON.parse(saved) : {}
-    localStorage.setItem("loanApplication", JSON.stringify({
-      ...existingData,
-      ...formData
-    }))
+    localStorage.setItem("loanApplication", JSON.stringify({ ...existingData, ...formData }))
     window.location.href = "/borrower/apply/personal-info"
   }
 
@@ -83,7 +83,7 @@ export default function ApplyStep2() {
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-slate-900 mb-2">Apply for Financing</h1>
-          <p className="text-slate-600">Step 2 of 5: Asset Details</p>
+          <p className="text-slate-600">Step 2 of 5: Property Details</p>
         </div>
 
         <div className="mb-8">
@@ -92,7 +92,7 @@ export default function ApplyStep2() {
             <span className="text-sm text-slate-600">40% Complete</span>
           </div>
           <div className="w-full bg-slate-200 rounded-full h-2">
-            <div className="bg-blue-600 h-2 rounded-full transition-all duration-500" style={{ width: "40%" }}></div>
+            <div className="bg-blue-600 h-2 rounded-full transition-all duration-500" style={{ width: "40%" }} />
           </div>
         </div>
 
@@ -104,131 +104,171 @@ export default function ApplyStep2() {
 
         <Card>
           <CardHeader>
-            <CardTitle>
-              {formData.purpose === "car" ? "Vehicle Information" : "Property Information"}
-            </CardTitle>
-            <p className="text-sm text-slate-600">
-              {formData.purpose === "car"
-                ? "Tell us about the vehicle you want to finance"
-                : "Tell us about the home"}
-            </p>
+            <CardTitle>Property Information</CardTitle>
+            <p className="text-sm text-slate-600">Tell us about the home you want to finance</p>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Property Fields - Show for property, renovation */}
-            {(formData.purpose === "property" || formData.purpose === "renovation") && (
-              <>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
-                    <Home className="h-4 w-4" />
-                    Home Address *
-                  </label>
-                  <textarea
-                    name="property_address"
-                    value={formData.property_address}
-                    onChange={handleChange}
-                    rows={3}
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="456 Home Ave, City, State, ZIP"
-                  />
-                </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
-                    <DollarSign className="h-4 w-4" />
-                    Estimated Home Value
-                  </label>
-                  <input
-                    type="number"
-                    name="property_value"
-                    value={formData.property_value}
-                    onChange={handleChange}
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="150000"
-                  />
-                </div>
-              </>
-            )}
+            {/* Property Address */}
+            <div>
+              <label className="flex text-sm font-medium text-slate-700 mb-2 items-center gap-2">
+                <Home className="h-4 w-4" />
+                Property Address *
+              </label>
+              <textarea
+                name="property_address"
+                value={formData.property_address}
+                onChange={handleChange}
+                rows={3}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                placeholder="456 Oak Street, City, State, ZIP"
+              />
+              <p className="text-xs text-slate-500 mt-1">Enter the address of the property you wish to finance. If not yet identified, enter your target city/area.</p>
+            </div>
 
-            {/* Vehicle Fields - Show for car */}
-            {formData.purpose === "car" && (
-              <>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
-                    <Car className="h-4 w-4" />
-                    Vehicle Make *
-                  </label>
-                  <input
-                    type="text"
-                    name="vehicle_make"
-                    value={formData.vehicle_make}
-                    onChange={handleChange}
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="e.g., Toyota, Honda, Ford"
-                  />
-                </div>
+            {/* Estimated Home Value */}
+            <div>
+              <label className="flex text-sm font-medium text-slate-700 mb-2 items-center gap-2">
+                <DollarSign className="h-4 w-4" />
+                Estimated Home Value
+              </label>
+              <input
+                type="number"
+                name="property_value"
+                value={formData.property_value}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                placeholder="350000"
+              />
+            </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
-                    <Car className="h-4 w-4" />
-                    Vehicle Model *
-                  </label>
-                  <input
-                    type="text"
-                    name="vehicle_model"
-                    value={formData.vehicle_model}
-                    onChange={handleChange}
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="e.g., Camry, Accord, F-150"
-                  />
-                </div>
+            {/* Property Type */}
+            <div>
+              <label className="flex text-sm font-medium text-slate-700 mb-2 items-center gap-2">
+                <Home className="h-4 w-4" />
+                Property Type *
+              </label>
+              <select
+                name="property_type"
+                value={formData.property_type}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              >
+                <option value="">Select property type</option>
+                <option value="single_family">Single Family Home</option>
+                <option value="townhome">Townhome</option>
+                <option value="condominium">Condominium</option>
+                <option value="multi_family">Multi-Family Home (2–4 units)</option>
+              </select>
+            </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
-                    <Car className="h-4 w-4" />
-                    Vehicle Year *
-                  </label>
-                  <input
-                    type="number"
-                    name="vehicle_year"
-                    value={formData.vehicle_year}
-                    onChange={handleChange}
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="2024"
-                    min="1900"
-                    max="2025"
-                  />
-                </div>
+            {/* Occupancy Type */}
+            <div>
+              <label className="flex text-sm font-medium text-slate-700 mb-2 items-center gap-2">
+                <Home className="h-4 w-4" />
+                How will you use this property? *
+              </label>
+              <select
+                name="occupancy_type"
+                value={formData.occupancy_type}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              >
+                <option value="">Select occupancy type</option>
+                <option value="primary">Primary Residence</option>
+                <option value="secondary">Secondary / Vacation Home</option>
+                <option value="investment">Investment Property</option>
+              </select>
+            </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
-                    <DollarSign className="h-4 w-4" />
-                    Estimated Vehicle Value
-                  </label>
-                  <input
-                    type="number"
-                    name="vehicle_value"
-                    value={formData.vehicle_value}
-                    onChange={handleChange}
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="25000"
-                  />
+            {/* Down Payment */}
+            <div>
+              <label className="flex text-sm font-medium text-slate-700 mb-2 items-center gap-2">
+                <Percent className="h-4 w-4" />
+                Down Payment Percentage
+              </label>
+              <input
+                type="number"
+                name="down_payment_percent"
+                value={formData.down_payment_percent}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                placeholder="20"
+                min="0"
+                max="100"
+              />
+              <p className="text-xs text-slate-500 mt-1">Enter the percentage you plan to put down (e.g. 20 for 20%)</p>
+            </div>
+
+            <div className="border-t pt-6 space-y-5">
+              {/* First Time Buyer */}
+              <div>
+                <label className="flex text-sm font-medium text-slate-700 mb-3 items-center gap-2">
+                  <Home className="h-4 w-4" />
+                  Is this your first time buying a home? *
+                </label>
+                <div className="flex gap-3">
+                  {["yes", "no"].map((val) => (
+                    <label
+                      key={val}
+                      className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                        formData.first_time_buyer === val
+                          ? "border-blue-500 bg-blue-50 text-blue-700 font-semibold"
+                          : "border-slate-200 hover:border-slate-300"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="first_time_buyer"
+                        value={val}
+                        checked={formData.first_time_buyer === val}
+                        onChange={handleChange}
+                        className="hidden"
+                      />
+                      {val === "yes" ? "Yes, first time" : "No, I've owned before"}
+                    </label>
+                  ))}
                 </div>
-              </>
-            )}
+              </div>
+
+              {/* Co-Borrower */}
+              <div>
+                <label className="flex text-sm font-medium text-slate-700 mb-3 items-center gap-2">
+                  <Users className="h-4 w-4" />
+                  Will you have a co-borrower? *
+                </label>
+                <div className="flex gap-3">
+                  {["yes", "no"].map((val) => (
+                    <label
+                      key={val}
+                      className={`flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${
+                        formData.has_co_borrower === val
+                          ? "border-blue-500 bg-blue-50 text-blue-700 font-semibold"
+                          : "border-slate-200 hover:border-slate-300"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="has_co_borrower"
+                        value={val}
+                        checked={formData.has_co_borrower === val}
+                        onChange={handleChange}
+                        className="hidden"
+                      />
+                      {val === "yes" ? "Yes" : "No"}
+                    </label>
+                  ))}
+                </div>
+                <p className="text-xs text-slate-500 mt-2">A co-borrower shares responsibility for the financing with you</p>
+              </div>
+            </div>
 
             <div className="flex gap-3 pt-4">
-              <Button
-                variant="outline"
-                onClick={handleBack}
-                className="flex-1"
-              >
+              <Button variant="outline" onClick={handleBack} className="flex-1">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Previous
               </Button>
-              <Button
-                onClick={handleNext}
-                className="flex-1 bg-blue-600 hover:bg-blue-700"
-              >
+              <Button onClick={handleNext} className="flex-1 bg-blue-600 hover:bg-blue-700">
                 Next Step
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
