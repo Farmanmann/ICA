@@ -37,13 +37,6 @@ export default function ApplyStep3() {
     })
   }
 
-  const calculateMonthlyPayment = () => {
-    if (formData.amount && formData.term) {
-      return (parseFloat(formData.amount) / parseInt(formData.term)).toFixed(2)
-    }
-    return "0.00"
-  }
-
   const handleNext = () => {
     setError("")
 
@@ -110,7 +103,7 @@ export default function ApplyStep3() {
           <CardContent className="space-y-6">
             {/* Loan Amount */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+              <label className="flex text-sm font-medium text-slate-700 mb-2 items-center gap-2">
                 <DollarSign className="h-4 w-4" />
                 Financing Amount Requested *
               </label>
@@ -128,7 +121,7 @@ export default function ApplyStep3() {
 
             {/* Loan Term */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+              <label className="flex text-sm font-medium text-slate-700 mb-2 items-center gap-2">
                 <Calendar className="h-4 w-4" />
                 Repayment Term *
               </label>
@@ -139,30 +132,15 @@ export default function ApplyStep3() {
                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
               >
                 <option value="">Select term</option>
-                <option value="12">12 months</option>
-                <option value="24">24 months</option>
-                <option value="36">36 months</option>
-                <option value="48">48 months</option>
-                <option value="60">60 months</option>
+                <option value="180">15 years</option>
+                <option value="240">20 years</option>
+                <option value="360">30 years</option>
               </select>
             </div>
 
-            {/* Monthly Payment Preview */}
-            {formData.amount && formData.term && (
-              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                <p className="text-sm font-medium text-blue-900 mb-1">Estimated Monthly Payment</p>
-                <p className="text-3xl font-bold text-blue-600">
-                  ${calculateMonthlyPayment()}
-                </p>
-                <p className="text-xs text-blue-800 mt-2">
-                  Interest-free • Total repayment: ${parseFloat(formData.amount).toLocaleString()}
-                </p>
-              </div>
-            )}
-
             {/* Employment Status */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+              <label className="flex text-sm font-medium text-slate-700 mb-2 items-center gap-2">
                 <Briefcase className="h-4 w-4" />
                 Employment Status
               </label>
@@ -182,7 +160,7 @@ export default function ApplyStep3() {
 
             {/* Annual Income */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+              <label className="flex text-sm font-medium text-slate-700 mb-2 items-center gap-2">
                 <TrendingUp className="h-4 w-4" />
                 Annual Income
               </label>

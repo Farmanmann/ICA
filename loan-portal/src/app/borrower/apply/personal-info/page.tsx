@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { User, Mail, Phone, MapPin, ArrowRight, Building, Briefcase } from "lucide-react"
+import { MapPin, ArrowRight, Building, Briefcase, Home } from "lucide-react"
 
 interface LoanOption {
   value: string
@@ -13,41 +13,39 @@ interface LoanOption {
 
 export default function ApplyStep1() {
   const [formData, setFormData] = useState({
-    borrower_name: "",
-    email: "",
-    phone: "",
-    address: "",
     loan_type: "murabaha",
-    purpose: ""
+    purpose: "",
+    home_address: "",
+    buying_stage: ""
   })
   const loanTypes: LoanOption[] = [
     { value: "murabaha", label: "Murabaha (Cost-Plus Financing)" },
-    { value: "ijara", label: "Ijara (Lease-to-Own)" },
-    { value: "musharaka", label: "Musharaka (Partnership)" },
-    { value: "diminishing_musharaka", label: "Diminishing Musharaka" },
+    { value: "musharaka", label: "Musharakah (Partnership)" },
+    { value: "no_preference", label: "No Preference" },
   ]
   const purposes: LoanOption[] = [
-    { value: "property", label: "Home Purchase" },
-    { value: "renovation", label: "Home Renovation" },
-    { value: "car", label: "Vehicle Purchase" },
-    { value: "business", label: "Business Financing" },
-    { value: "education", label: "Education" },
-    { value: "other", label: "Other" },
+    { value: "home_purchase", label: "Home Purchase" },
+    { value: "refinance", label: "Refinance" },
+    { value: "investment_home", label: "Investment Home" },
+  ]
+  const buyingStages: LoanOption[] = [
+    { value: "just_exploring", label: "Just exploring my options" },
+    { value: "researching", label: "Researching and comparing lenders" },
+    { value: "found_home", label: "I found a home I want to buy" },
+    { value: "under_contract", label: "I'm under contract" },
+    { value: "refinancing", label: "I'm looking to refinance my current home" },
   ]
   const [error, setError] = useState("")
 
   useEffect(() => {
-    // Load saved data from localStorage
     const saved = localStorage.getItem("loanApplication")
     if (saved) {
       const data = JSON.parse(saved)
       setFormData({
-        borrower_name: data.borrower_name || "",
-        email: data.email || "",
-        phone: data.phone || "",
-        address: data.address || "",
         loan_type: data.loan_type || "murabaha",
-        purpose: data.purpose || ""
+        purpose: data.purpose || "",
+        home_address: data.home_address || "",
+        buying_stage: data.buying_stage || ""
       })
     }
   }, [])
@@ -62,20 +60,11 @@ export default function ApplyStep1() {
   const handleNext = () => {
     setError("")
 
-    // Validation
-    if (!formData.borrower_name || !formData.email || !formData.phone || !formData.loan_type || !formData.purpose) {
+    if (!formData.loan_type || !formData.purpose || !formData.buying_stage) {
       setError("Please fill in all required fields")
       return
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(formData.email)) {
-      setError("Please enter a valid email address")
-      return
-    }
-
-    // Save to localStorage
     const saved = localStorage.getItem("loanApplication")
     const existingData = saved ? JSON.parse(saved) : {}
     localStorage.setItem("loanApplication", JSON.stringify({
@@ -84,7 +73,6 @@ export default function ApplyStep1() {
       currentStep: 1
     }))
 
-    // Navigate to next step
     window.location.href = "/borrower/apply/propertly-details"
   }
 
@@ -117,12 +105,12 @@ export default function ApplyStep1() {
         <Card>
           <CardHeader>
             <CardTitle>Financing Application</CardTitle>
-            <p className="text-sm text-slate-600">Tell us about yourself and the financing you need</p>
+            <p className="text-sm text-slate-600">Tell us about the financing you need</p>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Loan Type */}
+            {/* Financing Type */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+              <label className="flex text-sm font-medium text-slate-700 mb-2 items-center gap-2">
                 <Building className="h-4 w-4" />
                 Financing Type *
               </label>
@@ -141,9 +129,9 @@ export default function ApplyStep1() {
               </p>
             </div>
 
-            {/* Purpose */}
+            {/* Financing Purpose */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+              <label className="flex text-sm font-medium text-slate-700 mb-2 items-center gap-2">
                 <Briefcase className="h-4 w-4" />
                 Financing Purpose *
               </label>
@@ -160,67 +148,38 @@ export default function ApplyStep1() {
               </select>
             </div>
 
+            {/* Where in Buying Process */}
+            <div>
+              <label className="flex text-sm font-medium text-slate-700 mb-2 items-center gap-2">
+                <Home className="h-4 w-4" />
+                Where are you in the home buying process? *
+              </label>
+              <select
+                name="buying_stage"
+                value={formData.buying_stage}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              >
+                <option value="">Select your stage</option>
+                {buyingStages.map(stage => (
+                  <option key={stage.value} value={stage.value}>{stage.label}</option>
+                ))}
+              </select>
+            </div>
+
             <div className="border-t pt-6">
               <h3 className="text-lg font-semibold text-slate-900 mb-4">Personal Information</h3>
             </div>
 
-            {/* Full Name */}
+            {/* Home Address */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
-                <User className="h-4 w-4" />
-                Full Name *
-              </label>
-              <input
-                type="text"
-                name="borrower_name"
-                value={formData.borrower_name}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                placeholder="John Doe"
-              />
-            </div>
-
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
-                <Mail className="h-4 w-4" />
-                Email Address *
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                placeholder="john@example.com"
-              />
-            </div>
-
-            {/* Phone */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
-                <Phone className="h-4 w-4" />
-                Phone Number *
-              </label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                placeholder="(555) 123-4567"
-              />
-            </div>
-
-            {/* Address */}
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2 flex items-center gap-2">
+              <label className="flex text-sm font-medium text-slate-700 mb-2 items-center gap-2">
                 <MapPin className="h-4 w-4" />
-                Current Address
+                Home Address *
               </label>
               <textarea
-                name="address"
-                value={formData.address}
+                name="home_address"
+                value={formData.home_address}
                 onChange={handleChange}
                 rows={3}
                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"

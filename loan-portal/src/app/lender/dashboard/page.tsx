@@ -171,43 +171,31 @@ export default function LenderDashboard() {
         )}
 
         {/* Stats Row */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
           <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#565e74] mb-2">Total Invested</p>
-            <div className="flex items-baseline gap-2">
-              <h3 className="text-4xl font-black text-[#131b2e]">${stats.totalInvested.toLocaleString()}</h3>
-              <span className="text-emerald-600 text-xs font-bold flex items-center gap-0.5">
-                <Icon name="trending_up" className="text-[14px]" />
-                8%
-              </span>
-            </div>
-            <p className="text-sm text-[#565e74]/70 mt-1">Across {stats.activeLoans} properties</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-[#565e74] mb-2">Offers Sent</p>
+            <h3 className="text-4xl font-black text-[#131b2e]">{loading ? "—" : myBids.length}</h3>
+            <p className="text-sm text-[#565e74]/70 mt-1">Total offers submitted</p>
           </div>
 
           <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#565e74] mb-2">Active Financing</p>
-            <h3 className="text-4xl font-black text-[#131b2e]">{stats.activeLoans}</h3>
-            <p className="text-sm text-[#565e74]/70 mt-1">Currently funding</p>
-          </div>
-
-          <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#565e74] mb-2">Pending Bids</p>
-            <h3 className="text-4xl font-black text-[#131b2e]">{stats.pendingBids}</h3>
-            <p className="text-sm text-[#565e74]/70 mt-1">Awaiting decision</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-[#565e74] mb-2">Offers Accepted</p>
+            <h3 className="text-4xl font-black text-[#131b2e]">{loading ? "—" : stats.activeLoans}</h3>
+            <p className="text-sm text-[#565e74]/70 mt-1">Accepted by borrowers</p>
           </div>
         </section>
 
-        {/* My Investments Table */}
+        {/* My Offers Table */}
         <section id="investments" className="bg-white rounded-xl shadow-sm overflow-hidden mb-12">
           <div className="px-8 py-6 border-b border-[#eaedff]">
-            <h4 className="text-xl font-bold text-[#131b2e]">My Investments</h4>
+            <h4 className="text-xl font-bold text-[#131b2e]">My Offers</h4>
           </div>
           <div className="overflow-x-auto">
             {loading ? (
               <div className="py-12 text-center text-[#565e74]">Loading investments...</div>
             ) : myBids.length === 0 ? (
               <div className="py-12 text-center text-[#565e74]">
-                <p className="mb-2 font-medium">No bids placed yet.</p>
+                <p className="mb-2 font-medium">No offers sent yet.</p>
                 <a href="/lender/bidding" className="text-[#006948] text-sm font-bold hover:underline">Browse applications →</a>
               </div>
             ) : (
@@ -216,16 +204,15 @@ export default function LenderDashboard() {
                   <tr style={{ background: "#f2f3ff" }}>
                     <th className="px-8 py-4 text-xs font-bold uppercase tracking-widest text-[#565e74]">Property</th>
                     <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-[#565e74]">Borrower</th>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-[#565e74]">Amount Bid</th>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-[#565e74]">Term</th>
-                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-[#565e74]">Monthly Return</th>
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-[#565e74]">Profit Rate</th>
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-[#565e74]">APR</th>
+                    <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-[#565e74]">Monthly Payment</th>
                     <th className="px-6 py-4 text-xs font-bold uppercase tracking-widest text-[#565e74]">Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#eaedff]">
                   {myBids.map((bid: any) => {
                     const loan = bid.loans
-                    const monthlyReturn = loan?.term ? parseFloat(bid.amount) / parseInt(loan.term) : null
                     return (
                       <tr key={bid.id} className="hover:bg-[#006948]/5 transition-colors">
                         <td className="px-8 py-5">
@@ -247,14 +234,14 @@ export default function LenderDashboard() {
                           <p className="text-sm font-medium text-[#131b2e]">{loan?.borrower_name || "—"}</p>
                         </td>
                         <td className="px-6 py-5">
-                          <p className="text-sm font-bold text-[#131b2e]">${parseFloat(bid.amount).toLocaleString()}</p>
+                          <p className="text-sm font-bold text-[#131b2e]">{bid.profit_rate ? `${bid.profit_rate}%` : "—"}</p>
                         </td>
                         <td className="px-6 py-5">
-                          <p className="text-sm text-[#565e74]">{loan?.term ? `${loan.term} mo` : "—"}</p>
+                          <p className="text-sm font-bold text-[#131b2e]">{bid.apr ? `${bid.apr}%` : "—"}</p>
                         </td>
                         <td className="px-6 py-5">
-                          {monthlyReturn
-                            ? <p className="text-sm font-bold text-emerald-600">${monthlyReturn.toFixed(2)}</p>
+                          {bid.monthly_payment
+                            ? <p className="text-sm font-bold text-emerald-600">${parseFloat(bid.monthly_payment).toLocaleString()}</p>
                             : <p className="text-sm font-bold text-[#565e74] italic">TBD</p>
                           }
                         </td>
@@ -325,7 +312,7 @@ export default function LenderDashboard() {
                       style={{ background: "#006948", boxShadow: "0 4px 12px rgba(0,105,72,0.15)" }}
                       onClick={() => window.location.href = "/lender/bidding"}
                     >
-                      Bid Now
+                      Send Offer
                     </button>
                   </div>
                 </div>

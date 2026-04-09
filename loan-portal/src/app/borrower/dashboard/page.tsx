@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
-const islamicPattern = `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l2.5 12.5L45 15l-12.5 2.5L30 30l-2.5-12.5L15 15l12.5-2.5z' fill='%23006948' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E")`
+const islamicPattern = `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l2.5 12.5L45 15l-12.5 2.5L30 30l-2.5-12.5L15 15l12.5-2.5z' fill='%231a3c6e' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E")`
 
 
 function Icon({ name, className = "" }: { name: string; className?: string }) {
@@ -20,7 +20,7 @@ function Icon({ name, className = "" }: { name: string; className?: string }) {
 function statusBadge(status: string) {
   if (status === "Approved")
     return (
-      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#85f8c4] text-[#005137]">
+      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#d0e4ff] text-[#0f2645]">
         ACTIVE
       </span>
     )
@@ -38,7 +38,7 @@ function statusBadge(status: string) {
 }
 
 function statusDot(status: string) {
-  if (status === "Approved") return <div className="w-2 h-2 rounded-full bg-[#006948] animate-pulse" />
+  if (status === "Approved") return <div className="w-2 h-2 rounded-full bg-[#1a3c6e] animate-pulse" />
   if (status === "Pending") return <div className="w-2 h-2 rounded-full bg-[#8d4b00]" />
   return <div className="w-2 h-2 rounded-full bg-[#565e74]" />
 }
@@ -95,18 +95,9 @@ export default function BorrowerDashboard() {
     }
   }
 
-  const calculateMonthlyPayment = (amount: any, term: any) => {
-    return (parseFloat(amount) / parseInt(term)).toFixed(2)
-  }
-
   const activeLoan = loans.find((l: any) => l.status === "Approved") as any
-  const totalBorrowed = loans
-    .filter((l: any) => l.status === "Approved")
-    .reduce((sum: number, l: any) => sum + parseFloat(l.amount || 0), 0)
-
-  const monthlyPayment = activeLoan
-    ? parseFloat(calculateMonthlyPayment(activeLoan.amount, activeLoan.term))
-    : 0
+  const pendingLoans = loans.filter((l: any) => l.status === "Pending").length
+  const offersReceived = bids.length
 
   return (
     <div
@@ -118,23 +109,23 @@ export default function BorrowerDashboard() {
         className="fixed top-0 w-full z-50 flex justify-between items-center px-8 h-20"
         style={{ background: "rgba(255,255,255,0.8)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", boxShadow: "0 4px 24px 0 rgba(15,23,42,0.05)" }}
       >
-        <div className="text-xl font-black text-emerald-900 tracking-tight">Noor Financing</div>
+        <div className="text-xl font-black text-[#0f2645] tracking-tight">Noor Financing</div>
         <div className="hidden md:flex items-center gap-8">
-          <a className="text-emerald-700 font-bold border-b-2 border-emerald-600 pb-1 text-sm uppercase tracking-widest" href="#">Dashboard</a>
+          <a className="text-[#1a3c6e] font-bold border-b-2 border-[#1a3c6e] pb-1 text-sm uppercase tracking-widest" href="#">Dashboard</a>
         </div>
         <div className="flex items-center gap-4">
           <button className="p-2 hover:bg-slate-100/50 rounded-lg transition-all active:scale-95">
             <Icon name="notifications" className="text-slate-600" />
           </button>
-          <div className="flex items-center gap-3 pl-4 border-l border-[#bccac0]/30">
-            <div className="w-10 h-10 rounded-full border-2 border-[#00855d] bg-emerald-100 flex items-center justify-center">
-              <Icon name="person" className="text-emerald-700" />
+          <div className="flex items-center gap-3 pl-4 border-l border-[#b8cfe8]/30">
+            <div className="w-10 h-10 rounded-full border-2 border-[#1a3c6e] bg-blue-100 flex items-center justify-center">
+              <Icon name="person" className="text-[#1a3c6e]" />
             </div>
             {userEmail ? (
               <div className="flex items-center gap-3">
                 <span className="text-sm text-[#565e74] hidden md:block">{userEmail}</span>
                 <button
-                  className="text-xs font-bold text-[#006948] border border-[#006948] px-3 py-1.5 rounded-lg hover:bg-[#85f8c4]/20 transition-all"
+                  className="text-xs font-bold text-[#1a3c6e] border border-[#1a3c6e] px-3 py-1.5 rounded-lg hover:bg-[#d0e4ff]/20 transition-all"
                   onClick={async () => {
                     const { createClient } = await import("@/lib/supabase/client")
                     await createClient().auth.signOut()
@@ -145,7 +136,7 @@ export default function BorrowerDashboard() {
                 </button>
               </div>
             ) : (
-              <a href="/auth/login" className="text-xs font-bold text-[#006948] border border-[#006948] px-3 py-1.5 rounded-lg hover:bg-[#85f8c4]/20 transition-all">
+              <a href="/auth/login" className="text-xs font-bold text-[#1a3c6e] border border-[#1a3c6e] px-3 py-1.5 rounded-lg hover:bg-[#d0e4ff]/20 transition-all">
                 Log In
               </a>
             )}
@@ -169,7 +160,7 @@ export default function BorrowerDashboard() {
             <p className="text-lg text-[#565e74] font-medium">Your home ownership journey, step by step.</p>
           </div>
           <button className="flex items-center gap-2 px-8 py-4 rounded-xl font-bold shadow-lg transition-all active:scale-95 group text-white"
-            style={{ background: "linear-gradient(135deg, #006948, #00855d)", boxShadow: "0 8px 24px rgba(0,105,72,0.2)" }}
+            style={{ background: "linear-gradient(135deg, #1a3c6e, #2463a8)", boxShadow: "0 8px 24px rgba(26,60,110,0.2)" }}
             onClick={() => window.location.href = "/borrower/apply/personal-info"}>
             Apply for New Financing
             <Icon name="arrow_forward" className="text-white group-hover:translate-x-1 transition-transform" />
@@ -177,57 +168,44 @@ export default function BorrowerDashboard() {
         </section>
 
         {/* Stats Row */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-[#006948]">
+        <section className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-[#1a3c6e]">
             <div className="flex items-center justify-between mb-4">
-              <span className="p-2 rounded-lg" style={{ background: "#85f8c4" }}>
-                <Icon name="home" className="text-[#005137]" />
+              <span className="p-2 rounded-lg" style={{ background: "#d0e4ff" }}>
+                <Icon name="pending_actions" className="text-[#0f2645]" />
               </span>
             </div>
             <h3 className="text-2xl font-bold text-[#131b2e]">
-              {loading ? "—" : loans.filter((l: any) => l.status === "Approved").length}
+              {loading ? "—" : pendingLoans}
             </h3>
-            <p className="text-xs font-bold uppercase tracking-widest text-[#565e74] mt-1">Active Financing</p>
-            <p className="text-sm text-[#565e74]/70 mt-2">Approved &amp; funded</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-[#565e74] mt-1">Pending Applications</p>
+            <p className="text-sm text-[#565e74]/70 mt-2">Under review</p>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow-sm">
+          <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-[#2463a8]">
             <div className="flex items-center justify-between mb-4">
-              <span className="p-2 rounded-lg" style={{ background: "#85f8c4" }}>
-                <Icon name="payments" className="text-[#005137]" />
+              <span className="p-2 rounded-lg" style={{ background: "#d0e4ff" }}>
+                <Icon name="description" className="text-[#0f2645]" />
               </span>
             </div>
             <h3 className="text-2xl font-bold text-[#131b2e]">
-              {loading ? "—" : `$${totalBorrowed.toLocaleString()}`}
+              {loading ? "—" : loans.length}
             </h3>
-            <p className="text-xs font-bold uppercase tracking-widest text-[#565e74] mt-1">Total Amount</p>
-            <p className="text-sm text-[#565e74]/70 mt-2">Interest-free</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-[#565e74] mt-1">Submitted Applications</p>
+            <p className="text-sm text-[#565e74]/70 mt-2">Total submitted</p>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow-sm">
+          <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-[#1a3c6e]">
             <div className="flex items-center justify-between mb-4">
               <span className="p-2 rounded-lg" style={{ background: "#ffdcc3" }}>
-                <Icon name="calendar_today" className="text-[#8d4b00]" />
+                <Icon name="local_offer" className="text-[#8d4b00]" />
               </span>
             </div>
             <h3 className="text-2xl font-bold text-[#131b2e]">
-              {loading ? "—" : activeLoan ? `$${monthlyPayment.toLocaleString()}` : "N/A"}
+              {loading ? "—" : offersReceived}
             </h3>
-            <p className="text-xs font-bold uppercase tracking-widest text-[#565e74] mt-1">Monthly Payment</p>
-            <p className="text-sm text-[#565e74]/70 mt-2">Next due date</p>
-          </div>
-
-          <div className="bg-white p-6 rounded-xl shadow-sm">
-            <div className="flex items-center justify-between mb-4">
-              <span className="p-2 rounded-lg" style={{ background: "#85f8c4" }}>
-                <Icon name="trending_up" className="text-[#005137]" />
-              </span>
-            </div>
-            <h3 className="text-2xl font-bold text-[#131b2e]">
-              {loading ? "—" : loans.filter((l: any) => l.status === "Approved").length > 0 ? "0%" : "—"}
-            </h3>
-            <p className="text-xs font-bold uppercase tracking-widest text-[#565e74] mt-1">Progress</p>
-            <p className="text-sm text-[#565e74]/70 mt-2">of total paid</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-[#565e74] mt-1">Offers Received</p>
+            <p className="text-sm text-[#565e74]/70 mt-2">From financiers</p>
           </div>
         </section>
 
@@ -236,10 +214,10 @@ export default function BorrowerDashboard() {
           <section className="relative group">
             <div
               className="absolute -inset-1 rounded-2xl blur opacity-10 group-hover:opacity-20 transition duration-1000"
-              style={{ background: "linear-gradient(to right, #006948, #00855d)" }}
+              style={{ background: "linear-gradient(to right, #1a3c6e, #2463a8)" }}
             />
             <div
-              className="relative border-l-8 border-[#006948] rounded-xl overflow-hidden shadow-2xl"
+              className="relative border-l-8 border-[#1a3c6e] rounded-xl overflow-hidden shadow-2xl"
               style={{ background: "rgba(255,255,255,0.8)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
             >
               <div className="p-8 md:p-10 flex flex-col lg:flex-row gap-10">
@@ -248,19 +226,15 @@ export default function BorrowerDashboard() {
                     <span className="px-3 py-1 bg-[#e2e7ff] rounded-full text-xs font-bold tracking-wider text-[#131b2e] uppercase">
                       {activeLoan.property_address || "Property"}
                     </span>
-                    <span className="px-3 py-1 rounded-full text-[10px] font-black tracking-widest text-[#005137]" style={{ background: "#85f8c4" }}>
+                    <span className="px-3 py-1 rounded-full text-[10px] font-black tracking-widest text-[#0f2645]" style={{ background: "#d0e4ff" }}>
                       ACTIVE
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-widest text-[#565e74] mb-1">Financing Amount</p>
                       <p className="text-xl font-bold text-[#131b2e]">${parseFloat(activeLoan.amount).toLocaleString()}</p>
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-[#565e74] mb-1">Monthly Payment</p>
-                      <p className="text-xl font-bold text-[#131b2e]">${monthlyPayment.toLocaleString()}</p>
                     </div>
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-widest text-[#565e74] mb-1">Term</p>
@@ -275,19 +249,19 @@ export default function BorrowerDashboard() {
                   <div className="space-y-3">
                     <div className="flex justify-between items-center text-xs font-bold tracking-widest uppercase">
                       <span className="text-[#565e74]">Repayment Progress</span>
-                      <span className="text-[#006948]">0% Completed</span>
+                      <span className="text-[#1a3c6e]">0% Completed</span>
                     </div>
                     <div className="h-3 w-full rounded-full overflow-hidden" style={{ background: "#e2e7ff" }}>
-                      <div className="h-full rounded-full" style={{ width: "0%", background: "linear-gradient(to right, #006948, #00855d)" }} />
+                      <div className="h-full rounded-full" style={{ width: "0%", background: "linear-gradient(to right, #1a3c6e, #2463a8)" }} />
                     </div>
                   </div>
 
                   <div className="flex flex-wrap gap-4 pt-4">
-                    <button className="px-8 py-3 rounded-lg font-bold shadow-md hover:-translate-y-0.5 transition-all text-white" style={{ background: "#006948" }}>
+                    <button className="px-8 py-3 rounded-lg font-bold shadow-md hover:-translate-y-0.5 transition-all text-white" style={{ background: "#1a3c6e" }}>
                       Make Payment
                     </button>
                     <button
-                      className="px-8 py-3 border-2 border-[#006948] text-[#006948] rounded-lg font-bold hover:bg-[#85f8c4]/20 transition-all"
+                      className="px-8 py-3 border-2 border-[#1a3c6e] text-[#1a3c6e] rounded-lg font-bold hover:bg-[#d0e4ff]/20 transition-all"
                       onClick={() => window.location.href = `/loans/${(activeLoan as any).id}`}
                     >
                       View Full Details
@@ -320,10 +294,10 @@ export default function BorrowerDashboard() {
         {/* Empty State */}
         {!loading && loans.length === 0 && (
           <div className="bg-white rounded-xl shadow-sm p-12 text-center">
-            <Icon name="description" className="text-[#bccac0] mb-4" />
+            <Icon name="description" className="text-[#b8cfe8] mb-4" />
             <h3 className="text-xl font-semibold text-[#131b2e] mb-2">No Financing Yet</h3>
             <p className="text-[#565e74] mb-6">Start your home journey by applying for interest-free financing.</p>
-            <button className="px-8 py-3 rounded-lg font-bold text-white" style={{ background: "#006948" }}
+            <button className="px-8 py-3 rounded-lg font-bold text-white" style={{ background: "#1a3c6e" }}
               onClick={() => window.location.href = "/borrower/apply/personal-info"}>
               Apply for Financing
             </button>
@@ -335,27 +309,35 @@ export default function BorrowerDashboard() {
           <section className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold tracking-tight text-[#131b2e]">Financing Offers</h2>
-              <span className="text-sm font-bold text-[#006948] bg-[#85f8c4]/30 px-3 py-1 rounded-full">{bids.length} offer{bids.length !== 1 ? "s" : ""} received</span>
+              <span className="text-sm font-bold text-[#1a3c6e] bg-[#d0e4ff]/30 px-3 py-1 rounded-full">{bids.length} offer{bids.length !== 1 ? "s" : ""} received</span>
             </div>
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-[#bccac0]/10">
+            <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-[#b8cfe8]/10">
               <div className="overflow-x-auto">
                 <table className="w-full text-left">
                   <thead>
-                    <tr className="border-b border-[#bccac0]/20" style={{ background: "#f2f3ff" }}>
+                    <tr className="border-b border-[#b8cfe8]/20" style={{ background: "#f2f3ff" }}>
                       <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[#565e74]">Property</th>
-                      <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[#565e74]">Offer Amount</th>
+                      <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[#565e74]">Profit Rate</th>
+                      <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[#565e74]">APR</th>
+                      <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[#565e74]">Monthly Payment</th>
                       <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[#565e74]">Status</th>
                       <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[#565e74]">Date</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#bccac0]/10">
+                  <tbody className="divide-y divide-[#b8cfe8]/10">
                     {bids.map((bid: any) => (
-                      <tr key={bid.id} className="hover:bg-[#85f8c4]/5 transition-colors">
+                      <tr key={bid.id} className="hover:bg-[#d0e4ff]/5 transition-colors">
                         <td className="px-6 py-5 text-sm font-medium text-[#565e74]">
                           {bid.loans?.property_address || "Property"}
                         </td>
                         <td className="px-6 py-5 text-sm font-bold text-[#131b2e]">
-                          ${parseFloat(bid.amount).toLocaleString()}
+                          {bid.profit_rate ? `${bid.profit_rate}%` : "—"}
+                        </td>
+                        <td className="px-6 py-5 text-sm font-bold text-[#131b2e]">
+                          {bid.apr ? `${bid.apr}%` : "—"}
+                        </td>
+                        <td className="px-6 py-5 text-sm font-bold text-[#131b2e]">
+                          {bid.monthly_payment ? `$${parseFloat(bid.monthly_payment).toLocaleString()}` : "—"}
                         </td>
                         <td className="px-6 py-5">
                           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#ffdcc3] text-[#6e3900] uppercase">
@@ -379,14 +361,14 @@ export default function BorrowerDashboard() {
           <section className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold tracking-tight text-[#131b2e]">All Applications</h2>
-              <button className="text-sm font-bold text-[#006948] hover:underline underline-offset-4">View Archive</button>
+              <button className="text-sm font-bold text-[#1a3c6e] hover:underline underline-offset-4">View Archive</button>
             </div>
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-[#bccac0]/10">
+            <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-[#b8cfe8]/10">
               <div className="overflow-x-auto">
                 <table className="w-full text-left">
                   <thead>
-                    <tr className="border-b border-[#bccac0]/20" style={{ background: "#f2f3ff" }}>
-                      <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[#565e74]">Loan ID</th>
+                    <tr className="border-b border-[#b8cfe8]/20" style={{ background: "#f2f3ff" }}>
+                      <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[#565e74]">Application ID</th>
                       <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[#565e74]">Property Address</th>
                       <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[#565e74]">Amount</th>
                       <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[#565e74]">Term</th>
@@ -394,9 +376,9 @@ export default function BorrowerDashboard() {
                       <th className="px-6 py-4 text-right" />
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#bccac0]/10">
+                  <tbody className="divide-y divide-[#b8cfe8]/10">
                     {loans.map((loan: any) => (
-                      <tr key={loan.id} className="hover:bg-[#85f8c4]/5 transition-colors cursor-pointer group" onClick={() => window.location.href = `/loans/${loan.id}`}>
+                      <tr key={loan.id} className="hover:bg-[#d0e4ff]/5 transition-colors cursor-pointer group" onClick={() => window.location.href = `/loans/${loan.id}`}>
                         <td className="px-6 py-5">
                           <div className="flex items-center gap-3">
                             {statusDot(loan.status)}
@@ -416,7 +398,7 @@ export default function BorrowerDashboard() {
                           {statusBadge(loan.status)}
                         </td>
                         <td className="px-6 py-5 text-right">
-                          <Icon name="chevron_right" className="text-[#565e74] group-hover:text-[#006948] transition-colors" />
+                          <Icon name="chevron_right" className="text-[#565e74] group-hover:text-[#1a3c6e] transition-colors" />
                         </td>
                       </tr>
                     ))}
@@ -433,13 +415,13 @@ export default function BorrowerDashboard() {
         <div className="max-w-7xl mx-auto px-8 py-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="space-y-4">
             <div className="text-lg font-bold text-slate-900">Noor Financing</div>
-            <p className="text-sm leading-relaxed text-slate-500">© 2025 Noor Financing. Sharia-Compliant Ethical Investing.</p>
+            <p className="text-sm leading-relaxed text-slate-500">© 2026 Noor Financing. Sharia-Compliant Ethical Investing.</p>
           </div>
           <div className="flex flex-wrap gap-6 md:justify-end">
-            <a className="text-xs uppercase tracking-widest font-bold text-slate-500 hover:text-emerald-600 transition-all" href="#">Privacy Policy</a>
-            <a className="text-xs uppercase tracking-widest font-bold text-slate-500 hover:text-emerald-600 transition-all" href="#">Terms of Service</a>
-            <a className="text-xs uppercase tracking-widest font-bold text-slate-500 hover:text-emerald-600 transition-all" href="#">Sharia Certificate</a>
-            <a className="text-xs uppercase tracking-widest font-bold text-slate-500 hover:text-emerald-600 transition-all" href="#">Equal Housing</a>
+            <a className="text-xs uppercase tracking-widest font-bold text-slate-500 hover:text-[#1a3c6e] transition-all" href="#">Privacy Policy</a>
+            <a className="text-xs uppercase tracking-widest font-bold text-slate-500 hover:text-[#1a3c6e] transition-all" href="#">Terms of Service</a>
+            <a className="text-xs uppercase tracking-widest font-bold text-slate-500 hover:text-[#1a3c6e] transition-all" href="#">Sharia Certificate</a>
+            <a className="text-xs uppercase tracking-widest font-bold text-slate-500 hover:text-[#1a3c6e] transition-all" href="#">Equal Housing</a>
           </div>
         </div>
       </footer>
