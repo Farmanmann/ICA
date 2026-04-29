@@ -114,8 +114,7 @@ export default function ComingSoon() {
     }
   };
 
-  const launchDate = new Date("2026-05-01");
-  const formattedDate = launchDate.toLocaleDateString("en-US", { year: "numeric", month: "long" });
+  const formattedDate = "May 2026";
 
   const fadeUp = (active: boolean) =>
     `transition-all duration-700 ease-out ${active ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`;
