@@ -109,18 +109,17 @@ All steps persist state to `localStorage` under the key `loanApplication`. The f
 | Step | Route | Fields |
 |---|---|---|
 | 1 | `/borrower/apply/personal-info` | Financing type (Murabaha / Musharakah / No Preference), Purpose (Home Purchase / Refinance / Investment Home), Home address, Buying stage, Date of birth, Credit event (no / yes / bankruptcy / foreclosure) |
-| 2 | `/borrower/apply/propertly-details` ⚠️ | Property address, Estimated property value, Property type (Single Family / Townhome / Condo / Multi-Family), Occupancy (Primary / Secondary / Investment), Down payment %, First-time buyer (yes/no), Co-borrower (yes/no) |
+| 2 | `/borrower/apply/property-details` | Property address, Estimated property value, Property type (Single Family / Townhome / Condo / Multi-Family), Occupancy (Primary / Secondary / Investment), Down payment %, First-time buyer (yes/no), Co-borrower (yes/no) |
 | 3 | `/borrower/apply/financial-info` | Estimated purchase price, Repayment term (free numeric input in months), Employment status, Annual income, Credit score |
 | 4 | `/borrower/apply/documents` | Government ID upload (**required**), Income proof (optional), Bank statements (optional) |
 | 5 | `/borrower/apply/review` | Review all collected data and submit. Government ID is enforced — Submit button is disabled without it. |
 
-> ⚠️ **Known typo:** The Step 2 folder is named `propertly-details` (not `property-details`). All internal links already reference this misspelled path — do not rename without updating every reference.
 
-#### Other Borrower Pages (stubs)
-- `/borrower/settings` — account settings
-- `/borrower/payments` — payment history / schedule (placeholder)
+#### Other Borrower Pages
+- `/borrower/settings` — account settings (loads/saves from Supabase `user_metadata`)
+- `/borrower/payments` — shows approved loans from Supabase; payment processing is a placeholder
 - `/borrower/calculator` — financing calculator (placeholder)
-- `/borrower/verification` — identity verification (placeholder)
+- `/borrower/verification` — document checklist driven by borrower's loan record in Supabase
 
 ---
 
@@ -143,13 +142,11 @@ All steps persist state to `localStorage` under the key `loanApplication`. The f
 - Filter bar to filter by term length
 
 #### Settings (`/lender/settings`)
-- Account settings page
+- Account settings page (loads/saves from Supabase `user_metadata`; lender preferences stored under `user_metadata.lender_preferences`)
 
 ---
 
 ### Admin Portal (`/admin/`)
-
-> ⚠️ **Currently broken in production.** The admin portal points to `http://localhost:8000/api/` (a legacy Django backend) and will not function outside of a local development environment with that backend running. This must be migrated to Supabase before launch.
 
 | Route | Purpose |
 |---|---|
@@ -174,7 +171,7 @@ All pages exist and are accessible. Content should be reviewed by a lawyer befor
 `borrower_id`, `borrower_name`, `email`, `phone`, `address`, `loan_type`, `purpose`, `buying_stage`, `property_address`, `property_value`, `property_type`, `occupancy_type`, `down_payment_percent`, `first_time_buyer`, `has_co_borrower`, `amount`, `term`, `employment_status`, `annual_income`, `credit_score`, `date_of_birth`, `credit_event`, `status`
 
 ### `bids` — financier offers
-`loan_id`, `lender_id`, `amount`, `profit_rate`, `apr`, `monthly_payment`, `note`, `status`
+`loan_id`, `lender_id`, `lender_email`, `amount`, `profit_rate`, `apr`, `monthly_payment`, `note`, `status`
 
 ---
 
@@ -193,31 +190,49 @@ All pages exist and are accessible. Content should be reviewed by a lawyer befor
 
 ### Critical Blockers
 
-- [ ] **Admin portal migration** — remove all `localhost:8000` references and replace with Supabase queries. All 4 admin pages are broken in production.
-- [ ] **Real document uploads** — documents are currently stored as filenames only in localStorage. Actual file upload to Supabase Storage is not implemented. The government ID gate on the review page is client-side only and does not persist or validate a real file server-side.
-- [ ] **Supabase Row Level Security (RLS)** — without RLS policies, any authenticated user can read all loan applications and bids. Borrowers should only see their own loans; financiers should only see/create their own bids; admins get full access.
-- [ ] **Borrower offer acceptance flow** — borrowers can see offers on the dashboard but cannot accept or reject them. The `bids.status` column exists but there is no UI for acting on it.
+- [x] **Supabase Row Level Security (RLS)** — policies written in `supabase/migrations/002_rls_loans_bids.sql`. Run this in the Supabase SQL Editor before going live.
 
 ### Important UX
 
 - [ ] **Lender bidding — login redirect** — when a financier is not logged in, the "Send Offer" button is disabled but there is no redirect to login. Add a clear login button in the offer modal.
 - [ ] **Lender bidding — Info button visibility** — the "View Full Profile" button on cards is reported as hard to see. Needs a styling or positioning fix.
-- [ ] **Email notifications** — no transactional emails are sent at any point (application submitted, offer sent, offer accepted). Needs Supabase Edge Functions or a service like Resend/SendGrid.
-- [ ] **Borrower calculator** — `/borrower/calculator` is a stub. A Murabaha / Musharakah financing calculator would be a valuable pre-launch feature.
+- [x] **Borrower calculator** — fully built with Murabaha and Musharakah calculations, sliders, and a conventional bank comparison table.
+- [ ] **Payment processing** — `/borrower/payments` shows approved loans but has no payment collection. Integrate a payment processor (e.g., Stripe) before going live with funded loans.
 - [ ] **Mobile responsiveness audit** — dashboards and application steps were built desktop-first. Full mobile testing needed.
-- [ ] **Rename `propertly-details` folder** — fix the typo in the Step 2 folder name and update all two references (`financial-info/page.tsx` Previous button + anywhere else it is linked).
+- [x] **Rename `propertly-details` folder** — fixed; folder is now `property-details`, all three references updated.
 
 ### Pre-Launch Checklist
 
-- [ ] Legal review of all static pages (Privacy Policy, Terms, Licenses, etc.)
+**Legal / Compliance**
 - [ ] Confirm NMLS license number `#2780355` is active and correct
 - [ ] Obtain and display Sharia certification on `/sharia` page
-- [ ] Set up a separate production Supabase project (do not use the dev project in prod)
+- [ ] Write GLBA Information Security Program document (required for licensed mortgage entity)
+- [ ] Write Incident Response Plan (required by GLBA Safeguards Rule)
+
+**Supabase / Infrastructure**
+- [ ] Verify RLS policies are active on `loans` and `bids` tables in Supabase dashboard
+- [ ] Add production redirect URLs in Supabase dashboard (`https://noorfinancing.com/**`)
+- [ ] Set up a separate production Supabase project (do not use dev project in prod)
+- [x] Customize Supabase auth email templates — branded HTML ready in `supabase/email-templates/`. Paste into Supabase dashboard: Authentication → Email Templates
+- [ ] Set up custom SMTP for Supabase auth emails (better deliverability)
+- [ ] Create admin user via SQL (`UPDATE auth.users SET role = 'admin' WHERE email = '...'`)
 - [ ] Configure all environment variables on Vercel for production
-- [ ] End-to-end smoke test: borrower signup → 5-step application → financier sees it → sends offer → borrower sees offer on dashboard
-- [ ] Set up error monitoring (Sentry or equivalent)
+
+**AWS**
+- [ ] Rotate AWS IAM credentials (rotate before deploying to production)
+- [ ] Enable CloudTrail logging for KMS key audit trail
+- [ ] Set up billing alerts on AWS account
+
+**Email**
+- [ ] Verify Resend domain DNS records are propagated
+- [ ] Test transactional emails end-to-end: application submitted, offer sent, offer accepted
+
+**QA**
+- [ ] End-to-end smoke test: borrower signup → 5-step application → financier sees it → sends offer → borrower accepts offer
+- [x] Set up error monitoring — Sentry installed (`@sentry/nextjs`); add `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_ORG`, `SENTRY_PROJECT` to Vercel env vars
 - [ ] Set up analytics (Plausible, PostHog, or equivalent)
 - [ ] Accessibility audit (WCAG 2.1 AA — required, given the Accessibility Statement page exists)
+- [ ] Mobile responsiveness audit
 
 ---
 

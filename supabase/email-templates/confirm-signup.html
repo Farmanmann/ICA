@@ -1,0 +1,58 @@
+<!-- Supabase: Authentication → Email Templates → Confirm signup -->
+<!-- Subject: Confirm your email — Noor Financing -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body style="margin:0;padding:0;background:#f8fafc;font-family:Inter,Helvetica,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:#0f2340;padding:32px 40px;">
+              <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;">Noor Financing</p>
+              <p style="margin:4px 0 0;font-size:11px;font-weight:700;color:#00c47d;letter-spacing:0.15em;text-transform:uppercase;">Sharia-Compliant Home Financing</p>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding:40px 40px 32px;">
+              <h1 style="margin:0 0 16px;font-size:24px;font-weight:700;color:#0f2340;">Confirm your email</h1>
+              <p style="margin:0 0 24px;font-size:15px;color:#475569;line-height:1.6;">
+                Thank you for creating an account with Noor Financing. Please confirm your email address to activate your account.
+              </p>
+              <table cellpadding="0" cellspacing="0" style="margin:0 0 32px;">
+                <tr>
+                  <td style="background:#1a3c6e;border-radius:8px;">
+                    <a href="{{ .ConfirmationURL }}" style="display:inline-block;padding:14px 32px;font-size:15px;font-weight:700;color:#ffffff;text-decoration:none;">
+                      Confirm Email Address
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin:0 0 8px;font-size:13px;color:#94a3b8;">If the button doesn't work, copy and paste this link into your browser:</p>
+              <p style="margin:0 0 24px;font-size:12px;color:#1a3c6e;word-break:break-all;">{{ .ConfirmationURL }}</p>
+              <p style="margin:0;font-size:13px;color:#94a3b8;">This link expires in 24 hours. If you didn't create an account, you can safely ignore this email.</p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background:#f1f5f9;padding:24px 40px;border-top:1px solid #e2e8f0;">
+              <p style="margin:0 0 4px;font-size:12px;color:#64748b;">Noor Financing · NMLS #2780355</p>
+              <p style="margin:0;font-size:12px;color:#94a3b8;">Equal Housing Lender · Texas SML Licensed</p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

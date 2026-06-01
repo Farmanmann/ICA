@@ -77,7 +77,7 @@ export default function ApplyStep1() {
       currentStep: 1
     }))
 
-    window.location.href = "/borrower/apply/propertly-details"
+    window.location.href = "/borrower/apply/property-details"
   }
 
   return (

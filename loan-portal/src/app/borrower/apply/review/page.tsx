@@ -41,17 +41,45 @@ export default function ApplyStep5() {
         loan_type: applicationData.loan_type,
         purpose: applicationData.purpose,
         buying_stage: applicationData.buying_stage,
+        date_of_birth: applicationData.date_of_birth || null,
+        credit_event: applicationData.credit_event || null,
         property_address: applicationData.property_address,
         property_value: applicationData.property_value ? parseFloat(applicationData.property_value) : null,
+        property_type: applicationData.property_type || null,
+        occupancy_type: applicationData.occupancy_type || null,
+        down_payment_percent: applicationData.down_payment_percent ? parseFloat(applicationData.down_payment_percent) : null,
+        first_time_buyer: applicationData.first_time_buyer || null,
+        has_co_borrower: applicationData.has_co_borrower || null,
         amount: parseFloat(applicationData.amount),
         term: parseInt(applicationData.term),
         employment_status: applicationData.employment_status,
         annual_income: applicationData.annual_income ? parseFloat(applicationData.annual_income) : null,
+        credit_score: applicationData.credit_score ? parseInt(applicationData.credit_score) : null,
+        documents: {
+          id_document: applicationData.documents?.idDocumentMeta || null,
+          income_proof: applicationData.documents?.incomeProofMeta || null,
+          bank_statements: applicationData.documents?.bankStatementsMeta || null,
+        },
         status: "Pending",
       })
 
       if (insertError) throw insertError
       localStorage.removeItem("loanApplication")
+
+      // Send confirmation email to borrower
+      await fetch("/api/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "application_submitted",
+          borrowerEmail: user.email,
+          borrowerName: applicationData.borrower_name,
+          propertyAddress: applicationData.property_address,
+          amount: applicationData.amount,
+          loanType: applicationData.loan_type,
+        }),
+      })
+
       setSuccess(true)
     } catch (err: any) {
       setError(err.message || "Failed to submit application. Please try again.")
@@ -171,7 +199,7 @@ export default function ApplyStep5() {
         <Card className="mb-6">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Property Details</CardTitle>
-            <Button variant="ghost" size="sm" onClick={() => window.location.href = "/borrower/apply/propertly-details"}>
+            <Button variant="ghost" size="sm" onClick={() => window.location.href = "/borrower/apply/property-details"}>
               <Edit className="h-4 w-4 mr-2" />Edit
             </Button>
           </CardHeader>

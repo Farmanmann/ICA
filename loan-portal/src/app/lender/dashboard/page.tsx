@@ -29,6 +29,7 @@ export default function LenderDashboard() {
   const [myBids, setMyBids] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [userEmail, setUserEmail] = useState("")
 
   useEffect(() => {
     const link = document.createElement("link")
@@ -45,6 +46,7 @@ export default function LenderDashboard() {
       const supabase = createClient()
 
       const { data: { user } } = await supabase.auth.getUser()
+      if (user?.email) setUserEmail(user.email)
 
       const [loansRes, bidsRes] = await Promise.all([
         supabase
@@ -96,7 +98,7 @@ export default function LenderDashboard() {
           </div>
           <div>
             <p className="text-sm font-bold text-white">Financier Portal</p>
-            <p className="text-xs text-slate-400">Verified Financier</p>
+            <p className="text-xs text-slate-400 truncate max-w-35">{userEmail || "Verified Financier"}</p>
           </div>
         </div>
 
@@ -136,10 +138,18 @@ export default function LenderDashboard() {
           >
             New Investment
           </button>
-          <a className="flex items-center space-x-3 text-slate-400 hover:text-white py-3 px-4 hover:bg-slate-900 transition-all rounded-lg" href="#">
+          <button
+            className="flex items-center space-x-3 text-slate-400 hover:text-white py-3 px-4 hover:bg-slate-900 transition-all rounded-lg w-full"
+            onClick={async () => {
+              const { createClient } = await import("@/lib/supabase/client")
+              const supabase = createClient()
+              await supabase.auth.signOut()
+              window.location.href = "/auth/login"
+            }}
+          >
             <Icon name="logout" className="text-[20px]" />
             <span className="text-sm font-medium">Logout</span>
-          </a>
+          </button>
         </div>
       </aside>
 

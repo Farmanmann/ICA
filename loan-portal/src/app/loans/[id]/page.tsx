@@ -85,6 +85,7 @@ export default function LoanDetailPage() {
       const { error: insertError } = await supabase.from("bids").insert({
         loan_id: loan.id,
         lender_id: user.id,
+        lender_email: user.email,
         amount,
         status: "pending",
       })

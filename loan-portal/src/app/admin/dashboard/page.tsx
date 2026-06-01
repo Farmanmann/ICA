@@ -22,12 +22,14 @@ export default function AdminDashboard() {
   const fetchLoans = async () => {
     try {
       setLoading(true)
-      const res = await fetch("http://localhost:8000/api/loans/")
-      if (!res.ok) throw new Error("Failed to fetch loans")
-      const data = await res.json()
-      // Handle paginated response
-      const loans = data.results || data
-      setApplications(loans)
+      const { createClient } = await import("@/lib/supabase/client")
+      const supabase = createClient()
+      const { data, error: fetchError } = await supabase
+        .from("loans")
+        .select("*")
+        .order("created_at", { ascending: false })
+      if (fetchError) throw fetchError
+      setApplications(data ?? [])
       setError("")
     } catch (err) {
       setError("Unable to load loan applications. Please check your connection.")
@@ -39,12 +41,13 @@ export default function AdminDashboard() {
 
   const updateLoanStatus = async (loanId: any, newStatus: any) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/loans/${loanId}/`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus })
-      })
-      if (!res.ok) throw new Error("Failed to update status")
+      const { createClient } = await import("@/lib/supabase/client")
+      const supabase = createClient()
+      const { error: updateError } = await supabase
+        .from("loans")
+        .update({ status: newStatus })
+        .eq("id", loanId)
+      if (updateError) throw updateError
       await fetchLoans()
     } catch (err) {
       console.error("Failed to update loan:", err)
@@ -53,8 +56,9 @@ export default function AdminDashboard() {
   }
 
   const filteredApplications = applications.filter((loan: any) => {
-    const matchesSearch = loan.borrower_name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         loan.id.toString().includes(searchTerm)
+    const matchesSearch =
+      loan.borrower_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      loan.id?.toString().includes(searchTerm)
     const matchesFilter = filterStatus === "all" || loan.status === filterStatus
     return matchesSearch && matchesFilter
   })
@@ -64,7 +68,7 @@ export default function AdminDashboard() {
     approved: applications.filter((a: any) => a.status === "Approved").length,
     pending: applications.filter((a: any) => a.status === "Pending").length,
     rejected: applications.filter((a: any) => a.status === "Rejected").length,
-    totalAmount: applications.reduce((sum: number, a: any) => sum + parseFloat(a.amount || 0), 0)
+    totalAmount: applications.reduce((sum: number, a: any) => sum + parseFloat(a.amount || 0), 0),
   }
 
   return (
@@ -73,27 +77,21 @@ export default function AdminDashboard() {
       {sidebarOpen && (
         <aside className="w-64 bg-slate-900 text-white flex flex-col p-4 shadow-lg">
           <div className="mb-8">
-            <h2 className="text-2xl font-bold">ICA-Loans</h2>
+            <h2 className="text-2xl font-bold">Noor Financing</h2>
             <p className="text-slate-400 text-sm">Admin Panel</p>
           </div>
           <nav className="flex flex-col gap-2">
-            <Button variant="ghost" className="justify-start text-left bg-slate-800 text-white hover:bg-slate-700">
+            <Button variant="ghost" className="justify-start text-left bg-slate-800 text-white hover:bg-slate-700"
+              onClick={() => window.location.href = "/admin/dashboard"}>
               Dashboard
             </Button>
-            <Button variant="ghost" className="justify-start text-left hover:bg-slate-800 text-white">
-              Applications
+            <Button variant="ghost" className="justify-start text-left hover:bg-slate-800 text-white"
+              onClick={() => window.location.href = "/admin/verifications"}>
+              Verifications
             </Button>
-            <Button variant="ghost" className="justify-start text-left hover:bg-slate-800 text-white">
-              Borrowers
-            </Button>
-            <Button variant="ghost" className="justify-start text-left hover:bg-slate-800 text-white">
-              Payments
-            </Button>
-            <Button variant="ghost" className="justify-start text-left hover:bg-slate-800 text-white">
+            <Button variant="ghost" className="justify-start text-left hover:bg-slate-800 text-white"
+              onClick={() => window.location.href = "/admin/reports"}>
               Reports
-            </Button>
-            <Button variant="ghost" className="justify-start text-left hover:bg-slate-800 text-white">
-              Settings
             </Button>
           </nav>
         </aside>
@@ -104,18 +102,18 @@ export default function AdminDashboard() {
         {/* Top Navbar */}
         <header className="flex items-center justify-between bg-white border-b p-4 shadow-sm">
           <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
+            <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(!sidebarOpen)}>
               <Menu className="h-5 w-5" />
             </Button>
             <h1 className="text-xl font-bold text-slate-900">Financing Management Dashboard</h1>
           </div>
           <div className="flex items-center gap-3">
             <Badge variant="outline" className="text-sm">Admin</Badge>
-            <Button variant="outline">Logout</Button>
+            <Button variant="outline" onClick={async () => {
+              const { createClient } = await import("@/lib/supabase/client")
+              await createClient().auth.signOut()
+              window.location.href = "/auth/login"
+            }}>Logout</Button>
           </div>
         </header>
 
@@ -147,7 +145,9 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-3xl font-bold">{stats.approved}</div>
-                <p className="text-xs opacity-90 mt-1">{stats.total > 0 ? Math.round((stats.approved/stats.total)*100) : 0}% approval rate</p>
+                <p className="text-xs opacity-90 mt-1">
+                  {stats.total > 0 ? Math.round((stats.approved / stats.total) * 100) : 0}% approval rate
+                </p>
               </CardContent>
             </Card>
 
@@ -220,7 +220,7 @@ export default function AdminDashboard() {
                         <th className="text-left p-3 font-semibold">Type</th>
                         <th className="text-left p-3 font-semibold">Purpose</th>
                         <th className="text-left p-3 font-semibold">Borrower</th>
-                        <th className="text-left p-3 font-semibold">Asset Details</th>
+                        <th className="text-left p-3 font-semibold">Property</th>
                         <th className="text-left p-3 font-semibold">Amount</th>
                         <th className="text-left p-3 font-semibold">Term</th>
                         <th className="text-left p-3 font-semibold">Status</th>
@@ -230,15 +230,17 @@ export default function AdminDashboard() {
                     <tbody>
                       {filteredApplications.map((loan: any) => (
                         <tr key={loan.id} className="border-b hover:bg-slate-50">
-                          <td className="p-3 font-medium">#{loan.id}</td>
+                          <td className="p-3 font-medium font-mono text-xs">
+                            #{typeof loan.id === "string" ? loan.id.slice(0, 8).toUpperCase() : loan.id}
+                          </td>
                           <td className="p-3">
                             <Badge variant="outline" className="capitalize">
-                              {loan.loan_type || "N/A"}
+                              {loan.loan_type?.replace(/_/g, " ") || "N/A"}
                             </Badge>
                           </td>
                           <td className="p-3">
                             <span className="capitalize text-sm">
-                              {loan.purpose_display || loan.purpose || "N/A"}
+                              {loan.purpose?.replace(/_/g, " ") || "N/A"}
                             </span>
                           </td>
                           <td className="p-3">
@@ -248,20 +250,13 @@ export default function AdminDashboard() {
                             </div>
                           </td>
                           <td className="p-3">
-                            {loan.purpose === "car" ? (
-                              <div className="text-sm">
-                                <p className="font-medium">{loan.vehicle_make} {loan.vehicle_model}</p>
-                                <p className="text-xs text-slate-500">{loan.vehicle_year}</p>
-                              </div>
-                            ) : (
-                              <div className="text-sm">
-                                <p className="truncate max-w-[200px]" title={loan.property_address}>
-                                  {loan.property_address || "N/A"}
-                                </p>
-                              </div>
-                            )}
+                            <div className="text-sm">
+                              <p className="truncate max-w-[200px]" title={loan.property_address}>
+                                {loan.property_address || "N/A"}
+                              </p>
+                            </div>
                           </td>
-                          <td className="p-3 font-semibold">${parseFloat(loan.amount).toLocaleString()}</td>
+                          <td className="p-3 font-semibold">${parseFloat(loan.amount || 0).toLocaleString()}</td>
                           <td className="p-3">{loan.term} mo</td>
                           <td className="p-3">
                             <Badge
@@ -283,7 +278,7 @@ export default function AdminDashboard() {
                                 variant="outline"
                                 onClick={() => window.location.href = `/admin/loans/${loan.id}`}
                               >
-                                View Details
+                                View
                               </Button>
                               {loan.status === "Pending" && (
                                 <>

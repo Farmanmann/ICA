@@ -10,7 +10,42 @@ export default function SMSTermsPage() {
             {/* Program Description */}
             <div>
               <p>
-                <strong>Program Description.</strong> By opting into Noor Financing Alerts, you agree to receive recurring automated promotional and personalized marketing text messages (e.g., financing updates, rate alerts, and marketplace news) from Noor Financing at the mobile number provided at opt-in. Consent is not a condition of any purchase or financing offer.
+                <strong>Program Description.</strong> By opting into Noor Financing Alerts, you agree to receive recurring automated promotional and personalized marketing text messages (e.g., financing updates, rate alerts, application status notifications, and marketplace news) from Noor Financing at the mobile number provided at opt-in. Consent is not a condition of any purchase or financing offer.
+              </p>
+            </div>
+
+            {/* Message Frequency */}
+            <div>
+              <p>
+                <strong>Message Frequency.</strong> Message frequency varies based on your activity and preferences. You may receive up to 5 messages per month from Noor Financing. We will not send more than one promotional message per day.
+              </p>
+            </div>
+
+            {/* Rates */}
+            <div>
+              <p>
+                <strong>Message &amp; Data Rates.</strong> Message and data rates may apply. Check with your wireless provider if you are unsure about your plan's messaging and data rates.
+              </p>
+            </div>
+
+            {/* How to Opt Out */}
+            <div>
+              <p>
+                <strong>How to Opt Out.</strong> You may opt out of receiving SMS messages at any time by replying <strong>STOP</strong> to any message you receive from us. After texting STOP, you will receive a one-time confirmation message confirming that you have been unsubscribed and will no longer receive SMS messages from Noor Financing. To re-subscribe, text <strong>START</strong> to the same number.
+              </p>
+            </div>
+
+            {/* How to Get Help */}
+            <div>
+              <p>
+                <strong>How to Get Help.</strong> For assistance, reply <strong>HELP</strong> to any of our messages or contact us directly at <a href="mailto:support@noorfinancing.com" className="text-blue-600 hover:underline">support@noorfinancing.com</a> or <strong>346-521-8425</strong>.
+              </p>
+            </div>
+
+            {/* Supported Carriers */}
+            <div>
+              <p>
+                <strong>Supported Carriers.</strong> Our messaging program is supported by most major U.S. wireless carriers, including but not limited to AT&amp;T, Verizon, T-Mobile, Sprint, Boost Mobile, U.S. Cellular, and MetroPCS. Carrier support may vary. Noor Financing is not responsible for any delays or failures in message delivery attributable to your wireless carrier.
               </p>
             </div>
 
@@ -24,7 +59,7 @@ export default function SMSTermsPage() {
             {/* Privacy */}
             <div>
               <p>
-                <strong>Privacy.</strong> We value your data security. Your mobile information is never shared with third parties for their own marketing purposes. You can review our full <a href="/privacy" className="text-blue-600 hover:underline">Privacy Policy</a> and <a href="/terms" className="text-blue-600 hover:underline">Terms of Use</a> here.
+                <strong>Privacy.</strong> We value your data security. Your mobile phone number and opt-in information are never shared with third parties for their own marketing purposes. You can review our full <a href="/privacy" className="text-blue-600 hover:underline">Privacy Policy</a> and <a href="/terms" className="text-blue-600 hover:underline">Terms of Use</a> here.
               </p>
             </div>
 

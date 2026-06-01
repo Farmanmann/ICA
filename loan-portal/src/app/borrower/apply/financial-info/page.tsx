@@ -68,7 +68,7 @@ export default function ApplyStep3() {
       ...existingData,
       ...formData
     }))
-    window.location.href = "/borrower/apply/propertly-details"
+    window.location.href = "/borrower/apply/property-details"
   }
 
   return (

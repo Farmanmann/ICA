@@ -108,27 +108,31 @@ export default function LenderBiddingPage() {
     setOfferSubmitting(true)
     setError("")
     try {
-      const { createClient } = await import("@/lib/supabase/client")
-      const supabase = createClient()
-      const { error: insertError } = await supabase.from("bids").insert({
-        loan_id: offerLoan.id,
-        lender_id: currentUser.id,
-        amount: parseFloat(offerLoan.amount),
-        profit_rate: offerData.profit_rate ? parseFloat(offerData.profit_rate) : null,
-        apr: offerData.apr ? parseFloat(offerData.apr) : null,
-        monthly_payment: offerData.monthly_payment ? parseFloat(offerData.monthly_payment) : null,
-        note: offerData.note || null,
-        status: "pending",
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          loan_id: offerLoan.id,
+          lender_id: currentUser.id,
+          lender_email: currentUser.email,
+          amount: parseFloat(offerLoan.amount),
+          profit_rate: offerData.profit_rate ? parseFloat(offerData.profit_rate) : null,
+          apr: offerData.apr ? parseFloat(offerData.apr) : null,
+          monthly_payment: offerData.monthly_payment ? parseFloat(offerData.monthly_payment) : null,
+          note: offerData.note || null,
+          borrower_email: offerLoan.email || null,
+          borrower_name: offerLoan.borrower_name || null,
+          property_address: offerLoan.property_address || null,
+        }),
       })
-      if (insertError) throw insertError
-      setSuccess("Offer sent successfully!")
-      setOfferLoan(null)
-      setDetailLoan(null)
-      setOfferData({ profit_rate: "", apr: "", monthly_payment: "", note: "" })
-      setTimeout(() => setSuccess(""), 4000)
+
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || "Failed to create payment session")
+
+      // Redirect to Stripe Checkout — bid is saved by webhook after payment
+      window.location.href = data.url
     } catch (err: any) {
-      setError(err.message || "Failed to send offer. Please try again.")
-    } finally {
+      setError(err.message || "Failed to initiate payment. Please try again.")
       setOfferSubmitting(false)
     }
   }
@@ -175,10 +179,17 @@ export default function LenderBiddingPage() {
           </a>
         </nav>
         <div className="px-4 mt-auto">
-          <a className="flex items-center space-x-3 text-slate-400 hover:text-white py-3 px-4 hover:bg-slate-900 transition-all rounded-lg" href="#">
+          <button
+            className="w-full flex items-center space-x-3 text-slate-400 hover:text-white py-3 px-4 hover:bg-slate-900 transition-all rounded-lg"
+            onClick={async () => {
+              const { createClient } = await import("@/lib/supabase/client")
+              await createClient().auth.signOut()
+              window.location.href = "/auth/login"
+            }}
+          >
             <Icon name="logout" className="text-[20px]" />
             <span className="text-sm font-medium">Logout</span>
-          </a>
+          </button>
         </div>
       </aside>
 
@@ -277,7 +288,8 @@ export default function LenderBiddingPage() {
                   </div>
 
                   <button
-                    className="w-full py-2.5 rounded-lg font-bold text-sm flex items-center justify-center gap-2 border-2 border-emerald-600 text-emerald-700 hover:bg-emerald-50 transition-colors"
+                    className="w-full py-2.5 rounded-lg font-bold text-sm flex items-center justify-center gap-2 text-white transition-colors"
+                    style={{ background: "linear-gradient(135deg, #006948, #00855d)" }}
                     onClick={(e) => { e.stopPropagation(); setDetailLoan(loan) }}
                   >
                     <Info className="h-4 w-4" />
@@ -383,17 +395,27 @@ export default function LenderBiddingPage() {
               </section>
 
               {/* Send Offer CTA */}
-              <button
-                className="w-full py-4 text-white rounded-xl font-bold text-sm transition-all hover:opacity-90 shadow-lg"
-                style={{ background: "linear-gradient(135deg, #006948, #00855d)" }}
-                onClick={() => {
-                  setOfferData({ profit_rate: "", apr: "", monthly_payment: "", note: "" })
-                  setError("")
-                  setOfferLoan(detailLoan)
-                }}
-              >
-                Send Offer
-              </button>
+              {currentUser ? (
+                <button
+                  className="w-full py-4 text-white rounded-xl font-bold text-sm transition-all hover:opacity-90 shadow-lg"
+                  style={{ background: "linear-gradient(135deg, #006948, #00855d)" }}
+                  onClick={() => {
+                    setOfferData({ profit_rate: "", apr: "", monthly_payment: "", note: "" })
+                    setError("")
+                    setOfferLoan(detailLoan)
+                  }}
+                >
+                  Send Offer
+                </button>
+              ) : (
+                <a
+                  href={`/auth/login?redirect=/lender/bidding`}
+                  className="w-full py-4 text-white rounded-xl font-bold text-sm transition-all hover:opacity-90 shadow-lg flex items-center justify-center"
+                  style={{ background: "linear-gradient(135deg, #006948, #00855d)" }}
+                >
+                  Log In to Send Offer
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -495,6 +517,11 @@ export default function LenderBiddingPage() {
                 <p className="text-xs text-emerald-800 mt-0.5">All financing is structured to be interest-free and compliant with Islamic finance principles.</p>
               </div>
 
+              <div className="bg-amber-50 p-3 rounded-xl border border-amber-100">
+                <p className="text-sm text-amber-900 font-medium">$75 submission fee</p>
+                <p className="text-xs text-amber-800 mt-0.5">A one-time $75 fee is charged per offer to maintain a high-quality borrower marketplace. You will be redirected to a secure Stripe payment page.</p>
+              </div>
+
               <div className="flex gap-3 pt-1">
                 <Button variant="outline" className="flex-1" onClick={() => { setOfferLoan(null); setError("") }}>Cancel</Button>
                 <button
@@ -503,10 +530,21 @@ export default function LenderBiddingPage() {
                   onClick={handleSendOffer}
                   disabled={offerSubmitting || !currentUser}
                 >
-                  {offerSubmitting ? "Sending..." : "Send Offer"}
+                  {offerSubmitting ? "Redirecting to payment..." : "Pay $75 & Send Offer"}
                 </button>
               </div>
-              {!currentUser && <p className="text-sm text-amber-600 font-medium text-center">You must be logged in to send an offer.</p>}
+              {!currentUser && (
+                <div className="text-center">
+                  <p className="text-sm text-amber-600 font-medium mb-2">You must be logged in to send an offer.</p>
+                  <a
+                    href="/auth/login"
+                    className="inline-block px-6 py-2 text-sm font-bold text-white rounded-lg"
+                    style={{ background: "linear-gradient(135deg, #006948, #00855d)" }}
+                  >
+                    Log In to Continue
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </div>

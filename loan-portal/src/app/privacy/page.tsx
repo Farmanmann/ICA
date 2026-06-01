@@ -21,8 +21,8 @@ export default function PrivacyPage() {
               </p>
               <ul className="list-disc pl-6 space-y-2 mt-3">
                 <li>Contact information, including your name, residential address, telephone number, and email address.</li>
-                <li>Identifying information, including your Social Security number, date of birth, driver's license number, or other government-issued identifiers.</li>
-                <li>Financial information, including income, assets, employment history, credit scores, and debt obligations.</li>
+                <li>Identifying information, including your Social Security number, date of birth, driver's license number, passport number, or other government-issued identifiers. We may also collect copies or images of government-issued identification documents (such as a driver's license, state-issued ID, or passport) for the purpose of verifying your identity in compliance with our Customer Identification Program (CIP) obligations under the federal Bank Secrecy Act (BSA) and applicable Anti-Money Laundering (AML) regulations.</li>
+                <li>Financial information, including income, assets, employment history, credit scores, and debt obligations. We may also collect copies of financial documents such as bank statements, pay stubs, tax returns, and employment verification letters as part of the application underwriting process. Bank statements are used solely to verify income and financial capacity and are shared only with Network Partners reviewing your financing application.</li>
                 <li>Sensitive personal information, including financial account credentials and information regarding your preference for Shariah-compliant financing. Pursuant to the Texas Data Privacy and Security Act (TDPSA), the collection of information related to religious or ethical preferences is classified as sensitive data. By initiating an inquiry, you provide express consent for the processing of this data for the purpose of matching you with appropriate financing products.</li>
                 <li>Usage data, including IP addresses, device identifiers, browser type, and information regarding your interactions with the Digital Properties.</li>
               </ul>
@@ -41,8 +41,10 @@ export default function PrivacyPage() {
               <ul className="list-disc pl-6 space-y-2 mt-3">
                 <li>Delivering the Services, specifically connecting you with Network Partners (lenders and financial institutions) to provide financing offers.</li>
                 <li>Communicating with you for administrative and marketing purposes, including responding to inquiries and sending promotional materials.</li>
-                <li>Verifying your identity and maintaining security to detect and prevent unauthorized transactions or fraudulent activity.</li>
-                <li>Satisfying our legal and regulatory obligations, including compliance with the Texas Department of Savings and Mortgage Lending (SML) and federal Anti-Money Laundering (AML) laws.</li>
+                <li>Verifying your identity in accordance with our Customer Identification Program (CIP), as required under the federal Bank Secrecy Act (BSA) and USA PATRIOT Act. This includes collecting and reviewing government-issued identification documents. Copies of identification documents are retained for a minimum period as required by applicable law and regulation.</li>
+                <li>Reviewing financial documents, including bank statements and income verification materials, to assess eligibility for financing products on behalf of our Network Partners.</li>
+                <li>Satisfying our legal and regulatory obligations, including compliance with the Texas Department of Savings and Mortgage Lending (SML), the Gramm-Leach-Bliley Act (GLBA), and federal Anti-Money Laundering (AML) laws.</li>
+                <li>Conducting sanctions screening and fraud detection in compliance with OFAC regulations and applicable federal requirements.</li>
               </ul>
             </div>
 
@@ -74,6 +76,18 @@ export default function PrivacyPage() {
 
             <div>
               <p>
+                <strong>Financial Privacy — Gramm-Leach-Bliley Act (GLBA) Notice.</strong> As a licensed mortgage entity, Noor Financing is subject to the federal Gramm-Leach-Bliley Act (GLBA), which requires us to explain how we collect, share, and protect your financial information.
+              </p>
+              <ul className="list-disc pl-6 space-y-2 mt-3">
+                <li><strong>What we collect.</strong> We collect nonpublic personal information (NPI) about you from the information you provide on applications and other forms, from your transactions with us and our Network Partners, and from consumer reporting agencies.</li>
+                <li><strong>What we share.</strong> We may share your NPI with our Network Partners (affiliated and nonaffiliated financial institutions) in our network as necessary to facilitate your request for financing. We may also share NPI with service providers who perform functions on our behalf under written agreements that restrict their use of your information.</li>
+                <li><strong>Your right to opt out.</strong> Federal law gives you the right to limit some, but not all, sharing of your NPI. Specifically, you may opt out of sharing with nonaffiliated third parties for purposes other than those required to service your account or as permitted by law. To opt out, contact us at <a href="mailto:support@noorfinancing.com" className="text-blue-600 hover:underline">support@noorfinancing.com</a>.</li>
+                <li><strong>How we protect your information.</strong> We maintain physical, electronic, and procedural safeguards to protect your NPI, including encryption of document uploads and access controls that limit data access to authorized personnel only.</li>
+              </ul>
+            </div>
+
+            <div>
+              <p>
                 <strong>Your Choices and Opt-Outs.</strong> We provide you with the ability to make choices regarding your personal information:
               </p>
             </div>
@@ -86,7 +100,10 @@ export default function PrivacyPage() {
 
             <div>
               <p>
-                <strong>Information Security and Retention.</strong> We maintain physical, electronic, and procedural measures designed to safeguard your personal information, including the use of industry-standard encryption and multi-factor authentication. We retain personal information for as long as necessary to fulfill the purposes outlined in this policy or as required to satisfy legal, regulatory, or reporting requirements.
+                <strong>Information Security and Retention.</strong> We maintain physical, electronic, and procedural measures designed to safeguard your personal information, including the use of industry-standard encryption (AES-256) and access controls. Uploaded documents, including government-issued identification images and bank statements, are encrypted at rest using AWS Key Management Service (KMS) and are accessible only to authorized personnel and Network Partners reviewing your application.
+              </p>
+              <p className="mt-3">
+                We retain personal information, including copies of identification documents and financial records, for a minimum of three (3) years as required by the Texas Department of Savings and Mortgage Lending (7 TAC §80.204) and applicable federal law, including BSA record-keeping requirements for CIP documentation. After the applicable retention period, records are securely destroyed in accordance with our data retention policy.
               </p>
             </div>
 

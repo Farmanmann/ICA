@@ -7,9 +7,20 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import {
-  ArrowLeft, User, Mail, Phone, MapPin, Building, Car,
-  DollarSign, Calendar, FileText, Download, CheckCircle, XCircle
+  ArrowLeft, User, Mail, Phone, MapPin, Building,
+  DollarSign, Calendar, FileText, CheckCircle, XCircle, Lock, ExternalLink
 } from "lucide-react"
+
+const LOAN_TYPE_LABELS: Record<string, string> = {
+  murabaha: "Murabaha (Cost-Plus Financing)",
+  musharaka: "Musharakah (Partnership)",
+  no_preference: "No Preference",
+}
+const PURPOSE_LABELS: Record<string, string> = {
+  home_purchase: "Home Purchase",
+  refinance: "Refinance",
+  investment_home: "Investment Home",
+}
 
 export default function LoanDetailPage() {
   const params = useParams()
@@ -17,8 +28,10 @@ export default function LoanDetailPage() {
   const loanId = params.id
 
   const [loan, setLoan] = useState<any>(null)
+  const [bids, setBids] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
+  const [updating, setUpdating] = useState(false)
 
   useEffect(() => {
     fetchLoanDetails()
@@ -27,10 +40,25 @@ export default function LoanDetailPage() {
   const fetchLoanDetails = async () => {
     try {
       setLoading(true)
-      const res = await fetch(`http://localhost:8000/api/loans/${loanId}/`)
-      if (!res.ok) throw new Error("Failed to fetch loan details")
-      const data = await res.json()
+      const { createClient } = await import("@/lib/supabase/client")
+      const supabase = createClient()
+
+      const { data, error: fetchError } = await supabase
+        .from("loans")
+        .select("*")
+        .eq("id", loanId)
+        .single()
+      if (fetchError) throw fetchError
       setLoan(data)
+
+      // Fetch bids for this loan
+      const { data: bidsData } = await supabase
+        .from("bids")
+        .select("*")
+        .eq("loan_id", loanId)
+        .order("created_at", { ascending: false })
+      setBids(bidsData ?? [])
+
       setError("")
     } catch (err) {
       setError("Unable to load loan details")
@@ -42,17 +70,21 @@ export default function LoanDetailPage() {
 
   const updateLoanStatus = async (newStatus: string) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/loans/${loanId}/`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus })
-      })
-      if (!res.ok) throw new Error("Failed to update status")
+      setUpdating(true)
+      const { createClient } = await import("@/lib/supabase/client")
+      const supabase = createClient()
+      const { error: updateError } = await supabase
+        .from("loans")
+        .update({ status: newStatus })
+        .eq("id", loanId)
+      if (updateError) throw updateError
       await fetchLoanDetails()
-      alert(`Loan ${newStatus.toLowerCase()} successfully!`)
+      alert(`Application ${newStatus.toLowerCase()} successfully!`)
     } catch (err) {
       console.error("Failed to update loan:", err)
       alert("Failed to update loan status")
+    } finally {
+      setUpdating(false)
     }
   }
 
@@ -74,6 +106,8 @@ export default function LoanDetailPage() {
     )
   }
 
+  const monthlyPayment = loan.amount && loan.term ? (parseFloat(loan.amount) / parseInt(loan.term)).toFixed(2) : "0.00"
+
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
@@ -81,27 +115,21 @@ export default function LoanDetailPage() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => router.back()}
-              >
+              <Button variant="ghost" size="icon" onClick={() => router.back()}>
                 <ArrowLeft className="h-5 w-5" />
               </Button>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900">Financing #{loan.id}</h1>
+                <h1 className="text-2xl font-bold text-slate-900">
+                  Financing #{typeof loan.id === "string" ? loan.id.slice(0, 8).toUpperCase() : loan.id}
+                </h1>
                 <p className="text-sm text-slate-600">
-                  {loan.loan_type_display} - {loan.purpose_display}
+                  {LOAN_TYPE_LABELS[loan.loan_type] || loan.loan_type} — {PURPOSE_LABELS[loan.purpose] || loan.purpose}
                 </p>
               </div>
             </div>
             <Badge
               variant={
-                loan.status === "Approved"
-                  ? "default"
-                  : loan.status === "Pending"
-                  ? "secondary"
-                  : "destructive"
+                loan.status === "Approved" ? "default" : loan.status === "Pending" ? "secondary" : "destructive"
               }
               className="text-lg px-4 py-2"
             >
@@ -115,17 +143,11 @@ export default function LoanDetailPage() {
         {/* Action Buttons */}
         {loan.status === "Pending" && (
           <div className="flex gap-3">
-            <Button
-              onClick={() => updateLoanStatus("Approved")}
-              className="bg-green-600 hover:bg-green-700"
-            >
+            <Button onClick={() => updateLoanStatus("Approved")} className="bg-green-600 hover:bg-green-700" disabled={updating}>
               <CheckCircle className="h-4 w-4 mr-2" />
               Approve Financing
             </Button>
-            <Button
-              onClick={() => updateLoanStatus("Rejected")}
-              variant="destructive"
-            >
+            <Button onClick={() => updateLoanStatus("Rejected")} variant="destructive" disabled={updating}>
               <XCircle className="h-4 w-4 mr-2" />
               Reject Financing
             </Button>
@@ -133,7 +155,7 @@ export default function LoanDetailPage() {
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Main Details */}
+          {/* Left Column */}
           <div className="lg:col-span-2 space-y-6">
             {/* Loan Summary */}
             <Card>
@@ -145,7 +167,7 @@ export default function LoanDetailPage() {
                   <div>
                     <p className="text-sm text-slate-600 mb-1">Financing Amount</p>
                     <p className="text-3xl font-bold text-slate-900">
-                      ${parseFloat(loan.amount).toLocaleString()}
+                      ${parseFloat(loan.amount || 0).toLocaleString()}
                     </p>
                   </div>
                   <div>
@@ -153,16 +175,14 @@ export default function LoanDetailPage() {
                     <p className="text-3xl font-bold text-slate-900">{loan.term} months</p>
                   </div>
                   <div>
-                    <p className="text-sm text-slate-600 mb-1">Monthly Payment</p>
-                    <p className="text-2xl font-bold text-blue-600">
-                      ${loan.monthly_payment.toFixed(2)}
-                    </p>
-                    <p className="text-xs text-green-600 mt-1">Interest-free</p>
+                    <p className="text-sm text-slate-600 mb-1">Est. Monthly Payment</p>
+                    <p className="text-2xl font-bold text-blue-600">${monthlyPayment}</p>
+                    <p className="text-xs text-green-600 mt-1">Interest-free (principal only)</p>
                   </div>
                   <div>
-                    <p className="text-sm text-slate-600 mb-1">Total Repayment</p>
+                    <p className="text-sm text-slate-600 mb-1">Down Payment</p>
                     <p className="text-2xl font-bold text-slate-900">
-                      ${parseFloat(loan.amount).toLocaleString()}
+                      {loan.down_payment_percent ? `${loan.down_payment_percent}%` : "Not specified"}
                     </p>
                   </div>
                 </div>
@@ -181,83 +201,76 @@ export default function LoanDetailPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-slate-600 mb-1 flex items-center gap-2">
-                      <User className="h-4 w-4" />
-                      Full Name
+                      <User className="h-4 w-4" /> Full Name
                     </p>
-                    <p className="font-semibold">{loan.borrower_name}</p>
+                    <p className="font-semibold">{loan.borrower_name || "Not provided"}</p>
                   </div>
                   <div>
                     <p className="text-sm text-slate-600 mb-1 flex items-center gap-2">
-                      <Mail className="h-4 w-4" />
-                      Email
+                      <Mail className="h-4 w-4" /> Email
                     </p>
-                    <p className="font-semibold">{loan.email}</p>
+                    <p className="font-semibold">{loan.email || "Not provided"}</p>
                   </div>
                   <div>
                     <p className="text-sm text-slate-600 mb-1 flex items-center gap-2">
-                      <Phone className="h-4 w-4" />
-                      Phone
+                      <Phone className="h-4 w-4" /> Phone
                     </p>
-                    <p className="font-semibold">{loan.phone}</p>
+                    <p className="font-semibold">{loan.phone || "Not provided"}</p>
                   </div>
                   <div>
                     <p className="text-sm text-slate-600 mb-1 flex items-center gap-2">
-                      <MapPin className="h-4 w-4" />
-                      Address
+                      <MapPin className="h-4 w-4" /> Home Address
                     </p>
                     <p className="font-semibold">{loan.address || "Not provided"}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-slate-600 mb-1">Date of Birth</p>
+                    <p className="font-semibold">{loan.date_of_birth || "Not provided"}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-slate-600 mb-1">Credit Event</p>
+                    <p className="font-semibold capitalize">{loan.credit_event?.replace(/_/g, " ") || "None"}</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Asset Details */}
+            {/* Property Details */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  {loan.purpose === "car" ? (
-                    <><Car className="h-5 w-5" />Vehicle Details</>
-                  ) : (
-                    <><Building className="h-5 w-5" />Home Details</>
-                  )}
+                  <Building className="h-5 w-5" /> Property Details
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {loan.purpose === "car" ? (
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm text-slate-600 mb-1">Make</p>
-                      <p className="font-semibold">{loan.vehicle_make || "N/A"}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-slate-600 mb-1">Model</p>
-                      <p className="font-semibold">{loan.vehicle_model || "N/A"}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-slate-600 mb-1">Year</p>
-                      <p className="font-semibold">{loan.vehicle_year || "N/A"}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-slate-600 mb-1">Vehicle Value</p>
-                      <p className="font-semibold">
-                        {loan.vehicle_value ? `$${parseFloat(loan.vehicle_value).toLocaleString()}` : "N/A"}
-                      </p>
-                    </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="col-span-2">
+                    <p className="text-sm text-slate-600 mb-1">Property Address</p>
+                    <p className="font-semibold">{loan.property_address || "Not provided"}</p>
                   </div>
-                ) : (
-                  <div className="space-y-4">
-                    <div>
-                      <p className="text-sm text-slate-600 mb-1">Home Address</p>
-                      <p className="font-semibold">{loan.property_address || "N/A"}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-slate-600 mb-1">Home Value</p>
-                      <p className="font-semibold">
-                        {loan.property_value ? `$${parseFloat(loan.property_value).toLocaleString()}` : "N/A"}
-                      </p>
-                    </div>
+                  <div>
+                    <p className="text-sm text-slate-600 mb-1">Est. Property Value</p>
+                    <p className="font-semibold">
+                      {loan.property_value ? `$${parseFloat(loan.property_value).toLocaleString()}` : "Not provided"}
+                    </p>
                   </div>
-                )}
+                  <div>
+                    <p className="text-sm text-slate-600 mb-1">Property Type</p>
+                    <p className="font-semibold capitalize">{loan.property_type?.replace(/_/g, " ") || "Not provided"}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-slate-600 mb-1">Occupancy</p>
+                    <p className="font-semibold capitalize">{loan.occupancy_type?.replace(/_/g, " ") || "Not provided"}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-slate-600 mb-1">First Time Buyer</p>
+                    <p className="font-semibold">{loan.first_time_buyer === "yes" ? "Yes" : loan.first_time_buyer === "no" ? "No" : "Not specified"}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-slate-600 mb-1">Co-Borrower</p>
+                    <p className="font-semibold">{loan.has_co_borrower === "yes" ? "Yes" : loan.has_co_borrower === "no" ? "No" : "Not specified"}</p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
@@ -265,17 +278,14 @@ export default function LoanDetailPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <DollarSign className="h-5 w-5" />
-                  Financial Information
+                  <DollarSign className="h-5 w-5" /> Financial Information
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-slate-600 mb-1">Employment Status</p>
-                    <p className="font-semibold capitalize">
-                      {loan.employment_status || "Not provided"}
-                    </p>
+                    <p className="font-semibold capitalize">{loan.employment_status?.replace(/-/g, " ") || "Not provided"}</p>
                   </div>
                   <div>
                     <p className="text-sm text-slate-600 mb-1">Annual Income</p>
@@ -287,6 +297,10 @@ export default function LoanDetailPage() {
                     <p className="text-sm text-slate-600 mb-1">Credit Score</p>
                     <p className="font-semibold">{loan.credit_score || "Not provided"}</p>
                   </div>
+                  <div>
+                    <p className="text-sm text-slate-600 mb-1">Buying Stage</p>
+                    <p className="font-semibold capitalize">{loan.buying_stage?.replace(/_/g, " ") || "Not provided"}</p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -295,36 +309,52 @@ export default function LoanDetailPage() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <FileText className="h-5 w-5" />
-                  Uploaded Documents
+                  <FileText className="h-5 w-5" /> Uploaded Documents
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {loan.documents && loan.documents.length > 0 ? (
+                {loan.documents && Object.keys(loan.documents).some((k) => loan.documents[k]) ? (
                   <div className="space-y-3">
-                    {loan.documents.map((doc: any) => (
-                      <div
-                        key={doc.id}
-                        className="flex items-center justify-between p-4 border rounded-lg hover:bg-slate-50"
-                      >
-                        <div className="flex items-center gap-3">
-                          <FileText className="h-8 w-8 text-blue-600" />
-                          <div>
-                            <p className="font-semibold">{doc.document_type}</p>
-                            <p className="text-sm text-slate-600">
-                              Uploaded: {new Date(doc.uploaded_at).toLocaleDateString()}
-                            </p>
-                            {doc.notes && (
-                              <p className="text-sm text-slate-500 mt-1">{doc.notes}</p>
+                    {[
+                      { key: "id_document", label: "Government ID" },
+                      { key: "income_proof", label: "Income Proof" },
+                      { key: "bank_statements", label: "Bank Statements" },
+                    ].map(({ key, label }) => {
+                      const doc = loan.documents[key]
+                      if (!doc) return null
+                      const isEncrypted = typeof doc === "object" && doc.encryptedKey
+                      const displayName = isEncrypted ? doc.name : (typeof doc === "string" ? doc : key)
+                      return (
+                        <div key={key} className="flex items-center justify-between p-4 border rounded-lg hover:bg-slate-50">
+                          <div className="flex items-center gap-3">
+                            <FileText className="h-8 w-8 text-blue-600" />
+                            <div>
+                              <p className="font-semibold">{label}</p>
+                              <p className="text-xs text-slate-500 font-mono">{displayName}</p>
+                              {isEncrypted && (
+                                <p className="text-xs text-green-600 flex items-center gap-1 mt-0.5">
+                                  <Lock className="h-3 w-3" /> KMS encrypted
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Badge variant="outline" className="text-green-600 border-green-600">Uploaded</Badge>
+                            {isEncrypted && (
+                              <a
+                                href={`/api/documents/view?loanId=${loan.id}&docType=${key}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <Button size="sm" variant="outline" className="gap-1">
+                                  <ExternalLink className="h-3 w-3" /> View
+                                </Button>
+                              </a>
                             )}
                           </div>
                         </div>
-                        <Button size="sm" variant="outline">
-                          <Download className="h-4 w-4 mr-2" />
-                          Download
-                        </Button>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </div>
                 ) : (
                   <div className="text-center py-8 text-slate-500">
@@ -334,77 +364,93 @@ export default function LoanDetailPage() {
                 )}
               </CardContent>
             </Card>
+
+            {/* Financier Bids */}
+            {bids.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Financier Offers ({bids.length})</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b text-left">
+                          <th className="p-3 font-semibold text-sm">Profit Rate</th>
+                          <th className="p-3 font-semibold text-sm">APR</th>
+                          <th className="p-3 font-semibold text-sm">Monthly Payment</th>
+                          <th className="p-3 font-semibold text-sm">Status</th>
+                          <th className="p-3 font-semibold text-sm">Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {bids.map((bid: any) => (
+                          <tr key={bid.id} className="border-b hover:bg-slate-50">
+                            <td className="p-3">{bid.profit_rate ? `${bid.profit_rate}%` : "—"}</td>
+                            <td className="p-3">{bid.apr ? `${bid.apr}%` : "—"}</td>
+                            <td className="p-3">{bid.monthly_payment ? `$${parseFloat(bid.monthly_payment).toLocaleString()}` : "—"}</td>
+                            <td className="p-3">
+                              <Badge variant={bid.status === "accepted" ? "default" : bid.status === "rejected" ? "destructive" : "secondary"}>
+                                {bid.status}
+                              </Badge>
+                            </td>
+                            <td className="p-3 text-sm text-slate-500">{new Date(bid.created_at).toLocaleDateString()}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
 
-          {/* Right Column - Sidebar */}
+          {/* Right Column */}
           <div className="space-y-6">
-            {/* Timeline */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Calendar className="h-5 w-5" />
-                  Timeline
+                  <Calendar className="h-5 w-5" /> Timeline
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
                   <p className="text-sm text-slate-600 mb-1">Application Submitted</p>
-                  <p className="font-semibold">
-                    {new Date(loan.created_at).toLocaleDateString()}
-                  </p>
-                  <p className="text-xs text-slate-500">
-                    {new Date(loan.created_at).toLocaleTimeString()}
-                  </p>
+                  <p className="font-semibold">{loan.created_at ? new Date(loan.created_at).toLocaleDateString() : "—"}</p>
+                  <p className="text-xs text-slate-500">{loan.created_at ? new Date(loan.created_at).toLocaleTimeString() : ""}</p>
                 </div>
                 <div>
                   <p className="text-sm text-slate-600 mb-1">Last Updated</p>
-                  <p className="font-semibold">
-                    {new Date(loan.updated_at).toLocaleDateString()}
-                  </p>
-                  <p className="text-xs text-slate-500">
-                    {new Date(loan.updated_at).toLocaleTimeString()}
-                  </p>
+                  <p className="font-semibold">{loan.updated_at ? new Date(loan.updated_at).toLocaleDateString() : "—"}</p>
                 </div>
-                {loan.due_date && (
-                  <div>
-                    <p className="text-sm text-slate-600 mb-1">Due Date</p>
-                    <p className="font-semibold">
-                      {new Date(loan.due_date).toLocaleDateString()}
-                    </p>
-                  </div>
-                )}
               </CardContent>
             </Card>
 
-            {/* Loan Stats */}
             <Card>
               <CardHeader>
-                <CardTitle>Repayment Status</CardTitle>
+                <CardTitle>Application Status</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div>
-                  <p className="text-sm text-slate-600 mb-1">Total Paid</p>
-                  <p className="text-2xl font-bold text-green-600">
-                    ${loan.total_paid.toFixed(2)}
-                  </p>
+                <div className="text-center">
+                  <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-bold ${
+                    loan.status === "Approved" ? "bg-green-100 text-green-800" :
+                    loan.status === "Pending" ? "bg-amber-100 text-amber-800" :
+                    "bg-red-100 text-red-800"
+                  }`}>
+                    {loan.status}
+                  </div>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-600 mb-1">Remaining Balance</p>
-                  <p className="text-2xl font-bold text-slate-900">
-                    ${loan.remaining_balance.toFixed(2)}
-                  </p>
+                  <p className="text-sm text-slate-600 mb-1">Financing Type</p>
+                  <p className="font-semibold">{LOAN_TYPE_LABELS[loan.loan_type] || loan.loan_type}</p>
                 </div>
-                <div className="pt-2">
-                  <div className="flex justify-between text-sm text-slate-600 mb-2">
-                    <span>Progress</span>
-                    <span>{loan.stats.payment_progress.toFixed(1)}%</span>
-                  </div>
-                  <div className="w-full bg-slate-200 rounded-full h-3">
-                    <div
-                      className="bg-blue-600 h-3 rounded-full transition-all"
-                      style={{ width: `${loan.stats.payment_progress}%` }}
-                    />
-                  </div>
+                <div>
+                  <p className="text-sm text-slate-600 mb-1">Purpose</p>
+                  <p className="font-semibold">{PURPOSE_LABELS[loan.purpose] || loan.purpose}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-slate-600 mb-1">Offers Received</p>
+                  <p className="text-2xl font-bold text-blue-600">{bids.length}</p>
                 </div>
               </CardContent>
             </Card>

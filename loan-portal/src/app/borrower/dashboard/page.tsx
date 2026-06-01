@@ -95,6 +95,55 @@ export default function BorrowerDashboard() {
     }
   }
 
+  const handleAcceptOffer = async (bidId: string, loanId: string) => {
+    try {
+      const { createClient } = await import("@/lib/supabase/client")
+      const supabase = createClient()
+
+      // Fetch bid details for email
+      const { data: bidData } = await supabase.from("bids").select("*").eq("id", bidId).single()
+      // Fetch loan details for email
+      const { data: loanData } = await supabase.from("loans").select("*").eq("id", loanId).single()
+
+      // Accept this bid
+      await supabase.from("bids").update({ status: "accepted" }).eq("id", bidId)
+      // Mark loan as Approved
+      await supabase.from("loans").update({ status: "Approved" }).eq("id", loanId)
+      // Reject all other bids for this loan
+      await supabase.from("bids").update({ status: "rejected" }).eq("loan_id", loanId).neq("id", bidId)
+
+      // Send email notification to lender
+      if (bidData?.lender_email) {
+        await fetch("/api/email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "offer_accepted",
+            lenderEmail: bidData.lender_email,
+            propertyAddress: loanData?.property_address,
+            amount: loanData?.amount?.toString(),
+            profitRate: bidData.profit_rate?.toString(),
+          }),
+        })
+      }
+
+      fetchLoans()
+    } catch (err) {
+      console.error("Failed to accept offer:", err)
+    }
+  }
+
+  const handleRejectOffer = async (bidId: string) => {
+    try {
+      const { createClient } = await import("@/lib/supabase/client")
+      const supabase = createClient()
+      await supabase.from("bids").update({ status: "rejected" }).eq("id", bidId)
+      fetchLoans()
+    } catch (err) {
+      console.error("Failed to reject offer:", err)
+    }
+  }
+
   const activeLoan = loans.find((l: any) => l.status === "Approved") as any
   const pendingLoans = loans.filter((l: any) => l.status === "Pending").length
   const offersReceived = bids.length
@@ -322,6 +371,7 @@ export default function BorrowerDashboard() {
                       <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[#565e74]">Monthly Payment</th>
                       <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[#565e74]">Status</th>
                       <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[#565e74]">Date</th>
+                      <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-[#565e74]">Action</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#b8cfe8]/10">
@@ -346,6 +396,27 @@ export default function BorrowerDashboard() {
                         </td>
                         <td className="px-6 py-5 text-sm text-[#565e74]">
                           {new Date(bid.created_at).toLocaleDateString()}
+                        </td>
+                        <td className="px-6 py-5">
+                          {bid.status === "pending" ? (
+                            <div className="flex gap-2">
+                              <button
+                                className="px-3 py-1.5 text-xs font-bold text-white rounded-lg transition-colors"
+                                style={{ background: "#1a3c6e" }}
+                                onClick={() => handleAcceptOffer(bid.id, bid.loan_id)}
+                              >
+                                Accept
+                              </button>
+                              <button
+                                className="px-3 py-1.5 text-xs font-bold border border-red-400 text-red-600 rounded-lg hover:bg-red-50 transition-colors"
+                                onClick={() => handleRejectOffer(bid.id)}
+                              >
+                                Decline
+                              </button>
+                            </div>
+                          ) : (
+                            <span className="text-xs text-[#565e74] capitalize">{bid.status}</span>
+                          )}
                         </td>
                       </tr>
                     ))}

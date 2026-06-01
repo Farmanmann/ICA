@@ -73,6 +73,13 @@ export default function LoginPage() {
         return
       }
 
+      // Check if MFA challenge is required
+      const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel()
+      if (aal && aal.nextLevel === "aal2" && aal.nextLevel !== aal.currentLevel) {
+        window.location.href = "/auth/mfa"
+        return
+      }
+
       // Redirect based on role
       if (profile.role === "admin") {
         window.location.href = "/admin/dashboard"
